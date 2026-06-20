@@ -1,0 +1,1769 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nex Cell — Gestor Financeiro</title>
+<link rel="icon" href="data:image/png;base64,ICON_B64_PLACEHOLDER">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0A0A0F;
+    --bg-grad: radial-gradient(1200px 600px at 50% -10%, rgba(138,77,255,.18), transparent 60%), #0A0A0F;
+    --surface:#151320;
+    --surface-2:#1B1828;
+    --surface-3:#211C33;
+    --border:#322B49;
+    --border-soft:#241F36;
+    --text:#F5F3FA;
+    --text-soft:#A89FC2;
+    --text-faint:#766D91;
+    --brand:#8A4DFF;
+    --brand-dark:#5C2FCC;
+    --brand-light:#241B3D;
+    --brand-magenta:#E54DFF;
+    --brand-purple:#8A4DFF;
+    --brand-purple-dark:#6E2FE0;
+    --brand-gradient: linear-gradient(135deg, #8A4DFF 0%, #B23FEF 55%, #E54DFF 100%);
+    --brand-gradient-soft: linear-gradient(135deg, rgba(138,77,255,.16) 0%, rgba(229,77,255,.16) 100%);
+    --pago-bg:rgba(46,158,82,.16); --pago-text:#5FE39A; --pago-dot:#2E9E52;
+    --aberto-bg:rgba(242,169,59,.16); --aberto-text:#F2C168; --aberto-dot:#F2A93B;
+    --atrasado-bg:rgba(220,38,38,.16); --atrasado-text:#FF6B6B; --atrasado-dot:#DC2626;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.35), 0 1px 1px rgba(0,0,0,.2);
+    --shadow-md: 0 8px 28px rgba(138,77,255,.16), 0 2px 8px rgba(0,0,0,.4);
+    --shadow-glow: 0 0 0 1px rgba(138,77,255,.25), 0 8px 24px rgba(138,77,255,.18);
+    --radius-md: 14px;
+    --radius-lg: 18px;
+    --radius-sm: 10px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg-grad);
+    background-attachment:fixed;
+    color:var(--text);
+    font-family:'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:40px;
+  }
+  h1,h2,h3{font-family:'Plus Jakarta Sans', system-ui, sans-serif; margin:0;}
+  button{font-family:inherit;}
+  #app{max-width:980px; margin:0 auto; padding:0 16px;}
+
+  /* ---------- TOPBAR ---------- */
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 0 12px;
+  }
+  .brand{display:flex; align-items:center; gap:10px;}
+  .brand-logo{height:46px; width:auto; flex-shrink:0; display:block;}
+  .brand h1{
+    font-size:20px; font-weight:800; letter-spacing:-0.01em;
+    background:var(--brand-gradient); -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .brand p{margin:2px 0 0; font-size:12.5px; color:var(--text-soft);}
+  .icon-btn{
+    width:40px; height:40px; border-radius:10px; border:1px solid var(--border);
+    background:var(--surface); cursor:pointer; font-size:17px; color:var(--text);
+    display:flex; align-items:center; justify-content:center;
+    transition:.15s; flex-shrink:0;
+  }
+  .icon-btn:hover{background:var(--surface-2); border-color:var(--brand-purple); box-shadow:0 0 0 3px rgba(138,77,255,.15);}
+
+  /* ---------- TABS ---------- */
+  .tabs{display:flex; gap:6px; background:var(--surface); padding:4px; border-radius:12px; border:1px solid var(--border); margin-bottom:18px;}
+  .tab{
+    flex:1; border:none; background:transparent; padding:9px 8px; border-radius:9px;
+    font-weight:600; font-size:13.5px; color:var(--text-soft); cursor:pointer; transition:.15s;
+  }
+  .tab.active{background:var(--brand-gradient); color:#fff; box-shadow:var(--shadow-glow);}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
+
+  /* ---------- DASHBOARD ---------- */
+  .period-label{
+    display:flex; align-items:center; justify-content:space-between; gap:8px;
+    margin-bottom:10px; font-size:12.5px; color:var(--text-soft); font-weight:600;
+  }
+  .period-label b{color:var(--brand-magenta);}
+  .dashboard{
+    display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:14px;
+  }
+  .stat-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md);
+    padding:14px; box-shadow:var(--shadow-sm); position:relative; overflow:hidden;
+  }
+  .stat-card .stat-label{font-size:11.5px; color:var(--text-soft); font-weight:600; text-transform:uppercase; letter-spacing:.03em;}
+  .stat-card .stat-value{font-family:'Plus Jakarta Sans'; font-size:19px; font-weight:800; margin-top:6px; color:var(--text);}
+  .stat-card.accent-green .stat-value{color:var(--pago-text);}
+  .stat-card.accent-amber .stat-value{color:var(--aberto-text);}
+  .stat-card.accent-red .stat-value{color:var(--atrasado-text);}
+  .stat-card .stat-sub{font-size:11px; color:var(--text-faint); margin-top:3px;}
+  .stat-card.span2{grid-column:span 2;}
+  .stat-card.reserve-card{display:flex; align-items:center; gap:12px;}
+  .donut{
+    width:54px; height:54px; border-radius:50%; flex-shrink:0;
+    background:conic-gradient(var(--brand-magenta) 0% 10%, var(--brand-light) 10% 100%);
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+  }
+  .donut::after{
+    content:''; position:absolute; width:34px; height:34px; border-radius:50%; background:var(--surface);
+  }
+  .donut span{position:relative; z-index:1; font-size:10.5px; font-weight:800; color:var(--brand-magenta);}
+
+  /* ---------- GOAL CARD ---------- */
+  .goal-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md);
+    padding:16px; box-shadow:var(--shadow-sm); margin-bottom:16px; position:relative; overflow:hidden;
+  }
+  .goal-card::before{
+    content:''; position:absolute; inset:0; background:var(--brand-gradient-soft); opacity:.5; pointer-events:none;
+  }
+  .goal-head{display:flex; justify-content:space-between; align-items:center; gap:8px; position:relative; z-index:1;}
+  .goal-head .goal-title{font-size:12.5px; font-weight:700; color:var(--text-soft); text-transform:uppercase; letter-spacing:.03em;}
+  .goal-edit-btn{
+    border:1px solid var(--border); background:var(--surface-2); color:var(--text-soft);
+    border-radius:8px; padding:5px 10px; font-size:11.5px; font-weight:700; cursor:pointer; transition:.15s;
+  }
+  .goal-edit-btn:hover{border-color:var(--brand-purple); color:var(--text);}
+  .goal-amounts{display:flex; justify-content:space-between; align-items:baseline; margin-top:10px; position:relative; z-index:1;}
+  .goal-amounts .current{font-family:'Plus Jakarta Sans'; font-size:21px; font-weight:800; background:var(--brand-gradient); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .goal-amounts .target{font-size:13px; color:var(--text-soft); font-weight:600;}
+  .goal-bar-track{
+    width:100%; height:10px; border-radius:20px; background:var(--surface-3); overflow:hidden; margin-top:10px;
+    position:relative; z-index:1; border:1px solid var(--border-soft);
+  }
+  .goal-bar-fill{
+    height:100%; border-radius:20px; background:var(--brand-gradient); transition:width .3s ease;
+    box-shadow:0 0 12px rgba(229,77,255,.5);
+  }
+  .goal-foot{display:flex; justify-content:space-between; margin-top:8px; font-size:11.5px; color:var(--text-faint); position:relative; z-index:1;}
+  .goal-foot b{color:var(--text-soft);}
+
+  /* ---------- TOOLBAR ---------- */
+  .toolbar{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:14px;}
+  .toolbar h2{font-size:17px; font-weight:700;}
+  .search-box{flex:1 1 100%;}
+  .search-box input{
+    width:100%; padding:11px 14px; border-radius:11px; border:1px solid var(--border);
+    background:var(--surface); font-size:14px; color:var(--text); outline:none; transition:.15s;
+  }
+  .search-box input::placeholder{color:var(--text-faint);}
+  .search-box input:focus{border-color:var(--brand-purple); box-shadow:0 0 0 3px var(--brand-light);}
+  .filters{display:flex; gap:6px; flex-wrap:wrap; flex:1;}
+  .chip{
+    border:1px solid var(--border); background:var(--surface); padding:7px 13px; border-radius:20px;
+    font-size:12.5px; font-weight:600; color:var(--text-soft); cursor:pointer; transition:.15s; white-space:nowrap;
+  }
+  .chip.active{background:var(--brand-gradient); color:#fff; border-color:transparent;}
+  .period-row{display:flex; gap:8px; align-items:center; flex:1 1 100%; flex-wrap:wrap;}
+  .period-row label{font-size:12.5px; font-weight:600; color:var(--text-soft); white-space:nowrap;}
+  .period-row input[type="month"]{
+    border:1px solid var(--border); background:var(--surface); padding:8px 12px; border-radius:20px;
+    font-size:12.5px; font-weight:600; color:var(--text); cursor:pointer; outline:none; transition:.15s;
+    font-family:inherit; color-scheme:dark;
+  }
+  .period-row input[type="month"]:focus{border-color:var(--brand-purple); box-shadow:0 0 0 3px var(--brand-light);}
+  .period-row input[type="month"].active-filter{border-color:var(--brand-magenta); color:var(--brand-magenta);}
+  .chip-clear-month{
+    border:1px solid var(--border); background:var(--surface); padding:7px 11px; border-radius:20px;
+    font-size:12px; font-weight:600; color:var(--text-soft); cursor:pointer; transition:.15s;
+  }
+  .chip-clear-month:hover{background:var(--atrasado-bg); color:var(--atrasado-text); border-color:#5c2424;}
+
+  /* ---------- BUTTONS ---------- */
+  .btn{
+    border:none; border-radius:11px; padding:11px 18px; font-weight:700; font-size:13.5px;
+    cursor:pointer; transition:.15s; display:inline-flex; align-items:center; gap:6px; white-space:nowrap;
+  }
+  .btn-primary{background:var(--brand-gradient); color:#fff; box-shadow:var(--shadow-glow);}
+  .btn-primary:hover{filter:brightness(1.08);}
+  .btn-ghost{background:var(--surface); color:var(--text); border:1px solid var(--border);}
+  .btn-ghost:hover{background:var(--surface-2); border-color:var(--brand-purple);}
+  .btn-danger{background:var(--surface); color:var(--atrasado-text); border:1px solid #4a2424;}
+  .btn-danger:hover{background:var(--atrasado-bg);}
+  .btn-block{width:100%; justify-content:center;}
+  .btn-sm{padding:7px 11px; font-size:12px; border-radius:9px;}
+
+  /* ---------- SALES LIST ---------- */
+  .sales-list{display:flex; flex-direction:column; gap:10px;}
+  .sale-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md);
+    padding:14px; box-shadow:var(--shadow-sm);
+  }
+  .sale-top{display:flex; justify-content:space-between; align-items:flex-start; gap:8px;}
+  .sale-client{font-weight:700; font-size:15px; color:var(--text);}
+  .sale-desc{font-size:13px; color:var(--text-soft); margin-top:2px;}
+  .sale-actions{display:flex; gap:6px; flex-shrink:0;}
+  .icon-action{
+    width:32px; height:32px; border-radius:9px; border:1px solid var(--border); background:var(--surface-2);
+    cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center; transition:.15s;
+  }
+  .icon-action:hover{background:var(--surface-3); border-color:var(--brand-purple);}
+
+  .badge{
+    display:inline-flex; align-items:center; gap:5px; padding:4px 10px; border-radius:20px;
+    font-size:11.5px; font-weight:700;
+  }
+  .badge .dot{width:6px; height:6px; border-radius:50%;}
+  .badge-pago{background:var(--pago-bg); color:var(--pago-text);}
+  .badge-pago .dot{background:var(--pago-dot);}
+  .badge-aberto{background:var(--aberto-bg); color:var(--aberto-text);}
+  .badge-aberto .dot{background:var(--aberto-dot);}
+  .badge-atrasado{background:var(--atrasado-bg); color:var(--atrasado-text);}
+  .badge-atrasado .dot{background:var(--atrasado-dot);}
+
+  .sale-meta{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px;}
+  .meta-pill{
+    background:var(--surface-2); border:1px solid var(--border); border-radius:9px;
+    padding:6px 10px; font-size:11.5px; min-width:84px;
+  }
+  .meta-pill .ml{display:block; color:var(--text-faint); font-weight:600; text-transform:uppercase; font-size:9.5px; letter-spacing:.03em;}
+  .meta-pill .mv{display:block; font-weight:700; color:var(--text); margin-top:2px; font-size:13px;}
+  .meta-pill.profit .mv{color:var(--brand-magenta);}
+  .meta-pill.reserve .mv{color:var(--aberto-text);}
+
+  .sale-footer{display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px; margin-top:12px; padding-top:10px; border-top:1px dashed var(--border);}
+  .sale-dates{font-size:11.5px; color:var(--text-soft);}
+  .sale-dates b{color:var(--text);}
+  .status-select{
+    border:1px solid var(--border); border-radius:9px; padding:6px 10px; font-size:12px; font-weight:700;
+    cursor:pointer; background:var(--surface-2); color:var(--text); outline:none;
+  }
+  .sale-os-btn{
+    margin-top:10px; width:100%; justify-content:center;
+    background:var(--surface-2); color:var(--brand-magenta); border:1px solid var(--border);
+    border-radius:10px; padding:9px 12px; font-weight:700; font-size:12.5px; cursor:pointer;
+    display:flex; align-items:center; gap:6px; transition:.15s;
+  }
+  .sale-os-btn:hover{border-color:var(--brand-magenta); background:var(--surface-3);}
+
+  .empty-state{
+    text-align:center; padding:50px 20px; color:var(--text-soft); background:var(--surface);
+    border:1px dashed var(--border); border-radius:var(--radius-md);
+  }
+  .empty-state .ee-icon{font-size:34px; margin-bottom:8px;}
+  .empty-state h3{font-size:15px; margin-bottom:4px; color:var(--text);}
+  .empty-state p{font-size:13px; margin:0;}
+
+  /* ---------- TEMPLATES ---------- */
+  .templates-list{display:grid; grid-template-columns:1fr; gap:10px;}
+  .template-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md);
+    padding:14px; box-shadow:var(--shadow-sm);
+  }
+  .template-top{display:flex; justify-content:space-between; align-items:flex-start; gap:8px;}
+  .template-name{font-weight:700; font-size:14.5px;}
+  .template-desc{font-size:12.5px; color:var(--text-soft); margin-top:2px;}
+  .template-vals{display:flex; gap:14px; margin-top:10px;}
+  .template-vals div span{display:block; font-size:9.5px; text-transform:uppercase; color:var(--text-faint); font-weight:700; letter-spacing:.03em;}
+  .template-vals div b{font-size:13.5px; color:var(--text);}
+
+  /* ---------- MODAL ---------- */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(5,4,10,.7); display:none;
+    align-items:flex-end; justify-content:center; z-index:100; padding:0;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal{
+    background:var(--surface); border:1px solid var(--border); border-radius:20px 20px 0 0; width:100%; max-width:560px;
+    max-height:92vh; overflow-y:auto; padding:18px 18px 22px; box-shadow:0 -8px 30px rgba(0,0,0,.5);
+    animation:slideUp .2s ease;
+  }
+  @keyframes slideUp{from{transform:translateY(24px); opacity:.4;} to{transform:translateY(0); opacity:1;}}
+  .modal-header{display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;}
+  .modal-header h3{font-size:16.5px; font-weight:800;}
+  .modal-close{border:none; background:var(--surface-2); width:30px; height:30px; border-radius:8px; font-size:16px; cursor:pointer; color:var(--text-soft);}
+  .field{margin-bottom:13px;}
+  .field label{display:block; font-size:12px; font-weight:700; color:var(--text-soft); margin-bottom:5px;}
+  .field input, .field select, .field textarea{
+    width:100%; padding:11px 12px; border-radius:10px; border:1px solid var(--border);
+    background:var(--surface-2); font-size:14px; color:var(--text); outline:none; font-family:inherit; transition:.15s;
+    color-scheme:dark;
+  }
+  .field input::placeholder, .field textarea::placeholder{color:var(--text-faint);}
+  .field input:focus, .field select:focus, .field textarea:focus{border-color:var(--brand); background:var(--surface); box-shadow:0 0 0 3px var(--brand-light);}
+  .field textarea{resize:vertical; min-height:54px;}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .row3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;}
+  .calc-preview{
+    background:var(--brand-light); border-radius:12px; padding:12px; display:grid; grid-template-columns:repeat(3,1fr);
+    gap:8px; margin:6px 0 16px; border:1px solid var(--border-soft);
+  }
+  .calc-preview div{text-align:center;}
+  .calc-preview span{display:block; font-size:9.5px; text-transform:uppercase; color:var(--brand-magenta); font-weight:700; opacity:.85;}
+  .calc-preview b{font-size:13.5px; color:var(--text);}
+  .modal-buttons{display:flex; gap:10px; margin-top:6px;}
+  .modal-buttons .btn{flex:1;}
+  .confirm-text{font-size:14px; color:var(--text-soft); line-height:1.5; margin-bottom:18px;}
+  .field-hint{font-size:11px; color:var(--text-faint); margin-top:4px;}
+  .yesno-group{display:flex; gap:6px;}
+  .yesno-btn{
+    flex:1; border:1px solid var(--border); background:var(--surface-2); color:var(--text-soft);
+    border-radius:9px; padding:9px 6px; font-size:12.5px; font-weight:700; cursor:pointer; transition:.15s;
+  }
+  .yesno-btn.active{background:var(--brand-gradient); color:#fff; border-color:transparent;}
+  .section-title{
+    font-size:11.5px; font-weight:800; color:var(--brand-magenta); text-transform:uppercase; letter-spacing:.04em;
+    margin:18px 0 10px; padding-bottom:6px; border-bottom:1px solid var(--border-soft);
+  }
+  .section-title:first-child{margin-top:0;}
+  .logo-upload-box{
+    border:1.5px dashed var(--border); border-radius:14px; padding:18px; text-align:center; cursor:pointer;
+    transition:.15s; background:var(--surface-2);
+  }
+  .logo-upload-box:hover{border-color:var(--brand-purple); background:var(--surface-3);}
+  .logo-upload-box img{max-width:160px; max-height:90px; display:block; margin:0 auto 8px;}
+  .logo-upload-box .lu-icon{font-size:24px;}
+  .logo-upload-box p{font-size:12px; color:var(--text-soft); margin:6px 0 0;}
+
+  /* ---------- TOAST ---------- */
+  #toastWrap{position:fixed; bottom:18px; left:0; right:0; display:flex; flex-direction:column; align-items:center; gap:8px; z-index:200; pointer-events:none;}
+  .toast{
+    background:var(--surface-3); border:1px solid var(--border); color:var(--text); padding:10px 18px; border-radius:30px; font-size:13px; font-weight:600;
+    box-shadow:var(--shadow-md); animation:toastIn .2s ease, toastOut .2s ease 2.2s forwards; opacity:0;
+  }
+  @keyframes toastIn{to{opacity:1; transform:translateY(0);} from{opacity:0; transform:translateY(8px);}}
+  @keyframes toastOut{to{opacity:0;}}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media(min-width:680px){
+    .dashboard{grid-template-columns:repeat(4,1fr);}
+    .stat-card.span2{grid-column:span 1;}
+    .templates-list{grid-template-columns:1fr 1fr;}
+    .modal-overlay{align-items:center;}
+    .modal{border-radius:20px; margin:20px;}
+  }
+  @media(min-width:680px) and (max-width:899px){
+    .dashboard{grid-template-columns:repeat(3,1fr);}
+  }
+
+  /* ============================================================
+     ORDEM DE SERVIÇO — TELA (modal grande)
+  ============================================================ */
+  .os-modal{max-width:760px;}
+  .os-tabs-info{font-size:12px; color:var(--text-faint); margin:0 0 14px;}
+  .os-grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .os-grid3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;}
+  .os-actions-bar{display:flex; gap:10px; margin-top:18px; flex-wrap:wrap;}
+  .os-actions-bar .btn{flex:1; min-width:140px;}
+
+  /* ============================================================
+     ORDEM DE SERVIÇO — DOCUMENTO (impressão / PDF)
+  ============================================================ */
+  #osPrintOverlay{
+    position:fixed; inset:0; background:#0A0A0F; display:none; z-index:300;
+    overflow-y:auto; padding:18px 0 40px;
+  }
+  #osPrintOverlay.open{display:block;}
+  .os-print-toolbar{
+    max-width:860px; margin:0 auto 16px; padding:0 16px; display:flex; gap:10px; flex-wrap:wrap;
+    position:sticky; top:0; z-index:5;
+  }
+  .os-doc{
+    max-width:794px; margin:0 auto; background:#ffffff; color:#1a1a1a;
+    padding:34px 40px; box-shadow:0 10px 40px rgba(0,0,0,.5); border-radius:6px;
+    font-family:'Inter', system-ui, sans-serif;
+  }
+  .os-doc-logo-wrap{text-align:center; margin-bottom:14px;}
+  .os-doc-logo-wrap img{width:28%; min-width:140px; max-width:260px; height:auto; display:inline-block;}
+  .os-doc-header{
+    text-align:center; border-bottom:3px solid #8A4DFF; padding-bottom:14px; margin-bottom:18px;
+  }
+  .os-doc-header h1{
+    font-family:'Plus Jakarta Sans', sans-serif; font-size:22px; font-weight:800; margin:0;
+    background:linear-gradient(135deg,#8A4DFF,#E54DFF); -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .os-doc-header .os-sub{font-size:11.5px; color:#666; margin-top:4px; letter-spacing:.04em; text-transform:uppercase; font-weight:600;}
+  .os-doc-header .os-num{font-size:11px; color:#999; margin-top:6px;}
+  .os-block{
+    border:1px solid #E2DCEC; border-radius:10px; padding:12px 14px; margin-bottom:12px;
+    break-inside:avoid; page-break-inside:avoid;
+  }
+  .os-block-title{
+    font-size:10.5px; font-weight:800; text-transform:uppercase; letter-spacing:.05em;
+    color:#8A4DFF; margin:0 0 8px; padding-bottom:6px; border-bottom:1px solid #EDE7F6;
+  }
+  .os-fields-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px 16px;}
+  .os-fields-grid.cols3{grid-template-columns:1fr 1fr 1fr;}
+  .os-fields-grid.full{grid-template-columns:1fr;}
+  .os-fv{font-size:12.5px;}
+  .os-fv .os-fl{display:block; font-size:9px; text-transform:uppercase; letter-spacing:.04em; color:#999; font-weight:700; margin-bottom:2px;}
+  .os-fv .os-fd{display:block; font-weight:600; color:#1a1a1a; min-height:14px; word-break:break-word;}
+  .os-2col{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .os-flags{display:flex; flex-wrap:wrap; gap:8px;}
+  .os-flag{
+    display:inline-flex; align-items:center; gap:5px; padding:5px 10px; border-radius:20px; font-size:11px; font-weight:700;
+    border:1px solid #E2DCEC; background:#FAF8FC;
+  }
+  .os-flag.yes{background:#FBEEFC; color:#8A2FB8; border-color:#E9C9F2;}
+  .os-flag.no{background:#F4F4F5; color:#777;}
+  .os-services p, .os-obs p{font-size:12.5px; line-height:1.6; white-space:pre-wrap; margin:0; color:#222;}
+  .os-value-pay{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .os-value-pay .os-amount{font-size:18px; font-weight:800; color:#8A4DFF;}
+  .os-sign-grid{display:grid; grid-template-columns:1fr 1fr; gap:30px; margin-top:26px;}
+  .os-sign-line{border-top:1.5px solid #1a1a1a; padding-top:6px; text-align:center; font-size:11px; color:#444; font-weight:600;}
+  .os-doc-footer{margin-top:22px; text-align:center; font-size:9.5px; color:#aaa; border-top:1px dashed #ddd; padding-top:10px;}
+
+  @media print{
+    body *{visibility:hidden;}
+    #osPrintOverlay, #osPrintOverlay *{visibility:visible;}
+    #osPrintOverlay{position:absolute; inset:0; background:#fff; padding:0;}
+    .os-print-toolbar{display:none !important;}
+    .os-doc{box-shadow:none; max-width:100%; padding:14mm 16mm; border-radius:0;}
+    .os-block{break-inside:avoid; page-break-inside:avoid;}
+    @page{size:A4; margin:10mm;}
+  }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <header class="topbar">
+    <div class="brand">
+      <img src="data:image/png;base64,ICON_B64_PLACEHOLDER" alt="Nex Cell" class="brand-logo">
+      <div>
+        <h1>Nex Cell</h1>
+        <p>Gestor financeiro da loja</p>
+      </div>
+    </div>
+    <button class="icon-btn" id="btnSettings" title="Configurações e backup">⚙️</button>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="vendas">Vendas</button>
+    <button class="tab" data-tab="modelos">Modelos prontos</button>
+  </nav>
+
+  <main>
+    <section id="tab-vendas" class="tab-panel active">
+      <div class="period-label" id="periodLabel"></div>
+
+      <div class="goal-card">
+        <div class="goal-head">
+          <span class="goal-title">🎯 Meta de lucro do mês</span>
+          <button class="goal-edit-btn" id="btnEditGoal">✏️ Editar meta</button>
+        </div>
+        <div class="goal-amounts">
+          <span class="current" id="goalCurrent">R$ 0,00</span>
+          <span class="target" id="goalTargetLabel">de R$ 1.000,00</span>
+        </div>
+        <div class="goal-bar-track"><div class="goal-bar-fill" id="goalBarFill" style="width:0%"></div></div>
+        <div class="goal-foot">
+          <span id="goalPercentLabel">0% atingido</span>
+          <span id="goalRemainingLabel">Faltam <b>R$ 1.000,00</b></span>
+        </div>
+      </div>
+
+      <div class="dashboard" id="dashboard"></div>
+
+      <div class="toolbar">
+        <div class="search-box"><input id="searchInput" placeholder="🔎 Buscar por cliente ou descrição..."></div>
+        <div class="period-row">
+          <label for="monthFilter">Mês:</label>
+          <input type="month" id="monthFilter" title="Filtrar por mês da venda">
+          <button class="chip-clear-month" id="btnClearMonth" title="Ver todos os períodos">✕ Ver tudo</button>
+        </div>
+        <div class="filters" id="filters">
+          <button class="chip active" data-filter="todos">Todos</button>
+          <button class="chip" data-filter="pago">Pago</button>
+          <button class="chip" data-filter="aberto">Em aberto</button>
+          <button class="chip" data-filter="atrasado">Atrasado</button>
+        </div>
+        <button class="btn btn-primary" id="btnNewSale">＋ Nova venda</button>
+      </div>
+
+      <div class="sales-list" id="salesList"></div>
+
+      <div class="empty-state" id="emptyState" hidden>
+        <div class="ee-icon">🧾</div>
+        <h3>Nenhuma venda encontrada</h3>
+        <p>Cadastre uma nova venda ou ajuste os filtros de busca.</p>
+      </div>
+    </section>
+
+    <section id="tab-modelos" class="tab-panel">
+      <div class="toolbar">
+        <h2>Modelos prontos</h2>
+        <button class="btn btn-primary" id="btnNewTemplate" style="margin-left:auto;">＋ Novo modelo</button>
+      </div>
+      <div class="templates-list" id="templatesList"></div>
+      <div class="empty-state" id="emptyTemplates" hidden>
+        <div class="ee-icon">📦</div>
+        <h3>Nenhum modelo cadastrado</h3>
+        <p>Crie modelos como "Troca de tela" ou "Película" para agilizar o cadastro.</p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- MODAL: Edit Goal -->
+<div class="modal-overlay" id="goalModalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Editar meta mensal de lucro</h3>
+      <button class="modal-close" data-close="goalModalOverlay">&times;</button>
+    </div>
+    <form id="goalForm">
+      <div class="field">
+        <label>Valor da meta (R$)</label>
+        <input type="number" id="goalInput" min="0" step="0.01" required placeholder="1000,00">
+        <div class="field-hint">A meta é comparada com o lucro líquido das vendas pagas no mês filtrado. Se nenhum mês estiver filtrado, considera o mês atual.</div>
+      </div>
+      <div class="modal-buttons">
+        <button type="button" class="btn btn-ghost" data-close="goalModalOverlay">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Salvar meta</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: Sale form -->
+<div class="modal-overlay" id="saleModalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="saleModalTitle">Nova venda/serviço</h3>
+      <button class="modal-close" data-close="saleModalOverlay">&times;</button>
+    </div>
+    <form id="saleForm">
+      <div class="field">
+        <label>Selecionar modelo pronto (opcional)</label>
+        <select id="saleTemplateSelect">
+          <option value="">— Nenhum / preencher manualmente —</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Nome do cliente</label>
+        <input type="text" id="saleClient" required placeholder="Ex: Maria Silva">
+      </div>
+      <div class="field">
+        <label>Descrição da venda ou serviço</label>
+        <textarea id="saleDescription" required placeholder="Ex: Troca de tela iPhone 11"></textarea>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>Valor de custo (R$)</label>
+          <input type="number" id="saleCost" min="0" step="0.01" required placeholder="0,00">
+        </div>
+        <div class="field">
+          <label>Valor cobrado (R$)</label>
+          <input type="number" id="salePrice" min="0" step="0.01" required placeholder="0,00">
+        </div>
+      </div>
+
+      <div class="calc-preview" id="calcPreview">
+        <div><span>Lucro bruto</span><b id="prevGross">R$ 0,00</b></div>
+        <div><span>Reserva 10%</span><b id="prevReserve">R$ 0,00</b></div>
+        <div><span>Lucro líquido</span><b id="prevNet">R$ 0,00</b></div>
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label>Data da venda</label>
+          <input type="date" id="saleDate" required>
+        </div>
+        <div class="field">
+          <label>Data de vencimento</label>
+          <input type="date" id="saleDue">
+        </div>
+      </div>
+      <div class="field">
+        <label>Status</label>
+        <select id="saleStatus">
+          <option value="aberto">Em aberto</option>
+          <option value="pago">Pago</option>
+          <option value="atrasado">Atrasado</option>
+        </select>
+      </div>
+
+      <div class="modal-buttons">
+        <button type="button" class="btn btn-ghost" data-close="saleModalOverlay">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Salvar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: Template form -->
+<div class="modal-overlay" id="templateModalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="templateModalTitle">Novo modelo pronto</h3>
+      <button class="modal-close" data-close="templateModalOverlay">&times;</button>
+    </div>
+    <form id="templateForm">
+      <div class="field">
+        <label>Nome do serviço ou produto</label>
+        <input type="text" id="tplName" required placeholder="Ex: Troca de tela">
+      </div>
+      <div class="field">
+        <label>Descrição padrão</label>
+        <textarea id="tplDescription" placeholder="Ex: Troca de tela do celular"></textarea>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>Valor de custo padrão (R$)</label>
+          <input type="number" id="tplCost" min="0" step="0.01" required placeholder="0,00">
+        </div>
+        <div class="field">
+          <label>Valor cobrado padrão (R$)</label>
+          <input type="number" id="tplPrice" min="0" step="0.01" required placeholder="0,00">
+        </div>
+      </div>
+      <div class="modal-buttons">
+        <button type="button" class="btn btn-ghost" data-close="templateModalOverlay">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Salvar modelo</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: Settings / Backup -->
+<div class="modal-overlay" id="settingsModalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Configurações e backup</h3>
+      <button class="modal-close" data-close="settingsModalOverlay">&times;</button>
+    </div>
+
+    <div class="section-title" style="margin-top:0;">Logo da assistência (Ordem de Serviço)</div>
+    <div class="logo-upload-box" id="logoUploadBox">
+      <div id="logoPreviewArea">
+        <div class="lu-icon">🖼️</div>
+        <p>Toque para enviar sua logo (PNG ou JPG)</p>
+      </div>
+    </div>
+    <input type="file" id="fileLogo" accept="image/*" hidden>
+    <div class="modal-buttons" style="margin-top:10px;">
+      <button class="btn btn-ghost btn-block" id="btnRemoveLogo">🗑️ Remover logo</button>
+    </div>
+
+    <div class="section-title">Backup de dados</div>
+    <p style="font-size:13px; color:var(--text-soft); margin-top:0;">Seus dados ficam salvos somente neste navegador. Faça backups regulares para não perder informações.</p>
+    <div class="modal-buttons" style="flex-direction:column;">
+      <button class="btn btn-ghost btn-block" id="btnExport">⬇️ Exportar backup (JSON)</button>
+      <button class="btn btn-ghost btn-block" id="btnImport">⬆️ Importar backup (JSON)</button>
+      <input type="file" id="fileImport" accept="application/json" hidden>
+      <button class="btn btn-danger btn-block" id="btnClearAll">🗑️ Limpar todos os dados</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Generic Confirm -->
+<div class="modal-overlay" id="confirmModalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="confirmTitle">Confirmar ação</h3>
+      <button class="modal-close" data-close="confirmModalOverlay">&times;</button>
+    </div>
+    <p class="confirm-text" id="confirmText">Tem certeza?</p>
+    <div class="modal-buttons">
+      <button type="button" class="btn btn-ghost" data-close="confirmModalOverlay">Cancelar</button>
+      <button type="button" class="btn btn-danger" id="confirmActionBtn">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<div id="toastWrap"></div>
+
+<!-- MODAL: Ordem de Serviço (formulário) -->
+<div class="modal-overlay" id="osModalOverlay">
+  <div class="modal os-modal">
+    <div class="modal-header">
+      <h3>Gerar Ordem de Serviço</h3>
+      <button class="modal-close" data-close="osModalOverlay">&times;</button>
+    </div>
+    <p class="os-tabs-info">Os dados do cliente e valor já vêm preenchidos a partir da venda selecionada. Complete os campos técnicos abaixo.</p>
+    <form id="osForm">
+
+      <div class="section-title" style="margin-top:0;">Cliente</div>
+      <div class="field"><label>Nome completo</label><input type="text" id="osClientName" required placeholder="Ex: Maria Silva"></div>
+      <div class="os-grid2">
+        <div class="field"><label>Telefone</label><input type="text" id="osClientPhone" placeholder="(00) 00000-0000"></div>
+        <div class="field"><label>Data de entrada</label><input type="date" id="osEntryDate" required></div>
+      </div>
+      <div class="field"><label>Endereço</label><input type="text" id="osClientAddress" placeholder="Rua, número, bairro, cidade"></div>
+
+      <div class="section-title">Aparelho</div>
+      <div class="os-grid3">
+        <div class="field"><label>Marca</label><input type="text" id="osBrand" placeholder="Ex: Apple"></div>
+        <div class="field"><label>Modelo</label><input type="text" id="osModel" placeholder="Ex: iPhone 11"></div>
+        <div class="field"><label>IMEI (opcional)</label><input type="text" id="osImei" placeholder="000000000000000"></div>
+      </div>
+
+      <div class="section-title">Responsável</div>
+      <div class="os-grid2">
+        <div class="field"><label>Técnico responsável</label><input type="text" id="osTech" placeholder="Nome do técnico"></div>
+        <div class="field"><label>Status do aparelho</label><input type="text" id="osDeviceStatus" placeholder="Ex: Em análise"></div>
+      </div>
+
+      <div class="section-title">Segurança</div>
+      <div class="os-grid2">
+        <div class="field"><label>Senha numérica</label><input type="text" id="osPasscode" placeholder="Ex: 1234"></div>
+        <div class="field"><label>Padrão de desbloqueio</label><input type="text" id="osPattern" placeholder="Descreva o padrão, se houver"></div>
+      </div>
+
+      <div class="section-title">Serviços</div>
+      <div class="field"><label>Lista de serviços realizados</label><textarea id="osServices" placeholder="Ex: Troca de tela, limpeza interna..."></textarea></div>
+
+      <div class="section-title">Informações técnicas</div>
+      <div class="os-grid2" style="grid-template-columns:1fr 1fr;">
+        <div class="field">
+          <label>Possui chip?</label>
+          <div class="yesno-group" data-yesno="osHasChip"><button type="button" class="yesno-btn" data-val="Sim">Sim</button><button type="button" class="yesno-btn active" data-val="Não">Não</button></div>
+        </div>
+        <div class="field">
+          <label>Molhado?</label>
+          <div class="yesno-group" data-yesno="osWet"><button type="button" class="yesno-btn" data-val="Sim">Sim</button><button type="button" class="yesno-btn active" data-val="Não">Não</button></div>
+        </div>
+        <div class="field">
+          <label>Carregando?</label>
+          <div class="yesno-group" data-yesno="osCharging"><button type="button" class="yesno-btn active" data-val="Sim">Sim</button><button type="button" class="yesno-btn" data-val="Não">Não</button></div>
+        </div>
+        <div class="field">
+          <label>Ligando?</label>
+          <div class="yesno-group" data-yesno="osPowersOn"><button type="button" class="yesno-btn active" data-val="Sim">Sim</button><button type="button" class="yesno-btn" data-val="Não">Não</button></div>
+        </div>
+        <div class="field">
+          <label>Possui danos físicos?</label>
+          <div class="yesno-group" data-yesno="osPhysicalDamage"><button type="button" class="yesno-btn" data-val="Sim">Sim</button><button type="button" class="yesno-btn active" data-val="Não">Não</button></div>
+        </div>
+      </div>
+
+      <div class="section-title">Prazo e valor</div>
+      <div class="os-grid3">
+        <div class="field"><label>Data prevista p/ entrega</label><input type="date" id="osDeliveryDate"></div>
+        <div class="field"><label>Valor do serviço (R$)</label><input type="number" id="osValue" min="0" step="0.01" placeholder="0,00"></div>
+        <div class="field">
+          <label>Forma de pagamento</label>
+          <select id="osPayment">
+            <option value="">Selecione</option>
+            <option>Dinheiro</option>
+            <option>Pix</option>
+            <option>Cartão de débito</option>
+            <option>Cartão de crédito</option>
+            <option>A combinar</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="section-title">Observações</div>
+      <div class="field"><textarea id="osNotes" placeholder="Anotações adicionais sobre o aparelho ou serviço..."></textarea></div>
+
+      <div class="modal-buttons">
+        <button type="button" class="btn btn-ghost" data-close="osModalOverlay">Cancelar</button>
+        <button type="submit" class="btn btn-primary">📄 Visualizar Ordem de Serviço</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- OVERLAY: Documento da Ordem de Serviço (tela cheia, pronto p/ impressão/PDF) -->
+<div id="osPrintOverlay">
+  <div class="os-print-toolbar">
+    <button class="btn btn-ghost" id="btnOsBack">← Voltar</button>
+    <button class="btn btn-ghost" id="btnOsPrint">🖨️ Imprimir</button>
+    <button class="btn btn-primary" id="btnOsPdf">⬇️ Baixar PDF</button>
+  </div>
+
+  <div class="os-doc" id="osDoc">
+    <div class="os-doc-logo-wrap" id="osDocLogoWrap"></div>
+    <div class="os-doc-header">
+      <h1>Ordem de Serviço</h1>
+      <div class="os-sub">Assistência Técnica Especializada</div>
+      <div class="os-num" id="osDocNumber"></div>
+    </div>
+
+    <div class="os-block">
+      <div class="os-block-title">Cliente</div>
+      <div class="os-fields-grid">
+        <div class="os-fv"><span class="os-fl">Nome completo</span><span class="os-fd" id="docClientName"></span></div>
+        <div class="os-fv"><span class="os-fl">Telefone</span><span class="os-fd" id="docClientPhone"></span></div>
+        <div class="os-fv" style="grid-column:1/-1;"><span class="os-fl">Endereço</span><span class="os-fd" id="docClientAddress"></span></div>
+        <div class="os-fv"><span class="os-fl">Data de entrada</span><span class="os-fd" id="docEntryDate"></span></div>
+      </div>
+    </div>
+
+    <div class="os-2col">
+      <div class="os-block">
+        <div class="os-block-title">Aparelho</div>
+        <div class="os-fields-grid full">
+          <div class="os-fv"><span class="os-fl">Marca</span><span class="os-fd" id="docBrand"></span></div>
+          <div class="os-fv"><span class="os-fl">Modelo</span><span class="os-fd" id="docModel"></span></div>
+          <div class="os-fv"><span class="os-fl">IMEI</span><span class="os-fd" id="docImei"></span></div>
+        </div>
+      </div>
+      <div class="os-block">
+        <div class="os-block-title">Responsável</div>
+        <div class="os-fields-grid full">
+          <div class="os-fv"><span class="os-fl">Técnico responsável</span><span class="os-fd" id="docTech"></span></div>
+          <div class="os-fv"><span class="os-fl">Status do aparelho</span><span class="os-fd" id="docDeviceStatus"></span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="os-block">
+      <div class="os-block-title">Segurança</div>
+      <div class="os-fields-grid">
+        <div class="os-fv"><span class="os-fl">Senha numérica</span><span class="os-fd" id="docPasscode"></span></div>
+        <div class="os-fv"><span class="os-fl">Padrão de desbloqueio</span><span class="os-fd" id="docPattern"></span></div>
+      </div>
+    </div>
+
+    <div class="os-block os-services">
+      <div class="os-block-title">Serviços realizados</div>
+      <p id="docServices"></p>
+    </div>
+
+    <div class="os-block">
+      <div class="os-block-title">Informações técnicas</div>
+      <div class="os-flags" id="docFlags"></div>
+    </div>
+
+    <div class="os-block">
+      <div class="os-block-title">Prazo, valor e pagamento</div>
+      <div class="os-fields-grid cols3">
+        <div class="os-fv"><span class="os-fl">Previsão de entrega</span><span class="os-fd" id="docDeliveryDate"></span></div>
+        <div class="os-fv"><span class="os-fl">Valor do serviço</span><span class="os-fd os-amount" id="docValue"></span></div>
+        <div class="os-fv"><span class="os-fl">Forma de pagamento</span><span class="os-fd" id="docPayment"></span></div>
+      </div>
+    </div>
+
+    <div class="os-block os-obs">
+      <div class="os-block-title">Observações</div>
+      <p id="docNotes"></p>
+    </div>
+
+    <div class="os-sign-grid">
+      <div class="os-sign-line">Assinatura do Cliente</div>
+      <div class="os-sign-line">Assinatura do Técnico</div>
+    </div>
+
+    <div class="os-doc-footer">Documento gerado pelo sistema Nex Cell — vias válidas mediante assinatura de ambas as partes.</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ============================================================
+     DATA & STORAGE
+  ============================================================ */
+  const SALES_KEY = 'lojinha_sales';
+  const TEMPLATES_KEY = 'lojinha_templates';
+  const GOAL_KEY = 'lojinha_goal';
+  const LOGO_KEY = 'lojinha_logo';
+
+  const DEFAULT_TEMPLATES = [
+    {id: uid(), name:'Troca de tela', cost:150, price:280, description:'Troca de tela do celular'},
+    {id: uid(), name:'Troca de bateria', cost:60, price:120, description:'Troca de bateria do celular'},
+    {id: uid(), name:'Película', cost:8, price:25, description:'Aplicação de película protetora'},
+    {id: uid(), name:'Capinha', cost:12, price:35, description:'Venda de capinha protetora'},
+  ];
+
+  let sales = loadJSON(SALES_KEY, []);
+  let templates = loadJSON(TEMPLATES_KEY, null);
+  if(templates === null){
+    templates = DEFAULT_TEMPLATES;
+    saveTemplates();
+  }
+  let monthlyGoal = Number(localStorage.getItem(GOAL_KEY));
+  if(!monthlyGoal || isNaN(monthlyGoal) || monthlyGoal <= 0){
+    monthlyGoal = 1000;
+    localStorage.setItem(GOAL_KEY, String(monthlyGoal));
+  }
+  let logoDataUrl = localStorage.getItem(LOGO_KEY) || '';
+
+  function loadJSON(key, fallback){
+    try{
+      const raw = localStorage.getItem(key);
+      if(raw === null) return fallback;
+      const parsed = JSON.parse(raw);
+      return parsed;
+    }catch(e){
+      return fallback;
+    }
+  }
+  function saveSales(){ localStorage.setItem(SALES_KEY, JSON.stringify(sales)); }
+  function saveTemplates(){ localStorage.setItem(TEMPLATES_KEY, JSON.stringify(templates)); }
+  function saveGoal(){ localStorage.setItem(GOAL_KEY, String(monthlyGoal)); }
+  function saveLogo(){ localStorage.setItem(LOGO_KEY, logoDataUrl); }
+
+  function uid(){
+    return Date.now().toString(36) + Math.random().toString(36).slice(2,8);
+  }
+
+  /* ============================================================
+     UTILITIES
+  ============================================================ */
+  function fmtBRL(n){
+    return (Number(n)||0).toLocaleString('pt-BR', {style:'currency', currency:'BRL'});
+  }
+  function fmtDate(iso){
+    if(!iso) return '—';
+    const parts = iso.split('-');
+    if(parts.length !== 3) return iso;
+    return `${parts[2]}/${parts[1]}/${parts[0]}`;
+  }
+  function todayISO(){
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth()+1).padStart(2,'0');
+    const day = String(d.getDate()).padStart(2,'0');
+    return `${y}-${m}-${day}`;
+  }
+  function calcSale(sale){
+    const cost = Number(sale.cost) || 0;
+    const price = Number(sale.price) || 0;
+    const gross = price - cost;
+    const reserve = gross * 0.10;
+    const net = gross - reserve;
+    return {gross, reserve, net};
+  }
+  const STATUS_META = {
+    pago: {label:'Pago', badgeClass:'badge-pago'},
+    aberto: {label:'Em aberto', badgeClass:'badge-aberto'},
+    atrasado: {label:'Atrasado', badgeClass:'badge-atrasado'},
+  };
+  function escapeHTML(str){
+    return String(str ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  /* Auto-escalate "em aberto" sales whose due date has passed to "atrasado" */
+  function autoEscalateOverdue(){
+    const today = todayISO();
+    let changed = false;
+    sales.forEach(s => {
+      if(s.status === 'aberto' && s.dueDate && s.dueDate < today){
+        s.status = 'atrasado';
+        changed = true;
+      }
+    });
+    if(changed) saveSales();
+  }
+
+  /* ============================================================
+     TOAST
+  ============================================================ */
+  function showToast(msg){
+    const wrap = document.getElementById('toastWrap');
+    const t = document.createElement('div');
+    t.className = 'toast';
+    t.textContent = msg;
+    wrap.appendChild(t);
+    setTimeout(() => t.remove(), 2500);
+  }
+
+  /* ============================================================
+     MODAL HELPERS
+  ============================================================ */
+  function openModal(id){ document.getElementById(id).classList.add('open'); }
+  function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+
+  document.querySelectorAll('[data-close]').forEach(el => {
+    el.addEventListener('click', () => closeModal(el.getAttribute('data-close')));
+  });
+  document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', (e) => { if(e.target === overlay) overlay.classList.remove('open'); });
+  });
+
+  let confirmCallback = null;
+  function openConfirm(title, text, onConfirm){
+    document.getElementById('confirmTitle').textContent = title;
+    document.getElementById('confirmText').textContent = text;
+    confirmCallback = onConfirm;
+    openModal('confirmModalOverlay');
+  }
+  document.getElementById('confirmActionBtn').addEventListener('click', () => {
+    if(confirmCallback) confirmCallback();
+    closeModal('confirmModalOverlay');
+  });
+
+  /* ============================================================
+     TABS
+  ============================================================ */
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  /* ============================================================
+     MONTH FILTER (PERÍODO)
+  ============================================================ */
+  let currentMonth = ''; // 'YYYY-MM' ou '' para todos os períodos
+  const MONTH_NAMES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+
+  function getMonthFilteredSales(){
+    if(!currentMonth) return sales;
+    return sales.filter(s => (s.saleDate || '').slice(0,7) === currentMonth);
+  }
+  function getGoalReferenceSales(){
+    // Se um mês estiver filtrado, a meta usa esse mês. Caso contrário, usa o mês atual (calendário real).
+    const refMonth = currentMonth || todayISO().slice(0,7);
+    return sales.filter(s => (s.saleDate || '').slice(0,7) === refMonth);
+  }
+  function formatMonthLabel(yyyyMm){
+    const [y, m] = yyyyMm.split('-');
+    const idx = parseInt(m, 10) - 1;
+    return `${MONTH_NAMES[idx] || m} de ${y}`;
+  }
+  function renderPeriodLabel(){
+    const el = document.getElementById('periodLabel');
+    const monthInput = document.getElementById('monthFilter');
+    if(currentMonth){
+      el.innerHTML = `📅 Mostrando: <b>${formatMonthLabel(currentMonth)}</b>`;
+      monthInput.classList.add('active-filter');
+    } else {
+      el.innerHTML = `📅 Mostrando: <b>todos os períodos</b>`;
+      monthInput.classList.remove('active-filter');
+    }
+  }
+  document.getElementById('monthFilter').addEventListener('change', (e) => {
+    currentMonth = e.target.value;
+    renderDashboard();
+    renderSalesList();
+    renderPeriodLabel();
+  });
+  document.getElementById('btnClearMonth').addEventListener('click', () => {
+    currentMonth = '';
+    document.getElementById('monthFilter').value = '';
+    renderDashboard();
+    renderSalesList();
+    renderPeriodLabel();
+  });
+
+  /* ============================================================
+     DASHBOARD RENDER
+  ============================================================ */
+  function renderDashboard(){
+    let totalRecebido = 0, totalAberto = 0, totalAtrasado = 0;
+    let grossTotal = 0, reserveTotal = 0, netTotal = 0;
+    let countPago = 0, countAberto = 0, countAtrasado = 0;
+
+    getMonthFilteredSales().forEach(s => {
+      const price = Number(s.price) || 0;
+      if(s.status === 'pago'){
+        totalRecebido += price;
+        countPago++;
+        const c = calcSale(s);
+        grossTotal += c.gross;
+        reserveTotal += c.reserve;
+        netTotal += c.net;
+      } else if(s.status === 'aberto'){
+        totalAberto += price;
+        countAberto++;
+      } else if(s.status === 'atrasado'){
+        totalAtrasado += price;
+        countAtrasado++;
+      }
+    });
+
+    const dash = document.getElementById('dashboard');
+    dash.innerHTML = `
+      <div class="stat-card accent-green">
+        <div class="stat-label">Total recebido</div>
+        <div class="stat-value">${fmtBRL(totalRecebido)}</div>
+        <div class="stat-sub">${countPago} venda(s) paga(s)</div>
+      </div>
+      <div class="stat-card accent-amber">
+        <div class="stat-label">Em aberto</div>
+        <div class="stat-value">${fmtBRL(totalAberto)}</div>
+        <div class="stat-sub">${countAberto} pendente(s)</div>
+      </div>
+      <div class="stat-card accent-red">
+        <div class="stat-label">Atrasado</div>
+        <div class="stat-value">${fmtBRL(totalAtrasado)}</div>
+        <div class="stat-sub">${countAtrasado} em atraso</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Lucro bruto (pagos)</div>
+        <div class="stat-value">${fmtBRL(grossTotal)}</div>
+        <div class="stat-sub">Cobrado − custo</div>
+      </div>
+      <div class="stat-card reserve-card span2">
+        <div class="donut"><span>10%</span></div>
+        <div>
+          <div class="stat-label">Reserva acumulada (10%)</div>
+          <div class="stat-value">${fmtBRL(reserveTotal)}</div>
+          <div class="stat-sub">Separada automaticamente de cada venda paga</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Lucro líquido total</div>
+        <div class="stat-value">${fmtBRL(netTotal)}</div>
+        <div class="stat-sub">Após reserva de 10%</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Clientes pagos</div>
+        <div class="stat-value">${countPago}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Clientes em aberto</div>
+        <div class="stat-value">${countAberto}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Clientes atrasados</div>
+        <div class="stat-value">${countAtrasado}</div>
+      </div>
+    `;
+
+    renderGoal(calcGoalNet());
+  }
+
+  function calcGoalNet(){
+    let net = 0;
+    getGoalReferenceSales().forEach(s => {
+      if(s.status === 'pago'){
+        net += calcSale(s).net;
+      }
+    });
+    return net;
+  }
+
+  /* ============================================================
+     META MENSAL DE LUCRO
+  ============================================================ */
+  function renderGoal(netTotal){
+    const pct = monthlyGoal > 0 ? Math.min(100, (netTotal / monthlyGoal) * 100) : 0;
+    const remaining = Math.max(0, monthlyGoal - netTotal);
+    document.getElementById('goalCurrent').textContent = fmtBRL(netTotal);
+    document.getElementById('goalTargetLabel').textContent = `de ${fmtBRL(monthlyGoal)}`;
+    document.getElementById('goalBarFill').style.width = pct.toFixed(1) + '%';
+    document.getElementById('goalPercentLabel').textContent = `${pct.toFixed(0)}% atingido`;
+    document.getElementById('goalRemainingLabel').innerHTML = netTotal >= monthlyGoal
+      ? '🎉 Meta atingida!'
+      : `Faltam <b>${fmtBRL(remaining)}</b>`;
+  }
+
+  document.getElementById('btnEditGoal').addEventListener('click', () => {
+    document.getElementById('goalInput').value = monthlyGoal;
+    openModal('goalModalOverlay');
+  });
+  document.getElementById('goalForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const val = Number(document.getElementById('goalInput').value);
+    if(!val || val <= 0){
+      showToast('Informe um valor de meta válido.');
+      return;
+    }
+    monthlyGoal = val;
+    saveGoal();
+    closeModal('goalModalOverlay');
+    renderDashboard();
+    showToast('Meta atualizada.');
+  });
+
+  /* ============================================================
+     SALES LIST RENDER
+  ============================================================ */
+  let currentFilter = 'todos';
+  let currentSearch = '';
+
+  document.querySelectorAll('#filters .chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('#filters .chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      currentFilter = chip.dataset.filter;
+      renderSalesList();
+    });
+  });
+  document.getElementById('searchInput').addEventListener('input', (e) => {
+    currentSearch = e.target.value.trim().toLowerCase();
+    renderSalesList();
+  });
+
+  function renderSalesList(){
+    let list = getMonthFilteredSales().slice().sort((a,b) => (b.saleDate||'').localeCompare(a.saleDate||''));
+
+    if(currentFilter !== 'todos'){
+      list = list.filter(s => s.status === currentFilter);
+    }
+    if(currentSearch){
+      list = list.filter(s =>
+        (s.client||'').toLowerCase().includes(currentSearch) ||
+        (s.description||'').toLowerCase().includes(currentSearch)
+      );
+    }
+
+    const container = document.getElementById('salesList');
+    const emptyState = document.getElementById('emptyState');
+
+    if(list.length === 0){
+      container.innerHTML = '';
+      emptyState.hidden = false;
+      return;
+    }
+    emptyState.hidden = true;
+
+    container.innerHTML = list.map(s => {
+      const c = calcSale(s);
+      const meta = STATUS_META[s.status] || STATUS_META.aberto;
+      const overdue = s.status !== 'pago' && s.dueDate && s.dueDate < todayISO();
+      return `
+        <div class="sale-card" data-id="${s.id}">
+          <div class="sale-top">
+            <div>
+              <div class="sale-client">${escapeHTML(s.client)}</div>
+              <div class="sale-desc">${escapeHTML(s.description)}</div>
+            </div>
+            <div class="sale-actions">
+              <button class="icon-action" data-action="edit" title="Editar">✏️</button>
+              <button class="icon-action" data-action="delete" title="Excluir">🗑️</button>
+            </div>
+          </div>
+
+          <div class="sale-meta">
+            <div class="meta-pill"><span class="ml">Custo</span><span class="mv">${fmtBRL(s.cost)}</span></div>
+            <div class="meta-pill"><span class="ml">Cobrado</span><span class="mv">${fmtBRL(s.price)}</span></div>
+            <div class="meta-pill profit"><span class="ml">Lucro bruto</span><span class="mv">${fmtBRL(c.gross)}</span></div>
+            <div class="meta-pill reserve"><span class="ml">Reserva 10%</span><span class="mv">${fmtBRL(c.reserve)}</span></div>
+            <div class="meta-pill profit"><span class="ml">Lucro líquido</span><span class="mv">${fmtBRL(c.net)}</span></div>
+          </div>
+
+          <div class="sale-footer">
+            <div class="sale-dates">
+              Venda: <b>${fmtDate(s.saleDate)}</b> · Vencimento: <b style="${overdue ? 'color:var(--atrasado-text)' : ''}">${fmtDate(s.dueDate)}</b>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="badge ${meta.badgeClass}"><span class="dot"></span>${meta.label}</span>
+              <select class="status-select" data-action="status">
+                <option value="aberto" ${s.status==='aberto'?'selected':''}>Em aberto</option>
+                <option value="pago" ${s.status==='pago'?'selected':''}>Pago</option>
+                <option value="atrasado" ${s.status==='atrasado'?'selected':''}>Atrasado</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="button" class="sale-os-btn" data-action="os">🧾 Gerar Ordem de Serviço</button>
+        </div>
+      `;
+    }).join('');
+
+    container.querySelectorAll('.sale-card').forEach(card => {
+      const id = card.dataset.id;
+      card.querySelector('[data-action="edit"]').addEventListener('click', () => openSaleModal(id));
+      card.querySelector('[data-action="delete"]').addEventListener('click', () => {
+        openConfirm('Excluir venda', 'Tem certeza que deseja excluir esta venda/serviço? Essa ação não pode ser desfeita.', () => {
+          sales = sales.filter(s => s.id !== id);
+          saveSales();
+          renderAll();
+          showToast('Venda excluída.');
+        });
+      });
+      card.querySelector('[data-action="status"]').addEventListener('change', (e) => {
+        const sale = sales.find(s => s.id === id);
+        if(sale){
+          sale.status = e.target.value;
+          saveSales();
+          renderAll();
+          showToast('Status atualizado.');
+        }
+      });
+      card.querySelector('[data-action="os"]').addEventListener('click', () => openOsModal(id));
+    });
+  }
+
+  /* ============================================================
+     SALE MODAL (ADD / EDIT)
+  ============================================================ */
+  let editingSaleId = null;
+  const saleForm = document.getElementById('saleForm');
+  const saleTemplateSelect = document.getElementById('saleTemplateSelect');
+
+  function refreshTemplateSelectOptions(){
+    saleTemplateSelect.innerHTML = '<option value="">— Nenhum / preencher manualmente —</option>' +
+      templates.map(t => `<option value="${t.id}">${escapeHTML(t.name)}</option>`).join('');
+  }
+
+  saleTemplateSelect.addEventListener('change', () => {
+    const tpl = templates.find(t => t.id === saleTemplateSelect.value);
+    if(tpl){
+      document.getElementById('saleDescription').value = tpl.description || '';
+      document.getElementById('saleCost').value = tpl.cost;
+      document.getElementById('salePrice').value = tpl.price;
+      updateCalcPreview();
+    }
+  });
+
+  function updateCalcPreview(){
+    const cost = Number(document.getElementById('saleCost').value) || 0;
+    const price = Number(document.getElementById('salePrice').value) || 0;
+    const gross = price - cost;
+    const reserve = gross * 0.10;
+    const net = gross - reserve;
+    document.getElementById('prevGross').textContent = fmtBRL(gross);
+    document.getElementById('prevReserve').textContent = fmtBRL(reserve);
+    document.getElementById('prevNet').textContent = fmtBRL(net);
+  }
+  document.getElementById('saleCost').addEventListener('input', updateCalcPreview);
+  document.getElementById('salePrice').addEventListener('input', updateCalcPreview);
+
+  function openSaleModal(id){
+    editingSaleId = id || null;
+    refreshTemplateSelectOptions();
+    saleTemplateSelect.value = '';
+
+    if(id){
+      const s = sales.find(x => x.id === id);
+      document.getElementById('saleModalTitle').textContent = 'Editar venda/serviço';
+      document.getElementById('saleClient').value = s.client || '';
+      document.getElementById('saleDescription').value = s.description || '';
+      document.getElementById('saleCost').value = s.cost;
+      document.getElementById('salePrice').value = s.price;
+      document.getElementById('saleDate').value = s.saleDate || '';
+      document.getElementById('saleDue').value = s.dueDate || '';
+      document.getElementById('saleStatus').value = s.status || 'aberto';
+    } else {
+      document.getElementById('saleModalTitle').textContent = 'Nova venda/serviço';
+      saleForm.reset();
+      document.getElementById('saleDate').value = todayISO();
+      document.getElementById('saleStatus').value = 'aberto';
+    }
+    updateCalcPreview();
+    openModal('saleModalOverlay');
+  }
+
+  document.getElementById('btnNewSale').addEventListener('click', () => openSaleModal(null));
+
+  saleForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = {
+      client: document.getElementById('saleClient').value.trim(),
+      description: document.getElementById('saleDescription').value.trim(),
+      cost: Number(document.getElementById('saleCost').value) || 0,
+      price: Number(document.getElementById('salePrice').value) || 0,
+      saleDate: document.getElementById('saleDate').value,
+      dueDate: document.getElementById('saleDue').value,
+      status: document.getElementById('saleStatus').value,
+    };
+    if(!data.client || !data.description || !data.saleDate){
+      showToast('Preencha cliente, descrição e data da venda.');
+      return;
+    }
+    if(editingSaleId){
+      const idx = sales.findIndex(s => s.id === editingSaleId);
+      if(idx > -1) sales[idx] = {...sales[idx], ...data};
+      showToast('Venda atualizada.');
+    } else {
+      sales.push({id: uid(), ...data});
+      showToast('Venda cadastrada.');
+    }
+    saveSales();
+    closeModal('saleModalOverlay');
+    renderAll();
+  });
+
+  /* ============================================================
+     TEMPLATES RENDER
+  ============================================================ */
+  function renderTemplatesList(){
+    const container = document.getElementById('templatesList');
+    const emptyTpl = document.getElementById('emptyTemplates');
+    if(templates.length === 0){
+      container.innerHTML = '';
+      emptyTpl.hidden = false;
+      return;
+    }
+    emptyTpl.hidden = true;
+    container.innerHTML = templates.map(t => `
+      <div class="template-card" data-id="${t.id}">
+        <div class="template-top">
+          <div>
+            <div class="template-name">${escapeHTML(t.name)}</div>
+            <div class="template-desc">${escapeHTML(t.description || '')}</div>
+          </div>
+          <div class="sale-actions">
+            <button class="icon-action" data-action="edit" title="Editar">✏️</button>
+            <button class="icon-action" data-action="delete" title="Excluir">🗑️</button>
+          </div>
+        </div>
+        <div class="template-vals">
+          <div><span>Custo</span><b>${fmtBRL(t.cost)}</b></div>
+          <div><span>Cobrado</span><b>${fmtBRL(t.price)}</b></div>
+          <div><span>Lucro est.</span><b>${fmtBRL(t.price - t.cost)}</b></div>
+        </div>
+      </div>
+    `).join('');
+
+    container.querySelectorAll('.template-card').forEach(card => {
+      const id = card.dataset.id;
+      card.querySelector('[data-action="edit"]').addEventListener('click', () => openTemplateModal(id));
+      card.querySelector('[data-action="delete"]').addEventListener('click', () => {
+        openConfirm('Excluir modelo', 'Tem certeza que deseja excluir este modelo pronto?', () => {
+          templates = templates.filter(t => t.id !== id);
+          saveTemplates();
+          renderTemplatesList();
+          refreshTemplateSelectOptions();
+          showToast('Modelo excluído.');
+        });
+      });
+    });
+  }
+
+  /* ============================================================
+     TEMPLATE MODAL (ADD / EDIT)
+  ============================================================ */
+  let editingTemplateId = null;
+  const templateForm = document.getElementById('templateForm');
+
+  function openTemplateModal(id){
+    editingTemplateId = id || null;
+    if(id){
+      const t = templates.find(x => x.id === id);
+      document.getElementById('templateModalTitle').textContent = 'Editar modelo pronto';
+      document.getElementById('tplName').value = t.name || '';
+      document.getElementById('tplDescription').value = t.description || '';
+      document.getElementById('tplCost').value = t.cost;
+      document.getElementById('tplPrice').value = t.price;
+    } else {
+      document.getElementById('templateModalTitle').textContent = 'Novo modelo pronto';
+      templateForm.reset();
+    }
+    openModal('templateModalOverlay');
+  }
+  document.getElementById('btnNewTemplate').addEventListener('click', () => openTemplateModal(null));
+
+  templateForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = {
+      name: document.getElementById('tplName').value.trim(),
+      description: document.getElementById('tplDescription').value.trim(),
+      cost: Number(document.getElementById('tplCost').value) || 0,
+      price: Number(document.getElementById('tplPrice').value) || 0,
+    };
+    if(!data.name){
+      showToast('Informe o nome do modelo.');
+      return;
+    }
+    if(editingTemplateId){
+      const idx = templates.findIndex(t => t.id === editingTemplateId);
+      if(idx > -1) templates[idx] = {...templates[idx], ...data};
+      showToast('Modelo atualizado.');
+    } else {
+      templates.push({id: uid(), ...data});
+      showToast('Modelo criado.');
+    }
+    saveTemplates();
+    closeModal('templateModalOverlay');
+    renderTemplatesList();
+    refreshTemplateSelectOptions();
+  });
+
+  /* ============================================================
+     SETTINGS: EXPORT / IMPORT / CLEAR
+  ============================================================ */
+  document.getElementById('btnSettings').addEventListener('click', () => openModal('settingsModalOverlay'));
+
+  document.getElementById('btnExport').addEventListener('click', () => {
+    const payload = {sales, templates, monthlyGoal, logoDataUrl, exportedAt: new Date().toISOString()};
+    const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `lojinha-backup-${todayISO()}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    showToast('Backup exportado.');
+  });
+
+  document.getElementById('btnImport').addEventListener('click', () => {
+    document.getElementById('fileImport').click();
+  });
+
+  document.getElementById('fileImport').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try{
+        const parsed = JSON.parse(reader.result);
+        openConfirm('Importar backup', 'Isso substituirá todos os dados atuais de vendas e modelos. Deseja continuar?', () => {
+          sales = Array.isArray(parsed.sales) ? parsed.sales : [];
+          templates = Array.isArray(parsed.templates) ? parsed.templates : [];
+          if(parsed.monthlyGoal && Number(parsed.monthlyGoal) > 0){
+            monthlyGoal = Number(parsed.monthlyGoal);
+            saveGoal();
+          }
+          if(typeof parsed.logoDataUrl === 'string'){
+            logoDataUrl = parsed.logoDataUrl;
+            saveLogo();
+            renderLogoPreview();
+          }
+          saveSales();
+          saveTemplates();
+          renderAll();
+          closeModal('settingsModalOverlay');
+          showToast('Backup importado com sucesso.');
+        });
+      }catch(err){
+        showToast('Arquivo inválido. Selecione um backup JSON válido.');
+      }
+      e.target.value = '';
+    };
+    reader.readAsText(file);
+  });
+
+  document.getElementById('btnClearAll').addEventListener('click', () => {
+    openConfirm('Limpar todos os dados', 'Essa ação vai apagar TODAS as vendas e modelos salvos neste navegador. Essa ação não pode ser desfeita. Deseja continuar?', () => {
+      sales = [];
+      templates = [];
+      saveSales();
+      saveTemplates();
+      renderAll();
+      closeModal('settingsModalOverlay');
+      showToast('Todos os dados foram apagados.');
+    });
+  });
+
+  /* ============================================================
+     LOGO DA ASSISTÊNCIA (upload / preview / remoção)
+  ============================================================ */
+  function renderLogoPreview(){
+    const area = document.getElementById('logoPreviewArea');
+    if(logoDataUrl){
+      area.innerHTML = `<img src="${logoDataUrl}" alt="Logo"><p>Toque para trocar a logo</p>`;
+    } else {
+      area.innerHTML = `<div class="lu-icon">🖼️</div><p>Toque para enviar sua logo (PNG ou JPG)</p>`;
+    }
+  }
+  document.getElementById('logoUploadBox').addEventListener('click', () => {
+    document.getElementById('fileLogo').click();
+  });
+  document.getElementById('fileLogo').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if(!file) return;
+    if(!file.type.startsWith('image/')){
+      showToast('Selecione um arquivo de imagem válido.');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      logoDataUrl = reader.result;
+      saveLogo();
+      renderLogoPreview();
+      showToast('Logo salva com sucesso.');
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  });
+  document.getElementById('btnRemoveLogo').addEventListener('click', () => {
+    if(!logoDataUrl){ showToast('Nenhuma logo cadastrada.'); return; }
+    openConfirm('Remover logo', 'Tem certeza que deseja remover a logo da Ordem de Serviço?', () => {
+      logoDataUrl = '';
+      saveLogo();
+      renderLogoPreview();
+      showToast('Logo removida.');
+    });
+  });
+  renderLogoPreview();
+
+  /* ============================================================
+     MÓDULO: ORDEM DE SERVIÇO
+  ============================================================ */
+  const osForm = document.getElementById('osForm');
+  let osCurrentSaleId = null;
+  let osCounter = Number(localStorage.getItem('lojinha_os_counter')) || 0;
+
+  // toggles Sim/Não
+  document.querySelectorAll('[data-yesno]').forEach(group => {
+    group.querySelectorAll('.yesno-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        group.querySelectorAll('.yesno-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+  });
+  function getYesNo(groupId){
+    const group = document.querySelector(`[data-yesno="${groupId}"]`);
+    const active = group.querySelector('.yesno-btn.active');
+    return active ? active.dataset.val : 'Não';
+  }
+  function setYesNo(groupId, val){
+    const group = document.querySelector(`[data-yesno="${groupId}"]`);
+    group.querySelectorAll('.yesno-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.val === (val || 'Não'));
+    });
+  }
+
+  function openOsModal(saleId){
+    osCurrentSaleId = saleId;
+    const sale = sales.find(s => s.id === saleId);
+    osForm.reset();
+
+    document.getElementById('osClientName').value = sale ? (sale.client || '') : '';
+    document.getElementById('osEntryDate').value = todayISO();
+    document.getElementById('osValue').value = sale ? (sale.price || '') : '';
+    document.getElementById('osServices').value = sale ? (sale.description || '') : '';
+    document.getElementById('osDeliveryDate').value = sale ? (sale.dueDate || '') : '';
+
+    setYesNo('osHasChip', 'Não');
+    setYesNo('osWet', 'Não');
+    setYesNo('osCharging', 'Sim');
+    setYesNo('osPowersOn', 'Sim');
+    setYesNo('osPhysicalDamage', 'Não');
+
+    openModal('osModalOverlay');
+  }
+
+  osForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = {
+      clientName: document.getElementById('osClientName').value.trim(),
+      clientPhone: document.getElementById('osClientPhone').value.trim(),
+      clientAddress: document.getElementById('osClientAddress').value.trim(),
+      entryDate: document.getElementById('osEntryDate').value,
+      brand: document.getElementById('osBrand').value.trim(),
+      model: document.getElementById('osModel').value.trim(),
+      imei: document.getElementById('osImei').value.trim(),
+      tech: document.getElementById('osTech').value.trim(),
+      deviceStatus: document.getElementById('osDeviceStatus').value.trim(),
+      passcode: document.getElementById('osPasscode').value.trim(),
+      pattern: document.getElementById('osPattern').value.trim(),
+      services: document.getElementById('osServices').value.trim(),
+      hasChip: getYesNo('osHasChip'),
+      wet: getYesNo('osWet'),
+      charging: getYesNo('osCharging'),
+      powersOn: getYesNo('osPowersOn'),
+      physicalDamage: getYesNo('osPhysicalDamage'),
+      deliveryDate: document.getElementById('osDeliveryDate').value,
+      value: document.getElementById('osValue').value,
+      payment: document.getElementById('osPayment').value,
+      notes: document.getElementById('osNotes').value.trim(),
+    };
+    if(!data.clientName){
+      showToast('Informe o nome do cliente.');
+      return;
+    }
+    closeModal('osModalOverlay');
+    renderOsDocument(data);
+    openOsPrintOverlay();
+  });
+
+  function flagHtml(label, val){
+    const isYes = val === 'Sim';
+    return `<span class="os-flag ${isYes ? 'yes':'no'}">${isYes ? '✔':'✕'} ${label}: ${val}</span>`;
+  }
+
+  function renderOsDocument(data){
+    osCounter++;
+    localStorage.setItem('lojinha_os_counter', String(osCounter));
+    const osNumber = 'OS-' + String(osCounter).padStart(4,'0');
+
+    const logoWrap = document.getElementById('osDocLogoWrap');
+    logoWrap.innerHTML = logoDataUrl ? `<img src="${logoDataUrl}" alt="Logo">` : '';
+
+    document.getElementById('osDocNumber').textContent = `Nº ${osNumber} · Emitida em ${fmtDate(todayISO())}`;
+
+    document.getElementById('docClientName').textContent = data.clientName || '—';
+    document.getElementById('docClientPhone').textContent = data.clientPhone || '—';
+    document.getElementById('docClientAddress').textContent = data.clientAddress || '—';
+    document.getElementById('docEntryDate').textContent = fmtDate(data.entryDate);
+
+    document.getElementById('docBrand').textContent = data.brand || '—';
+    document.getElementById('docModel').textContent = data.model || '—';
+    document.getElementById('docImei').textContent = data.imei || '—';
+
+    document.getElementById('docTech').textContent = data.tech || '—';
+    document.getElementById('docDeviceStatus').textContent = data.deviceStatus || '—';
+
+    document.getElementById('docPasscode').textContent = data.passcode || '—';
+    document.getElementById('docPattern').textContent = data.pattern || '—';
+
+    document.getElementById('docServices').textContent = data.services || '—';
+
+    document.getElementById('docFlags').innerHTML = [
+      flagHtml('Possui chip', data.hasChip),
+      flagHtml('Molhado', data.wet),
+      flagHtml('Carregando', data.charging),
+      flagHtml('Ligando', data.powersOn),
+      flagHtml('Danos físicos', data.physicalDamage),
+    ].join('');
+
+    document.getElementById('docDeliveryDate').textContent = fmtDate(data.deliveryDate);
+    document.getElementById('docValue').textContent = data.value ? fmtBRL(data.value) : '—';
+    document.getElementById('docPayment').textContent = data.payment || '—';
+
+    document.getElementById('docNotes').textContent = data.notes || '—';
+  }
+
+  function openOsPrintOverlay(){
+    document.getElementById('osPrintOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeOsPrintOverlay(){
+    document.getElementById('osPrintOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('btnOsBack').addEventListener('click', closeOsPrintOverlay);
+  document.getElementById('btnOsPrint').addEventListener('click', () => window.print());
+
+  document.getElementById('btnOsPdf').addEventListener('click', async () => {
+    const btn = document.getElementById('btnOsPdf');
+    const original = btn.textContent;
+    btn.textContent = '⏳ Gerando PDF...';
+    btn.disabled = true;
+    try{
+      const docEl = document.getElementById('osDoc');
+      const canvas = await html2canvas(docEl, {scale:2, useCORS:true, backgroundColor:'#ffffff'});
+      const imgData = canvas.toDataURL('image/jpeg', 0.95);
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = pageWidth;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while(heightLeft > 0){
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      const safeName = (document.getElementById('docClientName').textContent || 'cliente')
+        .normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+      pdf.save(`ordem-servico-${safeName || 'cliente'}.pdf`);
+      showToast('PDF gerado com sucesso.');
+    }catch(err){
+      showToast('Não foi possível gerar o PDF. Tente novamente.');
+    }finally{
+      btn.textContent = original;
+      btn.disabled = false;
+    }
+  });
+
+  /* ============================================================
+     INIT
+  ============================================================ */
+  function renderAll(){
+    autoEscalateOverdue();
+    renderDashboard();
+    renderSalesList();
+    renderTemplatesList();
+    refreshTemplateSelectOptions();
+    renderPeriodLabel();
+  }
+
+  renderAll();
+
+})();
+</script>
+</body>
+</html>
