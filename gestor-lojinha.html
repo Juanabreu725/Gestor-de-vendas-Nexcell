@@ -837,7 +837,7 @@
 <div id="osPrintOverlay">
   <div class="os-print-toolbar">
     <button class="btn btn-ghost" id="btnOsBack">← Voltar</button>
-    <button class="btn btn-ghost" id="btnOsPrint">🖨️ Imprimir</button>
+    <button class="btn btn-ghost" id="btnOsPrint">📄 PDF 1 página</button>
     <button class="btn btn-primary" id="btnOsPdf">⬇️ Baixar PDF</button>
   </div>
 
@@ -916,9 +916,36 @@
       <p id="docNotes"></p>
     </div>
 
-    <div class="os-sign-grid">
-      <div class="os-sign-line">Assinatura do Cliente</div>
-      <div class="os-sign-line">Assinatura do Técnico</div>
+    <div class="os-block os-terms-block" style="margin-top:14px;">
+      <div class="os-block-title">Termos e Condições</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px 24px; font-size:10.5px; color:#333; line-height:1.55;">
+        <div>
+          <p style="margin:0 0 6px;"><strong>1. Prazo de Garantia</strong></p>
+          <p style="margin:0 0 3px;">• 30 dias corridos a partir da entrega.</p>
+          <p style="margin:0 0 10px;">• Restrita ao serviço executado e/ou peça substituída.</p>
+
+          <p style="margin:0 0 6px;"><strong>2. Perda da Garantia</strong></p>
+          <p style="margin:0 0 3px;">1. Danos por quedas, pancadas, pressão, umidade.</p>
+          <p style="margin:0 0 3px;">2. Linhas, manchas na tela por mau uso.</p>
+          <p style="margin:0 0 3px;">3. Abertura por terceiros não autorizados.</p>
+          <p style="margin:0 0 3px;">4. Alterações de software (root, ROMs).</p>
+          <p style="margin:0 0 3px;">5. Troca/adulteração de peças após reparo.</p>
+          <p style="margin:0;">6. Problemas não relacionados ao serviço.</p>
+        </div>
+        <div>
+          <p style="margin:0 0 6px;"><strong>3. Observações Importantes</strong></p>
+          <p style="margin:0 0 3px;">• Não cobre acessórios (capas, cabos, fones).</p>
+          <p style="margin:0 0 10px;">• Não nos responsabilizamos por dados pessoais.</p>
+
+          <p style="margin:0 0 6px;"><strong>4. Declaração</strong></p>
+          <p style="margin:0;">Recebi o aparelho funcionando, testado, ciente das condições.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="os-sign-grid" style="margin-top:20px;">
+      <div class="os-sign-line">CLIENTE</div>
+      <div class="os-sign-line">TÉCNICO</div>
     </div>
 
     <div class="os-doc-footer">Documento gerado pelo sistema Nex Cell — vias válidas mediante assinatura de ambas as partes.</div>
@@ -1885,7 +1912,37 @@
     document.body.style.overflow = '';
   }
   document.getElementById('btnOsBack').addEventListener('click', closeOsPrintOverlay);
-  document.getElementById('btnOsPrint').addEventListener('click', () => window.print());
+  document.getElementById('btnOsPrint').addEventListener('click', async () => {
+    const btn = document.getElementById('btnOsPrint');
+    const original = btn.textContent;
+    btn.textContent = '⏳ Gerando...';
+    btn.disabled = true;
+    try {
+      const docEl = document.getElementById('osDoc');
+      const canvas = await html2canvas(docEl, {scale: 2, useCORS: true, backgroundColor: '#ffffff'});
+      const imgData = canvas.toDataURL('image/jpeg', 0.95);
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      // Fit entire document into a single A4 page
+      const ratio = Math.min(pageWidth / canvas.width, pageHeight / canvas.height);
+      const imgW = canvas.width * ratio;
+      const imgH = canvas.height * ratio;
+      const offsetX = (pageWidth - imgW) / 2;
+      const offsetY = (pageHeight - imgH) / 2;
+      pdf.addImage(imgData, 'JPEG', offsetX, offsetY, imgW, imgH);
+      const safeName = (document.getElementById('docClientName').textContent || 'cliente')
+        .normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+      pdf.save(`ordem-servico-${safeName || 'cliente'}.pdf`);
+      showToast('PDF gerado em uma página com sucesso.');
+    } catch(err) {
+      showToast('Não foi possível gerar o PDF. Tente novamente.');
+    } finally {
+      btn.textContent = original;
+      btn.disabled = false;
+    }
+  });
 
   document.getElementById('btnOsPdf').addEventListener('click', async () => {
     const btn = document.getElementById('btnOsPdf');
