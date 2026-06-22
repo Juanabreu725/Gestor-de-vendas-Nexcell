@@ -414,21 +414,44 @@
     position:sticky; top:0; z-index:5;
   }
   .os-doc{
-    max-width:794px; margin:0 auto; background:#ffffff; color:#1a1a1a;
-    padding:34px 40px; box-shadow:0 10px 40px rgba(0,0,0,.5); border-radius:6px;
+    width:297mm; min-height:210mm; margin:0 auto; background:#ffffff; color:#1a1a1a;
+    padding:10mm 8mm; box-shadow:0 10px 40px rgba(0,0,0,.5); border-radius:6px;
     font-family:'Inter', system-ui, sans-serif;
+    display:flex; flex-direction:row; gap:0; align-items:stretch;
   }
-  .os-doc-logo-wrap{text-align:center; margin-bottom:14px;}
-  .os-doc-logo-wrap img{width:28%; min-width:140px; max-width:260px; height:auto; display:inline-block;}
+  .os-via{
+    flex:1; display:flex; flex-direction:column; gap:0; min-width:0;
+    padding:0 8px;
+  }
+  .os-via-label{
+    text-align:center; font-size:8px; font-weight:800; letter-spacing:.1em;
+    text-transform:uppercase; color:#aaa; margin-bottom:6px;
+    border:1px dashed #ddd; border-radius:4px; padding:3px 0;
+  }
+  .os-divider{
+    width:1px; background:repeating-linear-gradient(to bottom, #ccc 0, #ccc 6px, transparent 6px, transparent 12px);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0; margin:0 4px;
+    position:relative;
+  }
+  .os-divider span{
+    background:#fff; padding:4px 0; font-size:14px; color:#bbb; writing-mode:vertical-rl;
+    position:absolute; top:50%; transform:translateY(-50%);
+  }
+  .os-terms-inline{
+    font-size:8px; color:#555; line-height:1.5; margin-top:8px;
+    border-top:1px dashed #ddd; padding-top:6px;
+  }
+  .os-doc-logo-wrap{text-align:center; margin-bottom:6px;}
+  .os-doc-logo-wrap img{width:24%; min-width:80px; max-width:140px; height:auto; display:inline-block;}
   .os-doc-header{
-    text-align:center; border-bottom:3px solid #8A4DFF; padding-bottom:14px; margin-bottom:18px;
+    text-align:center; border-bottom:2px solid #8A4DFF; padding-bottom:8px; margin-bottom:10px;
   }
   .os-doc-header h1{
-    font-family:'Plus Jakarta Sans', sans-serif; font-size:22px; font-weight:800; margin:0;
+    font-family:'Plus Jakarta Sans', sans-serif; font-size:15px; font-weight:800; margin:0;
     background:linear-gradient(135deg,#8A4DFF,#E54DFF); -webkit-background-clip:text; background-clip:text; color:transparent;
   }
-  .os-doc-header .os-sub{font-size:11.5px; color:#666; margin-top:4px; letter-spacing:.04em; text-transform:uppercase; font-weight:600;}
-  .os-doc-header .os-num{font-size:11px; color:#999; margin-top:6px;}
+  .os-doc-header .os-sub{font-size:8.5px; color:#666; margin-top:2px; letter-spacing:.04em; text-transform:uppercase; font-weight:600;}
+  .os-doc-header .os-num{font-size:8px; color:#999; margin-top:3px;}
   .os-block{
     border:1px solid #E2DCEC; border-radius:10px; padding:12px 14px; margin-bottom:12px;
     break-inside:avoid; page-break-inside:avoid;
@@ -463,9 +486,9 @@
     #osPrintOverlay, #osPrintOverlay *{visibility:visible;}
     #osPrintOverlay{position:absolute; inset:0; background:#fff; padding:0;}
     .os-print-toolbar{display:none !important;}
-    .os-doc{box-shadow:none; max-width:100%; padding:14mm 16mm; border-radius:0;}
+    .os-doc{box-shadow:none; width:277mm; min-height:190mm; max-width:100%; padding:8mm 6mm; border-radius:0;}
     .os-block{break-inside:avoid; page-break-inside:avoid;}
-    @page{size:A4; margin:10mm;}
+    @page{size:A4 landscape; margin:10mm;}
   }
 </style>
 </head>
@@ -841,114 +864,186 @@
     <button class="btn btn-primary" id="btnOsPdf">⬇️ Baixar PDF</button>
   </div>
 
+  <!-- Wrapper landscape A4 -->
   <div class="os-doc" id="osDoc">
-    <div class="os-doc-logo-wrap" id="osDocLogoWrap"></div>
-    <div class="os-doc-header">
-      <h1>Ordem de Serviço</h1>
-      <div class="os-sub">Assistência Técnica Especializada</div>
-      <div class="os-num" id="osDocNumber"></div>
-    </div>
-
-    <div class="os-block">
-      <div class="os-block-title">Cliente</div>
-      <div class="os-fields-grid">
-        <div class="os-fv"><span class="os-fl">Nome completo</span><span class="os-fd" id="docClientName"></span></div>
-        <div class="os-fv"><span class="os-fl">Telefone</span><span class="os-fd" id="docClientPhone"></span></div>
-        <div class="os-fv" style="grid-column:1/-1;"><span class="os-fl">Endereço</span><span class="os-fd" id="docClientAddress"></span></div>
-        <div class="os-fv"><span class="os-fl">Data de entrada</span><span class="os-fd" id="docEntryDate"></span></div>
+    <!-- VIA ESQUERDA (Cliente) -->
+    <div class="os-via os-via-left">
+      <div class="os-via-label">VIA DO CLIENTE</div>
+      <div class="os-doc-logo-wrap" id="osDocLogoWrap"></div>
+      <div class="os-doc-header">
+        <h1>Ordem de Serviço</h1>
+        <div class="os-sub">Assistência Técnica Especializada</div>
+        <div class="os-num" id="osDocNumber"></div>
       </div>
-    </div>
 
-    <div class="os-2col">
       <div class="os-block">
-        <div class="os-block-title">Aparelho</div>
-        <div class="os-fields-grid full">
-          <div class="os-fv"><span class="os-fl">Marca</span><span class="os-fd" id="docBrand"></span></div>
-          <div class="os-fv"><span class="os-fl">Modelo</span><span class="os-fd" id="docModel"></span></div>
-          <div class="os-fv"><span class="os-fl">IMEI</span><span class="os-fd" id="docImei"></span></div>
+        <div class="os-block-title">Cliente</div>
+        <div class="os-fields-grid">
+          <div class="os-fv"><span class="os-fl">Nome</span><span class="os-fd" id="docClientName"></span></div>
+          <div class="os-fv"><span class="os-fl">Telefone</span><span class="os-fd" id="docClientPhone"></span></div>
+          <div class="os-fv" style="grid-column:1/-1;"><span class="os-fl">Endereço</span><span class="os-fd" id="docClientAddress"></span></div>
+          <div class="os-fv"><span class="os-fl">Data de entrada</span><span class="os-fd" id="docEntryDate"></span></div>
         </div>
       </div>
+
+      <div class="os-2col">
+        <div class="os-block">
+          <div class="os-block-title">Aparelho</div>
+          <div class="os-fields-grid full">
+            <div class="os-fv"><span class="os-fl">Marca</span><span class="os-fd" id="docBrand"></span></div>
+            <div class="os-fv"><span class="os-fl">Modelo</span><span class="os-fd" id="docModel"></span></div>
+            <div class="os-fv"><span class="os-fl">IMEI</span><span class="os-fd" id="docImei"></span></div>
+          </div>
+        </div>
+        <div class="os-block">
+          <div class="os-block-title">Responsável</div>
+          <div class="os-fields-grid full">
+            <div class="os-fv"><span class="os-fl">Técnico</span><span class="os-fd" id="docTech"></span></div>
+            <div class="os-fv"><span class="os-fl">Status</span><span class="os-fd" id="docDeviceStatus"></span></div>
+          </div>
+        </div>
+      </div>
+
       <div class="os-block">
-        <div class="os-block-title">Responsável</div>
-        <div class="os-fields-grid full">
-          <div class="os-fv"><span class="os-fl">Técnico responsável</span><span class="os-fd" id="docTech"></span></div>
-          <div class="os-fv"><span class="os-fl">Status do aparelho</span><span class="os-fd" id="docDeviceStatus"></span></div>
+        <div class="os-block-title">Segurança</div>
+        <div class="os-fields-grid" style="align-items:start;">
+          <div class="os-fv"><span class="os-fl">Senha numérica</span><span class="os-fd" id="docPasscode"></span></div>
+          <div class="os-fv"><span class="os-fl">Padrão</span><div class="pattern-doc-wrap" id="docPatternWrap"></div></div>
         </div>
       </div>
-    </div>
 
-    <div class="os-block">
-      <div class="os-block-title">Segurança</div>
-      <div class="os-fields-grid" style="align-items:start;">
-        <div class="os-fv"><span class="os-fl">Senha numérica</span><span class="os-fd" id="docPasscode"></span></div>
-        <div class="os-fv">
-          <span class="os-fl">Padrão de desbloqueio</span>
-          <div class="pattern-doc-wrap" id="docPatternWrap"></div>
+      <div class="os-block os-services">
+        <div class="os-block-title">Serviços realizados</div>
+        <p id="docServices"></p>
+      </div>
+
+      <div class="os-block">
+        <div class="os-block-title">Informações técnicas</div>
+        <div class="os-flags" id="docFlags"></div>
+        <div id="docDamageDescWrap" style="margin-top:8px; display:none;">
+          <span class="os-fl" style="display:block; font-size:9px; text-transform:uppercase; letter-spacing:.04em; color:#999; font-weight:700; margin-bottom:2px;">Danos físicos</span>
+          <p id="docDamageDesc" style="font-size:11px; line-height:1.5; white-space:pre-wrap; margin:0; color:#222;"></p>
         </div>
       </div>
-    </div>
 
-    <div class="os-block os-services">
-      <div class="os-block-title">Serviços realizados</div>
-      <p id="docServices"></p>
-    </div>
-
-    <div class="os-block">
-      <div class="os-block-title">Informações técnicas</div>
-      <div class="os-flags" id="docFlags"></div>
-      <div id="docDamageDescWrap" style="margin-top:10px; display:none;">
-        <span class="os-fl" style="display:block; font-size:9px; text-transform:uppercase; letter-spacing:.04em; color:#999; font-weight:700; margin-bottom:3px;">Descrição dos danos físicos</span>
-        <p id="docDamageDesc" style="font-size:12.5px; line-height:1.6; white-space:pre-wrap; margin:0; color:#222;"></p>
-      </div>
-    </div>
-
-    <div class="os-block">
-      <div class="os-block-title">Prazo, valor e pagamento</div>
-      <div class="os-fields-grid cols3">
-        <div class="os-fv"><span class="os-fl">Previsão de entrega</span><span class="os-fd" id="docDeliveryDate"></span></div>
-        <div class="os-fv"><span class="os-fl">Valor do serviço</span><span class="os-fd os-amount" id="docValue"></span></div>
-        <div class="os-fv"><span class="os-fl">Forma de pagamento</span><span class="os-fd" id="docPayment"></span></div>
-      </div>
-    </div>
-
-    <div class="os-block os-obs">
-      <div class="os-block-title">Observações</div>
-      <p id="docNotes"></p>
-    </div>
-
-    <div class="os-block os-terms-block" style="margin-top:14px;">
-      <div class="os-block-title">Termos e Condições</div>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px 24px; font-size:10.5px; color:#333; line-height:1.55;">
-        <div>
-          <p style="margin:0 0 6px;"><strong>1. Prazo de Garantia</strong></p>
-          <p style="margin:0 0 3px;">• 30 dias corridos a partir da entrega.</p>
-          <p style="margin:0 0 10px;">• Restrita ao serviço executado e/ou peça substituída.</p>
-
-          <p style="margin:0 0 6px;"><strong>2. Perda da Garantia</strong></p>
-          <p style="margin:0 0 3px;">1. Danos por quedas, pancadas, pressão, umidade.</p>
-          <p style="margin:0 0 3px;">2. Linhas, manchas na tela por mau uso.</p>
-          <p style="margin:0 0 3px;">3. Abertura por terceiros não autorizados.</p>
-          <p style="margin:0 0 3px;">4. Alterações de software (root, ROMs).</p>
-          <p style="margin:0 0 3px;">5. Troca/adulteração de peças após reparo.</p>
-          <p style="margin:0;">6. Problemas não relacionados ao serviço.</p>
-        </div>
-        <div>
-          <p style="margin:0 0 6px;"><strong>3. Observações Importantes</strong></p>
-          <p style="margin:0 0 3px;">• Não cobre acessórios (capas, cabos, fones).</p>
-          <p style="margin:0 0 10px;">• Não nos responsabilizamos por dados pessoais.</p>
-
-          <p style="margin:0 0 6px;"><strong>4. Declaração</strong></p>
-          <p style="margin:0;">Recebi o aparelho funcionando, testado, ciente das condições.</p>
+      <div class="os-block">
+        <div class="os-block-title">Prazo, valor e pagamento</div>
+        <div class="os-fields-grid cols3">
+          <div class="os-fv"><span class="os-fl">Previsão de entrega</span><span class="os-fd" id="docDeliveryDate"></span></div>
+          <div class="os-fv"><span class="os-fl">Valor</span><span class="os-fd os-amount" id="docValue"></span></div>
+          <div class="os-fv"><span class="os-fl">Pagamento</span><span class="os-fd" id="docPayment"></span></div>
         </div>
       </div>
+
+      <div class="os-block os-obs">
+        <div class="os-block-title">Observações</div>
+        <p id="docNotes"></p>
+      </div>
+
+      <div class="os-terms-inline">
+        <strong>1. Garantia:</strong> 30 dias corridos, restrita ao serviço executado/peça substituída. &nbsp;
+        <strong>2. Perda:</strong> quedas, umidade, abertura por terceiros, root/ROMs, adulteração. &nbsp;
+        <strong>3. Obs.:</strong> Não cobre acessórios nem dados pessoais. &nbsp;
+        <strong>4. Declaração:</strong> Recebi o aparelho funcionando, testado, ciente das condições.
+      </div>
+
+      <div class="os-sign-grid" style="margin-top:10px;">
+        <div class="os-sign-line">CLIENTE</div>
+        <div class="os-sign-line">TÉCNICO</div>
+      </div>
     </div>
 
-    <div class="os-sign-grid" style="margin-top:20px;">
-      <div class="os-sign-line">CLIENTE</div>
-      <div class="os-sign-line">TÉCNICO</div>
+    <!-- DIVISÓRIA -->
+    <div class="os-divider">
+      <span>✂</span>
     </div>
 
-    <div class="os-doc-footer">Documento gerado pelo sistema Nex Cell — vias válidas mediante assinatura de ambas as partes.</div>
+    <!-- VIA DIREITA (Loja) -->
+    <div class="os-via os-via-right">
+      <div class="os-via-label">VIA DA LOJA</div>
+      <div class="os-doc-logo-wrap" id="osDocLogoWrapR"></div>
+      <div class="os-doc-header">
+        <h1>Ordem de Serviço</h1>
+        <div class="os-sub">Assistência Técnica Especializada</div>
+        <div class="os-num" id="osDocNumberR"></div>
+      </div>
+
+      <div class="os-block">
+        <div class="os-block-title">Cliente</div>
+        <div class="os-fields-grid">
+          <div class="os-fv"><span class="os-fl">Nome</span><span class="os-fd" id="docClientNameR"></span></div>
+          <div class="os-fv"><span class="os-fl">Telefone</span><span class="os-fd" id="docClientPhoneR"></span></div>
+          <div class="os-fv" style="grid-column:1/-1;"><span class="os-fl">Endereço</span><span class="os-fd" id="docClientAddressR"></span></div>
+          <div class="os-fv"><span class="os-fl">Data de entrada</span><span class="os-fd" id="docEntryDateR"></span></div>
+        </div>
+      </div>
+
+      <div class="os-2col">
+        <div class="os-block">
+          <div class="os-block-title">Aparelho</div>
+          <div class="os-fields-grid full">
+            <div class="os-fv"><span class="os-fl">Marca</span><span class="os-fd" id="docBrandR"></span></div>
+            <div class="os-fv"><span class="os-fl">Modelo</span><span class="os-fd" id="docModelR"></span></div>
+            <div class="os-fv"><span class="os-fl">IMEI</span><span class="os-fd" id="docImeiR"></span></div>
+          </div>
+        </div>
+        <div class="os-block">
+          <div class="os-block-title">Responsável</div>
+          <div class="os-fields-grid full">
+            <div class="os-fv"><span class="os-fl">Técnico</span><span class="os-fd" id="docTechR"></span></div>
+            <div class="os-fv"><span class="os-fl">Status</span><span class="os-fd" id="docDeviceStatusR"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="os-block">
+        <div class="os-block-title">Segurança</div>
+        <div class="os-fields-grid" style="align-items:start;">
+          <div class="os-fv"><span class="os-fl">Senha numérica</span><span class="os-fd" id="docPasscodeR"></span></div>
+          <div class="os-fv"><span class="os-fl">Padrão</span><div class="pattern-doc-wrap" id="docPatternWrapR"></div></div>
+        </div>
+      </div>
+
+      <div class="os-block os-services">
+        <div class="os-block-title">Serviços realizados</div>
+        <p id="docServicesR"></p>
+      </div>
+
+      <div class="os-block">
+        <div class="os-block-title">Informações técnicas</div>
+        <div class="os-flags" id="docFlagsR"></div>
+        <div id="docDamageDescWrapR" style="margin-top:8px; display:none;">
+          <span class="os-fl" style="display:block; font-size:9px; text-transform:uppercase; letter-spacing:.04em; color:#999; font-weight:700; margin-bottom:2px;">Danos físicos</span>
+          <p id="docDamageDescR" style="font-size:11px; line-height:1.5; white-space:pre-wrap; margin:0; color:#222;"></p>
+        </div>
+      </div>
+
+      <div class="os-block">
+        <div class="os-block-title">Prazo, valor e pagamento</div>
+        <div class="os-fields-grid cols3">
+          <div class="os-fv"><span class="os-fl">Previsão de entrega</span><span class="os-fd" id="docDeliveryDateR"></span></div>
+          <div class="os-fv"><span class="os-fl">Valor</span><span class="os-fd os-amount" id="docValueR"></span></div>
+          <div class="os-fv"><span class="os-fl">Pagamento</span><span class="os-fd" id="docPaymentR"></span></div>
+        </div>
+      </div>
+
+      <div class="os-block os-obs">
+        <div class="os-block-title">Observações</div>
+        <p id="docNotesR"></p>
+      </div>
+
+      <div class="os-terms-inline">
+        <strong>1. Garantia:</strong> 30 dias corridos, restrita ao serviço executado/peça substituída. &nbsp;
+        <strong>2. Perda:</strong> quedas, umidade, abertura por terceiros, root/ROMs, adulteração. &nbsp;
+        <strong>3. Obs.:</strong> Não cobre acessórios nem dados pessoais. &nbsp;
+        <strong>4. Declaração:</strong> Recebi o aparelho funcionando, testado, ciente das condições.
+      </div>
+
+      <div class="os-sign-grid" style="margin-top:10px;">
+        <div class="os-sign-line">CLIENTE</div>
+        <div class="os-sign-line">TÉCNICO</div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1922,10 +2017,10 @@
       const canvas = await html2canvas(docEl, {scale: 2, useCORS: true, backgroundColor: '#ffffff'});
       const imgData = canvas.toDataURL('image/jpeg', 0.95);
       const { jsPDF } = window.jspdf;
-      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pdf = new jsPDF('l', 'mm', 'a4');
       const pageWidth = pdf.internal.pageSize.getWidth();
       const pageHeight = pdf.internal.pageSize.getHeight();
-      // Fit entire document into a single A4 page
+      // Fit entire document into a single A4 landscape page
       const ratio = Math.min(pageWidth / canvas.width, pageHeight / canvas.height);
       const imgW = canvas.width * ratio;
       const imgH = canvas.height * ratio;
@@ -1954,7 +2049,7 @@
       const canvas = await html2canvas(docEl, {scale:2, useCORS:true, backgroundColor:'#ffffff'});
       const imgData = canvas.toDataURL('image/jpeg', 0.95);
       const { jsPDF } = window.jspdf;
-      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pdf = new jsPDF('l', 'mm', 'a4');
       const pageWidth = pdf.internal.pageSize.getWidth();
       const pageHeight = pdf.internal.pageSize.getHeight();
       const imgWidth = pageWidth;
