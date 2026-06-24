@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catálogo de Modelos</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f0f11;
+    --surface: #18181c;
+    --surface2: #222228;
+    --border: #2e2e36;
+    --accent: #7c5cfc;
+    --accent-soft: #7c5cfc22;
+    --text: #f0eff5;
+    --muted: #8a8a9a;
+    --green: #22c55e;
+    --radius: 12px;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  header {
+    background: linear-gradient(135deg, #1a1625 0%, #0f0f11 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 36px 20px 32px;
+    text-align: center;
+  }
+
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+  }
+
+  .logo-dot {
+    width: 10px; height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--accent);
+  }
+
+  header p {
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .search-wrap {
+    max-width: 560px;
+    margin: 32px auto 0;
+    padding: 0 20px;
+    position: sticky;
+    top: 16px;
+    z-index: 10;
+  }
+
+  .search-box {
+    position: relative;
+  }
+
+  .search-box svg {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    pointer-events: none;
+  }
+
+  #search {
+    width: 100%;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 50px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 15px;
+    padding: 14px 20px 14px 46px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  #search::placeholder { color: var(--muted); }
+  #search:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+
+  .stats-bar {
+    max-width: 700px;
+    margin: 20px auto 0;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  #result-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  #result-count span {
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    color: var(--muted);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    padding: 5px 14px;
+    transition: all 0.15s;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    color: var(--text);
+  }
+
+  .main {
+    max-width: 700px;
+    margin: 24px auto 0;
+    padding: 0 20px;
+  }
+
+  .brand-section {
+    margin-bottom: 28px;
+  }
+
+  .brand-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .brand-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .brand-name {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+  }
+
+  .brand-count {
+    font-size: 12px;
+    color: var(--muted);
+    margin-left: auto;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 3px 10px;
+  }
+
+  .models-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .model-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: border-color 0.15s, background 0.15s;
+    cursor: default;
+  }
+
+  .model-card:hover {
+    border-color: var(--accent);
+    background: var(--surface2);
+  }
+
+  .model-number {
+    font-size: 11px;
+    color: var(--muted);
+    width: 22px;
+    flex-shrink: 0;
+    text-align: right;
+  }
+
+  .model-name {
+    font-size: 14px;
+    font-weight: 500;
+    flex: 1;
+  }
+
+  .in-stock {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    color: var(--green);
+    background: #22c55e14;
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  .in-stock::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    flex-shrink: 0;
+  }
+
+  .no-results {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+    display: none;
+  }
+
+  .no-results svg { margin-bottom: 16px; opacity: 0.4; }
+  .no-results h3 { font-size: 16px; color: var(--text); margin-bottom: 6px; }
+  .no-results p { font-size: 13px; }
+
+  .highlight {
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-radius: 3px;
+    padding: 0 2px;
+  }
+
+  .hidden { display: none !important; }
+
+  @media (max-width: 480px) {
+    header { padding: 28px 16px 24px; }
+    .logo { font-size: 19px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-dot"></div>
+    Catálogo de Modelos
+  </div>
+  <p>Pesquise para verificar se o modelo está disponível</p>
+</header>
+
+<div class="search-wrap">
+  <div class="search-box">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    <input type="text" id="search" placeholder="Ex: iPhone 16, Galaxy A55, Redmi Note 13…" autocomplete="off" autocorrect="off" spellcheck="false">
+  </div>
+</div>
+
+<div class="stats-bar">
+  <div id="result-count"><span id="count">82</span> modelos disponíveis</div>
+  <div class="filters">
+    <button class="filter-btn active" data-brand="all">Todos</button>
+    <button class="filter-btn" data-brand="Apple">Apple</button>
+    <button class="filter-btn" data-brand="Samsung">Samsung</button>
+    <button class="filter-btn" data-brand="Xiaomi">Xiaomi</button>
+    <button class="filter-btn" data-brand="Motorola">Motorola</button>
+    <button class="filter-btn" data-brand="Realme">Realme</button>
+  </div>
+</div>
+
+<div class="main" id="catalog">
+
+  <!-- APPLE -->
+  <div class="brand-section" data-brand="Apple">
+    <div class="brand-header">
+      <div class="brand-icon" style="background:#1c1c22;">🍎</div>
+      <div class="brand-name">Apple (iPhone)</div>
+      <div class="brand-count">20 modelos</div>
+    </div>
+    <div class="models-grid">
+      <div class="model-card" data-model="iPhone 7 / 8 Plus"><span class="model-number">01</span><span class="model-name">iPhone 7 / 8 Plus</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="iPhone XR"><span class="model-number">02</span><span class="model-name">iPhone XR</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="iPhone XS Max"><span class="model-number">03</span><span class="model-name">iPhone XS Max</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="iPhone 11"><span class="model-number">04</span><span class="model-name">iPhone 11</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="iPhone 11 Pro"><span class="model-number">05</span><span class="model-name">iPhone 11 Pro</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="iPhone 11 Pro Max"><span class="model-number">06</span><span class="model-name">iPhone 11 Pro Max</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="iPhone 13"><span class="model-number">07</span><span class="model-name">iPhone 13</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="iPhone 13 Pro"><span class="model-number">08</span><span class="model-name">iPhone 13 Pro</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="iPhone 14 6.1"><span class="model-number">09</span><span class="model-name">iPhone 14 (6.1")</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="iPhone 14 Pro Max 6.7"><span class="model-number">10</span><span class="model-name">iPhone 14 Pro Max (6.7")</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="iPhone 15"><span class="model-number">11</span><span class="model-name">iPhone 15</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="iPhone 15 Pro"><span class="model-number">12</span><span class="model-name">iPhone 15 Pro</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="iPhone 15 Pro Max"><span class="model-number">13</span><span class="model-name">iPhone 15 Pro Max</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="iPhone 16"><span class="model-number">14</span><span class="model-name">iPhone 16</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="iPhone 16 Pro"><span class="model-number">15</span><span class="model-name">iPhone 16 Pro</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="iPhone 16 Pro Max"><span class="model-number">16</span><span class="model-name">iPhone 16 Pro Max</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="iPhone 16E"><span class="model-number">17</span><span class="model-name">iPhone 16E</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="iPhone 17"><span class="model-number">18</span><span class="model-name">iPhone 17</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="iPhone 17 Pro"><span class="model-number">19</span><span class="model-name">iPhone 17 Pro</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="iPhone 17 Pro Max"><span class="model-number">20</span><span class="model-name">iPhone 17 Pro Max</span><span class="in-stock">Disponível</span></div>
+    </div>
+  </div>
+
+  <!-- SAMSUNG -->
+  <div class="brand-section" data-brand="Samsung">
+    <div class="brand-header">
+      <div class="brand-icon" style="background:#1a1c28;">🔵</div>
+      <div class="brand-name">Samsung Galaxy</div>
+      <div class="brand-count">32 modelos</div>
+    </div>
+    <div class="models-grid">
+      <div class="model-card" data-model="Galaxy A02s M02s"><span class="model-number">01</span><span class="model-name">Galaxy A02s / M02s</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Galaxy A03 164mm"><span class="model-number">02</span><span class="model-name">Galaxy A03 (164 mm)</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Galaxy A04"><span class="model-number">03</span><span class="model-name">Galaxy A04</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Galaxy A05s"><span class="model-number">04</span><span class="model-name">Galaxy A05s</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Galaxy A10s"><span class="model-number">05</span><span class="model-name">Galaxy A10s</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Galaxy M10 A10"><span class="model-number">06</span><span class="model-name">Galaxy M10 / A10</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Galaxy A12"><span class="model-number">07</span><span class="model-name">Galaxy A12</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Galaxy A13 4G"><span class="model-number">08</span><span class="model-name">Galaxy A13 4G</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Galaxy A13 5G A04s M13 5G"><span class="model-number">09</span><span class="model-name">Galaxy A13 5G / A04s / M13 5G</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Galaxy A15 A15 5G"><span class="model-number">10</span><span class="model-name">Galaxy A15 / A15 5G</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Galaxy A16"><span class="model-number">11</span><span class="model-name">Galaxy A16</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Galaxy A17 5G"><span class="model-number">12</span><span class="model-name">Galaxy A17 5G</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Galaxy A24 4G"><span class="model-number">13</span><span class="model-name">Galaxy A24 4G</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Galaxy A25 5G"><span class="model-number">14</span><span class="model-name">Galaxy A25 5G</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Galaxy A26 5G"><span class="model-number">15</span><span class="model-name">Galaxy A26 5G</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Galaxy A31"><span class="model-number">16</span><span class="model-name">Galaxy A31</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Galaxy A32 4G"><span class="model-number">17</span><span class="model-name">Galaxy A32 4G</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Galaxy A34 5G"><span class="model-number">18</span><span class="model-name">Galaxy A34 5G</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Galaxy A35 5G"><span class="model-number">19</span><span class="model-name">Galaxy A35 5G</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Galaxy A50 A50s A30s"><span class="model-number">20</span><span class="model-name">Galaxy A50 / A50s / A30s</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Galaxy A54 5G"><span class="model-number">21</span><span class="model-name">Galaxy A54 5G</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Galaxy A55 5G"><span class="model-number">22</span><span class="model-name">Galaxy A55 5G</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Galaxy A56 5G"><span class="model-number">23</span><span class="model-name">Galaxy A56 5G</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Galaxy M23 5G F23 5G M13 4G"><span class="model-number">24</span><span class="model-name">Galaxy M23 5G / F23 5G / M13 4G</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Galaxy S20 FE S20 Lite"><span class="model-number">25</span><span class="model-name">Galaxy S20 FE / S20 Lite</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Galaxy S21 FE"><span class="model-number">26</span><span class="model-name">Galaxy S21 FE</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Galaxy S23"><span class="model-number">27</span><span class="model-name">Galaxy S23</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Galaxy S23 FE"><span class="model-number">28</span><span class="model-name">Galaxy S23 FE</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Galaxy S24 FE"><span class="model-number">29</span><span class="model-name">Galaxy S24 FE</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Galaxy J4 Core J4 Prime"><span class="model-number">30</span><span class="model-name">Galaxy J4 Core / J4 Prime</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Galaxy J5 Prime"><span class="model-number">31</span><span class="model-name">Galaxy J5 Prime</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Galaxy G22 E32s"><span class="model-number">32</span><span class="model-name">Galaxy G22 / E32s</span><span class="in-stock">Disponível</span></div>
+    </div>
+  </div>
+
+  <!-- XIAOMI -->
+  <div class="brand-section" data-brand="Xiaomi">
+    <div class="brand-header">
+      <div class="brand-icon" style="background:#1e1818;">🟠</div>
+      <div class="brand-name">Xiaomi / Redmi / Poco</div>
+      <div class="brand-count">18 modelos</div>
+    </div>
+    <div class="models-grid">
+      <div class="model-card" data-model="Redmi 9A"><span class="model-number">01</span><span class="model-name">Redmi 9A</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Redmi 9C"><span class="model-number">02</span><span class="model-name">Redmi 9C</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Redmi 13"><span class="model-number">03</span><span class="model-name">Redmi 13</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Redmi 13C 4G Poco C65 4G"><span class="model-number">04</span><span class="model-name">Redmi 13C 4G / Poco C65 4G</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Redmi 14C Poco C75"><span class="model-number">05</span><span class="model-name">Redmi 14C / Poco C75</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Redmi 15"><span class="model-number">06</span><span class="model-name">Redmi 15</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Redmi 15C 4G"><span class="model-number">07</span><span class="model-name">Redmi 15C 4G</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Redmi A1 A2"><span class="model-number">08</span><span class="model-name">Redmi A1 / A2</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Redmi A4 5G"><span class="model-number">09</span><span class="model-name">Redmi A4 5G</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Redmi Note 13 5G"><span class="model-number">10</span><span class="model-name">Redmi Note 13 (5G)</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Redmi Note 13 4G"><span class="model-number">11</span><span class="model-name">Redmi Note 13 4G</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Redmi Note 13 Pro"><span class="model-number">12</span><span class="model-name">Redmi Note 13 Pro</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Redmi Note 13 Pro 5G"><span class="model-number">13</span><span class="model-name">Redmi Note 13 Pro 5G</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Redmi Note 14"><span class="model-number">14</span><span class="model-name">Redmi Note 14</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Redmi Note 14 4G"><span class="model-number">15</span><span class="model-name">Redmi Note 14 4G</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Xiaomi Mi 11 Lite 11 Lite 5G"><span class="model-number">16</span><span class="model-name">Xiaomi Mi 11 Lite / 11 Lite 5G</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Xiaomi Redmi 9A"><span class="model-number">17</span><span class="model-name">Xiaomi Redmi 9A</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Xiaomi Redmi 9C"><span class="model-number">18</span><span class="model-name">Xiaomi Redmi 9C</span><span class="in-stock">Disponível</span></div>
+    </div>
+  </div>
+
+  <!-- MOTOROLA -->
+  <div class="brand-section" data-brand="Motorola">
+    <div class="brand-header">
+      <div class="brand-icon" style="background:#1a1e1a;">🔴</div>
+      <div class="brand-name">Motorola</div>
+      <div class="brand-count">10 modelos</div>
+    </div>
+    <div class="models-grid">
+      <div class="model-card" data-model="Moto G3"><span class="model-number">01</span><span class="model-name">Moto G3</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Moto G8"><span class="model-number">02</span><span class="model-name">Moto G8</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Moto G04 4G"><span class="model-number">03</span><span class="model-name">Moto G04 4G</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Moto G05 5G"><span class="model-number">04</span><span class="model-name">Moto G05 5G</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Moto G10 G30"><span class="model-number">05</span><span class="model-name">Moto G10 / G30</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Moto G15 5G"><span class="model-number">06</span><span class="model-name">Moto G15 5G</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Moto G35 5G"><span class="model-number">07</span><span class="model-name">Moto G35 5G</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Moto G54 5G G64 G64 Power"><span class="model-number">08</span><span class="model-name">Moto G54 5G / G64 / G64 Power</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Moto G75 5G"><span class="model-number">09</span><span class="model-name">Moto G75 5G</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Motorola Edge 40 Neo"><span class="model-number">10</span><span class="model-name">Motorola Edge 40 Neo</span><span class="in-stock">Disponível</span></div>
+    </div>
+  </div>
+
+  <!-- REALME -->
+  <div class="brand-section" data-brand="Realme">
+    <div class="brand-header">
+      <div class="brand-icon" style="background:#1e1a1a;">🟡</div>
+      <div class="brand-name">Realme</div>
+      <div class="brand-count">2 modelos</div>
+    </div>
+    <div class="models-grid">
+      <div class="model-card" data-model="Realme C30"><span class="model-number">01</span><span class="model-name">Realme C30</span><span class="in-stock">Disponível</span></div>
+      <div class="model-card" data-model="Realme C30s"><span class="model-number">02</span><span class="model-name">Realme C30s</span><span class="in-stock">Disponível</span></div>
+    </div>
+  </div>
+
+  <div class="no-results" id="no-results">
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><path d="M8 11h6M11 8v6" style="opacity:.4"/>
+    </svg>
+    <h3>Nenhum modelo encontrado</h3>
+    <p>Tente pesquisar de outro jeito ou verifique a ortografia.</p>
+  </div>
+
+</div>
+
+<script>
+const searchInput = document.getElementById('search');
+const countEl = document.getElementById('count');
+const noResults = document.getElementById('no-results');
+const filterBtns = document.querySelectorAll('.filter-btn');
+
+let activeBrand = 'all';
+
+function normalize(str) {
+  return str.toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .replace(/\s+/g, ' ').trim();
+}
+
+function highlight(text, query) {
+  if (!query) return text;
+  const norm = normalize(query);
+  const words = norm.split(' ').filter(Boolean);
+  let result = text;
+  words.forEach(word => {
+    const regex = new RegExp(`(${word})`, 'gi');
+    result = result.replace(regex, '<mark class="highlight">$1</mark>');
+  });
+  return result;
+}
+
+function doFilter() {
+  const query = normalize(searchInput.value);
+  const words = query.split(' ').filter(Boolean);
+  let visibleCount = 0;
+  let anyVisible = false;
+
+  document.querySelectorAll('.brand-section').forEach(section => {
+    const brand = section.dataset.brand;
+    const brandMatch = activeBrand === 'all' || activeBrand === brand;
+
+    if (!brandMatch) {
+      section.classList.add('hidden');
+      return;
+    }
+
+    let sectionHasVisible = false;
+    section.querySelectorAll('.model-card').forEach(card => {
+      const modelText = normalize(card.dataset.model);
+      const matches = words.length === 0 || words.every(w => modelText.includes(w));
+
+      if (matches) {
+        card.classList.remove('hidden');
+        const nameEl = card.querySelector('.model-name');
+        nameEl.innerHTML = highlight(nameEl.textContent, searchInput.value);
+        visibleCount++;
+        sectionHasVisible = true;
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+
+    section.classList.toggle('hidden', !sectionHasVisible);
+    if (sectionHasVisible) anyVisible = true;
+  });
+
+  countEl.textContent = visibleCount;
+  noResults.style.display = anyVisible ? 'none' : 'block';
+}
+
+searchInput.addEventListener('input', doFilter);
+
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeBrand = btn.dataset.brand;
+    doFilter();
+  });
+});
+</script>
+</body>
+</html>
