@@ -626,6 +626,11 @@
           <input type="number" id="salePrice" min="0" step="0.01" required placeholder="0,00">
         </div>
       </div>
+      <div class="field">
+        <label>Custo de entrega (R$)</label>
+        <input type="number" id="saleDeliveryCost" min="0" step="0.01" placeholder="0,00">
+        <div class="field-hint">Opcional. Esse valor é somado ao custo para calcular o lucro.</div>
+      </div>
 
       <div class="calc-preview" id="calcPreview">
         <div><span>Lucro bruto</span><b id="prevGross">R$ 0,00</b></div>
@@ -1119,8 +1124,9 @@
   }
   function calcSale(sale){
     const cost = Number(sale.cost) || 0;
+    const deliveryCost = Number(sale.deliveryCost) || 0;
     const price = Number(sale.price) || 0;
-    const gross = price - cost;
+    const gross = price - cost - deliveryCost;
     const reserve = gross * 0.10;
     const net = gross - reserve;
     return {gross, reserve, net};
@@ -1496,8 +1502,9 @@
 
   function updateCalcPreview(){
     const cost = Number(document.getElementById('saleCost').value) || 0;
+    const deliveryCost = Number(document.getElementById('saleDeliveryCost').value) || 0;
     const price = Number(document.getElementById('salePrice').value) || 0;
-    const gross = price - cost;
+    const gross = price - cost - deliveryCost;
     const reserve = gross * 0.10;
     const net = gross - reserve;
     document.getElementById('prevGross').textContent = fmtBRL(gross);
@@ -1505,6 +1512,7 @@
     document.getElementById('prevNet').textContent = fmtBRL(net);
   }
   document.getElementById('saleCost').addEventListener('input', updateCalcPreview);
+  document.getElementById('saleDeliveryCost').addEventListener('input', updateCalcPreview);
   document.getElementById('salePrice').addEventListener('input', updateCalcPreview);
 
   function openSaleModal(id){
@@ -1518,6 +1526,7 @@
       document.getElementById('saleClient').value = s.client || '';
       document.getElementById('saleDescription').value = s.description || '';
       document.getElementById('saleCost').value = s.cost;
+      document.getElementById('saleDeliveryCost').value = s.deliveryCost || '';
       document.getElementById('salePrice').value = s.price;
       document.getElementById('saleDate').value = s.saleDate || '';
       document.getElementById('saleDue').value = s.dueDate || '';
@@ -1540,6 +1549,7 @@
       client: document.getElementById('saleClient').value.trim(),
       description: document.getElementById('saleDescription').value.trim(),
       cost: Number(document.getElementById('saleCost').value) || 0,
+      deliveryCost: Number(document.getElementById('saleDeliveryCost').value) || 0,
       price: Number(document.getElementById('salePrice').value) || 0,
       saleDate: document.getElementById('saleDate').value,
       dueDate: document.getElementById('saleDue').value,
