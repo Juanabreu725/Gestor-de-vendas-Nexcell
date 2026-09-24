@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gerador de Nota de Venda · NexCell</title>
+<style>
+:root{--bg:#f4f2f8;--card:#fff;--ink:#1c1a24;--mut:#6b6779;--line:#dcd8e6;--acc:#7c3aed;--accink:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14111c;--card:#1e1a2b;--ink:#ece9f5;--mut:#9b96ad;--line:#342e47;--acc:#a78bfa;--accink:#14111c}}
+:root[data-theme="dark"]{--bg:#14111c;--card:#1e1a2b;--ink:#ece9f5;--mut:#9b96ad;--line:#342e47;--acc:#a78bfa;--accink:#14111c}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+#app{max-width:1200px;margin:0 auto;padding:14px;display:grid;gap:16px}
+@media(min-width:960px){#app{grid-template-columns:400px 1fr;align-items:start}#form{position:sticky;top:10px;max-height:calc(100vh - 20px);overflow:auto}}
+#form{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+h1{font-size:18px;margin:0 0 10px}
+fieldset{border:0;border-top:1px solid var(--line);margin:12px 0 0;padding:10px 0 0}
+legend{font-weight:700;padding:0 6px 0 0;font-size:14px}
+.g{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.g .w{grid-column:1/-1}
+label{display:block;font-size:12px;color:var(--mut)}
+input,select,textarea{width:100%;margin-top:2px;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit;font-size:15px}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+button{padding:10px 14px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-weight:600;cursor:pointer}
+button.p{background:var(--acc);color:var(--accink);border-color:var(--acc)}
+.hint{font-size:12px;color:var(--mut);margin:6px 0 0}
+#prev{overflow:hidden}
+#zoom{transform-origin:top left}
+/* ---------- NOTA (sempre papel branco) ---------- */
+.sheet{width:794px;min-height:1123px;background:#fff;color:#000;font:11px/1.25 Arial,Helvetica,sans-serif;padding:46px 50px 30px;position:relative;box-shadow:0 1px 8px rgba(0,0,0,.2)}
+.hd{display:flex;border:1px solid #000;border-radius:14px;padding:12px 14px;align-items:center}
+.hd .l{flex:1;display:flex;gap:14px;align-items:center;border-right:1px solid #ccc}
+.logo{width:92px;height:92px;background:#120c22;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
+.logo img{width:100%;height:100%;object-fit:cover}
+.logo b{color:#fff;letter-spacing:4px;font-size:15px}.logo i{color:#c026d3;font-style:normal;letter-spacing:3px;font-size:8px}
+.hd .l h2{margin:0 0 14px;font-size:20px}
+.hd .r{flex:1;text-align:center}.hd .r h2{margin:0;font-size:19px}.hd .r small{color:#555;font-size:9.5px}.hd .r .n{font-size:14px;font-weight:700;margin:6px 0 3px}
+.sec{margin-top:14px}
+.st{background:#efefef;border:1px solid #ccc;font-weight:700;font-size:12px;padding:6px 14px}
+.bx{border:1px solid #000;border-top:0}
+.row{display:grid;padding:5px 14px 4px}
+.row+.row{padding-top:0}
+.c small{display:block;color:#666;font-size:10px}.c b{display:block;font-size:11.5px;min-height:14px}
+.gr3{grid-template-columns:1fr 1fr 1fr}
+.pr{grid-template-columns:2.1fr .7fr .7fr .7fr .5fr .8fr}
+.gr4{grid-template-columns:1fr 1fr 1fr 1fr}
+.gr2{grid-template-columns:1fr 1fr}
+.v{display:grid;grid-template-columns:1fr 1fr 1fr 1.05fr;border:1px solid #000;border-top:0}
+.v div{padding:9px 12px}.v div+div{border-left:1px solid #ccc}
+.v small{display:block;color:#555;font-size:10px}.v b{font-size:13px}
+.v .f{border:2px solid #000;margin:-1px;padding:10px 12px}.v .f b{font-size:17px}
+.ob{padding:8px 4px;white-space:pre-line;font-size:11px;line-height:1.2}
+.av{margin-top:14px;background:#fff8e1;border:1px solid #e6c667;padding:7px 10px;color:#333;font-size:9.5px}
+.av b{display:block;color:#7a5b00;margin-bottom:2px}.av p{margin:1px 0}
+.sg{display:flex;justify-content:space-between;align-items:flex-end;margin-top:30px;gap:40px}
+.sg>div{flex:1;text-align:center;border-top:1px solid #000;padding-top:4px;font-size:11px}
+.stamp{width:230px;margin:26px 0 -2px 70px;transform:rotate(-6deg);border:3px solid #34405f;border-radius:14px;color:#34405f;text-align:center;padding:6px 0;opacity:.85}
+.stamp small{display:block;font-size:8px;letter-spacing:2px}.stamp b{display:block;font-size:24px;letter-spacing:1px;border-bottom:1px solid #34405f;margin:0 14px}
+.ft{position:absolute;bottom:26px;left:0;right:0;text-align:center;color:#aaa;font-size:9px}
+@media print{
+ @page{size:A4;margin:0}
+ body{background:#fff}
+ #app{display:block;padding:0;max-width:none}
+ #form{display:none}
+ #prev{overflow:visible}
+ #zoom{transform:none!important;width:auto!important;height:auto!important}
+ .sheet{box-shadow:none;width:210mm;min-height:297mm}
+}
+</style>
+</head>
+<body>
+<div id="app">
+<div id="form">
+ <h1>Nova nota de venda</h1>
+ <div class="g">
+  <label>Nº da nota<input data-k="numero" type="number" min="1"></label>
+  <label>Emissão<input data-k="emissao" type="datetime-local"></label>
+ </div>
+
+ <fieldset><legend>Cliente</legend><div class="g">
+  <label class="w">Nome / Razão social<input data-k="nome"></label>
+  <label>CPF / CNPJ<input data-k="cpf" inputmode="numeric"></label>
+  <label>RG<input data-k="rg"></label>
+  <label>Telefone<input data-k="tel" inputmode="tel"></label>
+  <label>E-mail<input data-k="email" type="email"></label>
+  <label class="w">Endereço<input data-k="end"></label>
+ </div></fieldset>
+
+ <fieldset><legend>Aparelho</legend><div class="g">
+  <label class="w">Descrição<input data-k="desc" placeholder="Ex.: Xiaomi Redmi Note 13"></label>
+  <label>Cor<input data-k="cor"></label>
+  <label>Capacidade<input data-k="cap" placeholder="128 GB"></label>
+  <label>Estado<input data-k="estado" placeholder="Novo / Seminovo"></label>
+  <label>Qtd.<input data-k="qtd" type="number" min="1" value="1"></label>
+  <label class="w">Valor unitário (R$)<input data-k="valor" inputmode="decimal" placeholder="0,00"></label>
+  <label>IMEI 1<input data-k="imei1" inputmode="numeric"></label>
+  <label>IMEI 2<input data-k="imei2" inputmode="numeric"></label>
+  <label>Nº de série<input data-k="serie"></label>
+  <label>Código interno<input data-k="cod"></label>
+  <label class="w">Acessórios inclusos<input data-k="acess" placeholder="Carregador, cabo, capinha… (vazio = nenhum)"></label>
+ </div></fieldset>
+
+ <fieldset><legend>Pagamento</legend><div class="g">
+  <label>Garantia (dias)<input data-k="garantia" type="number" min="0" value="90"></label>
+  <label>Forma<select data-k="forma"><option>PIX</option><option>Dinheiro</option><option>Cartão de crédito</option><option>Cartão de débito</option><option>Boleto</option><option>Transferência</option></select></label>
+  <label>Desconto (R$)<input data-k="desc$" inputmode="decimal" placeholder="0,00"></label>
+  <label>Acréscimo (R$)<input data-k="acre" inputmode="decimal" placeholder="0,00"></label>
+  <label>Entrada (R$)<input data-k="entrada" inputmode="decimal" placeholder="0,00"></label>
+  <label>Nº de parcelas<input data-k="np" type="number" min="0" value="0"></label>
+  <label>Periodicidade<select data-k="per"><option>Mensal</option><option>Quinzenal</option><option>Semanal</option></select></label>
+  <label>1º vencimento<input data-k="venc" type="date"></label>
+  <label class="w">Observações extras<textarea data-k="extra" rows="2"></textarea></label>
+ </div>
+ <p class="hint">Parcela = (valor final − entrada) ÷ nº de parcelas. Com 0 parcelas, a venda é à vista.</p></fieldset>
+
+ <fieldset><legend>Loja</legend><div class="g">
+  <label>Nome<input data-k="loja" value="NEXCELL"></label>
+  <label>Telefone<input data-k="ltel" value="(99) 98493-3805"></label>
+  <label class="w">CNPJ<input data-k="cnpj" value="69.270.591/0001-13"></label>
+  <label class="w">Logo (opcional)<input id="logoIn" type="file" accept="image/*"></label>
+ </div></fieldset>
+
+ <div class="bar">
+  <button class="p" id="btnPrint">Imprimir / salvar PDF</button>
+  <button id="btnNew">Nova nota</button>
+ </div>
+ <p class="hint">Se a impressão não abrir aqui, abra a página no navegador e use Ctrl+P (ou Compartilhar → Imprimir no celular) e escolha “Salvar como PDF”.</p>
+</div>
+
+<div id="prev"><div id="zoom"><div class="sheet" id="sheet"></div></div></div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const inp=[...document.querySelectorAll('[data-k]')];
+const get=k=>$('[data-k="'+k+'"]').value.trim();
+const set=(k,v)=>{$('[data-k="'+k+'"]').value=v};
+const num=k=>parseFloat(get(k).replace(/\./g,'').replace(',','.'))||0;
+const brl=n=>'R$ '+n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const d=v=>v?esc(v):'—';
+const p2=n=>String(n).padStart(2,'0');
+let logo='';
+function store(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
+
+function addPeriod(base,i,per){
+  const x=new Date(base.getTime());
+  if(per==='Mensal'){const day=x.getDate();x.setDate(1);x.setMonth(x.getMonth()+i);const max=new Date(x.getFullYear(),x.getMonth()+1,0).getDate();x.setDate(Math.min(day,max))}
+  else x.setDate(x.getDate()+i*(per==='Semanal'?7:15));
+  return x;
+}
+const fd=x=>p2(x.getDate())+'/'+p2(x.getMonth()+1)+'/'+x.getFullYear();
+
+function render(){
+  const qtd=parseInt(get('qtd'))||1, vu=num('valor'), bruto=vu*qtd;
+  const desc=num('desc$'), acre=num('acre'), final=Math.max(0,bruto-desc+acre);
+  const ent=Math.min(num('entrada'),final), np=Math.max(0,parseInt(get('np'))||0);
+  const rest=final-ent, base=np?Math.floor(rest/np*100)/100:0;
+  const valores=[];let acc=0;
+  for(let i=0;i<np;i++){const v=i===np-1?Math.round((rest-acc)*100)/100:base;acc+=v;valores.push(v)}
+  const forma=get('forma'), per=get('per');
+  const forn=np?forma+' em '+np+'x':forma+' (à vista)';
+  const parcTxt=np?np+'x de '+brl(valores[0])+(ent>0?' + entrada '+brl(ent):''):(ent>0?'Pago no ato: '+brl(ent):'Pago à vista');
+  const v0=get('venc')?new Date(get('venc')+'T12:00:00'):new Date();
+  let ob='Aparelho: '+(get('desc')||'—');
+  if(ent>0&&np)ob+='\nEntrada recebida no ato: '+brl(ent);
+  valores.forEach((v,i)=>{ob+='\nParcela '+(i+1)+'/'+np+' — venc. '+fd(addPeriod(v0,i,per))+' — '+brl(v)+' — pendente'});
+  if(get('extra'))ob+='\n'+get('extra');
+  const em=get('emissao')?new Date(get('emissao')):new Date();
+  const emTxt=fd(em)+' '+p2(em.getHours())+':'+p2(em.getMinutes());
+  const nome=esc(get('loja')||'NEXCELL');
+  const nn=String(parseInt(get('numero'))||0).padStart(6,'0');
+  $('#sheet').innerHTML=`
+  <div class="hd"><div class="l"><div class="logo">${logo?`<img src="${logo}" alt="">`:'<b>NEX</b><i>CELL</i>'}</div>
+    <div><h2>${nome}</h2><div>${get('ltel')?'Tel: '+esc(get('ltel')):''}</div></div></div>
+    <div class="r"><h2>NOTA DE VENDA</h2><small>DOCUMENTO AUXILIAR DE VENDA</small><div class="n">Nº ${nn}</div><small>Emissão: ${emTxt}</small></div></div>
+  <div class="sec"><div class="st">DESTINATÁRIO / CLIENTE</div><div class="bx">
+    <div class="row gr3"><div class="c"><small>NOME / RAZÃO SOCIAL</small><b>${d(get('nome'))}</b></div><div class="c"><small>CPF / CNPJ</small><b>${d(get('cpf'))}</b></div><div class="c"><small>RG</small><b>${d(get('rg'))}</b></div></div>
+    <div class="row gr3"><div class="c"><small>TELEFONE</small><b>${d(get('tel'))}</b></div><div class="c"><small>E-MAIL</small><b>${d(get('email'))}</b></div><div class="c"><small>ENDEREÇO</small><b>${d(get('end'))}</b></div></div></div></div>
+  <div class="sec"><div class="st">PRODUTO / APARELHO</div><div class="bx">
+    <div class="row pr"><div class="c"><small>DESCRIÇÃO DO PRODUTO</small><b>${d(get('desc'))}</b></div><div class="c"><small>COR</small><b>${d(get('cor'))}</b></div><div class="c"><small>CAPAC.</small><b>${d(get('cap'))}</b></div><div class="c"><small>ESTADO</small><b>${d(get('estado'))}</b></div><div class="c"><small>QTD.</small><b>${qtd}</b></div><div class="c"><small>VALOR</small><b>${brl(vu)}</b></div></div>
+    <div class="row gr4"><div class="c"><small>IMEI 1</small><b>${d(get('imei1'))}</b></div><div class="c"><small>IMEI 2</small><b>${d(get('imei2'))}</b></div><div class="c"><small>Nº DE SÉRIE</small><b>${d(get('serie'))}</b></div><div class="c"><small>CÓDIGO INTERNO</small><b>${d(get('cod'))}</b></div></div></div></div>
+  <div class="sec"><div class="st">ACESSÓRIOS INCLUSOS</div><div class="bx"><div class="row" style="padding:9px 14px;font-size:11.5px">${get('acess')?esc(get('acess')):'Nenhum acessório informado.'}</div></div></div>
+  <div class="sec"><div class="st">GARANTIA E FORMA DE PAGAMENTO</div><div class="bx">
+    <div class="row gr2"><div class="c"><small>GARANTIA</small><b>${parseInt(get('garantia'))||0} dias</b></div><div class="c"><small>PERIODICIDADE DO PAGAMENTO</small><b>${np?per:'—'}</b></div></div>
+    <div class="row gr2"><div class="c"><small>FORMA DE PAGAMENTO</small><b>${esc(forn)}</b></div><div class="c"><small>PARCELAMENTO</small><b>${esc(parcTxt)}</b></div></div></div></div>
+  <div class="sec"><div class="st">VALORES</div><div class="v">
+    <div><small>VALOR DO APARELHO</small><b>${brl(bruto)}</b></div><div><small>DESCONTO</small><b>- ${brl(desc)}</b></div><div><small>ACRÉSCIMO</small><b>+ ${brl(acre)}</b></div><div class="f"><small>VALOR FINAL</small><b>${brl(final)}</b></div></div></div>
+  <div class="sec"><div class="st">OBSERVAÇÕES</div><div class="ob">${esc(ob)}</div></div>
+  <div class="av"><b>AVISO DE GARANTIA</b>
+    <p>• A garantia cobre exclusivamente defeitos de fabricação.</p>
+    <p>• Todo aparelho passará por uma análise técnica para verificação da causa do defeito antes de qualquer troca ou reparo em garantia.</p>
+    <p>• Danos causados por mau uso, quedas, contato com líquidos, oxidação, violação do aparelho ou qualquer dano físico não são cobertos pela garantia.</p>
+    <p>• Acessórios (capinha, película, carregador, cabo, fone) não possuem garantia contra desgaste natural de uso.</p></div>
+  <div class="stamp"><small>ASSISTENCIA TECNICA</small><b>${nome}</b><small style="letter-spacing:0;font-size:9px">CNPJ ${esc(get('cnpj'))}</small></div>
+  <div class="sg"><div>Assinatura do Vendedor</div><div>Assinatura do Cliente</div></div>
+  <div class="ft">Documento gerado eletronicamente — ${nome}</div>`;
+  fit();
+}
+
+function fit(){
+  const z=$('#zoom'),w=$('#prev').clientWidth,s=Math.min(1,w/794);
+  z.style.width='794px';z.style.transform='scale('+s+')';
+  z.style.height=($('#sheet').offsetHeight*s)+'px';
+}
+
+function nowLocal(){const x=new Date();return x.getFullYear()+'-'+p2(x.getMonth()+1)+'-'+p2(x.getDate())+'T'+p2(x.getHours())+':'+p2(x.getMinutes())}
+function nextMonth(){const x=new Date();x.setMonth(x.getMonth()+1);return x.getFullYear()+'-'+p2(x.getMonth()+1)+'-'+p2(x.getDate())}
+
+function init(){
+  set('numero',store('nex_seq')||'1');
+  set('emissao',nowLocal());
+  set('venc',nextMonth());
+  const l=store('nex_logo');if(l)logo=l;
+  ['loja','ltel','cnpj'].forEach(k=>{const v=store('nex_'+k);if(v)set(k,v)});
+  render();
+}
+
+inp.forEach(i=>i.addEventListener('input',()=>{
+  if(i.dataset.k==='numero')store('nex_seq',i.value);
+  if(['loja','ltel','cnpj'].includes(i.dataset.k))store('nex_'+i.dataset.k,i.value);
+  render();
+}));
+
+$('#logoIn').addEventListener('change',e=>{
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{logo=r.result;store('nex_logo',logo);render()};
+  r.readAsDataURL(f);
+});
+
+$('#btnNew').addEventListener('click',()=>{
+  const n=(parseInt(get('numero'))||0)+1;
+  ['nome','cpf','rg','tel','email','end','desc','cor','cap','estado','imei1','imei2','serie','cod','acess','desc$','acre','valor','entrada','extra'].forEach(k=>set(k,''));
+  set('qtd','1');set('np','0');set('numero',n);store('nex_seq',String(n));
+  set('emissao',nowLocal());set('venc',nextMonth());render();
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+
+$('#btnPrint').addEventListener('click',()=>{
+  const n=(parseInt(get('numero'))||0);
+  try{window.print()}catch(e){alert('Abra a página no navegador e use Ctrl+P para salvar em PDF.')}
+});
+
+addEventListener('resize',fit);
+addEventListener('beforeprint',()=>{$('#zoom').style.height='auto'});
+addEventListener('afterprint',fit);
+init();
+</script>
+</body>
+</html>
