@@ -160,6 +160,12 @@
   .account-santander .dot{background:var(--santander-dot);}
   .account-c6{background:var(--c6-bg); color:var(--c6-text);}
   .account-c6 .dot{background:var(--c6-dot);}
+  .account-other{background:var(--brand-light); color:var(--brand-magenta);}
+  .account-other .dot{background:var(--brand-magenta);}
+  .inst-partial{font-size:11px; color:var(--text-soft); margin-top:2px;}
+  .inst-partial b{color:var(--pago-text);}
+  .inst-partial .rest{color:var(--aberto-text); font-weight:700;}
+  .icon-action-sm.pay:hover{border-color:var(--pago-text); color:var(--pago-text);}
 
   /* ---------- CLIENT CARDS (Cobranças) ---------- */
   .clients-list{display:flex; flex-direction:column; gap:10px;}
@@ -359,11 +365,8 @@
       </div>
       <div class="field">
         <label>Conta destino</label>
-        <select id="cobAccount">
-          <option value="nubank">Nubank</option>
-          <option value="santander">Santander</option>
-          <option value="c6">C6 Bank</option>
-        </select>
+        <input type="text" id="cobAccount" list="bancosList" required placeholder="Ex: Nubank Vanilton" autocomplete="off">
+        <datalist id="bancosList"></datalist>
       </div>
 
       <div id="cobInstallmentFields">
@@ -464,6 +467,26 @@
   </div>
 </div>
 
+<!-- MODAL: Entrada / pagamento parcial -->
+<div class="modal-overlay" id="partialModalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Registrar entrada</h3>
+      <button class="modal-close" data-close="partialModalOverlay">&times;</button>
+    </div>
+    <div class="calc-preview"><span id="partialInfo">Restante</span><b id="partialRest">R$ 0,00</b></div>
+    <div class="field">
+      <label>Valor recebido agora (R$)</label>
+      <input type="number" id="partialValue" min="0" step="0.01" placeholder="0,00">
+      <div class="field-hint" id="partialHint"></div>
+    </div>
+    <div class="modal-buttons">
+      <button type="button" class="btn btn-danger" id="btnPartialReset">Zerar</button>
+      <button type="button" class="btn btn-primary" id="btnPartialSave">Salvar</button>
+    </div>
+  </div>
+</div>
+
 <div id="toastWrap"></div>
 
 <script>
@@ -518,11 +541,13 @@
   }
   const ACCOUNT_LABELS = {nubank:'Nubank', santander:'Santander', c6:'C6 Bank'};
   function accountBadgeHtml(acc){
-    const cls = 'account-' + (acc || 'nubank');
-    const label = ACCOUNT_LABELS[acc] || acc || '—';
+    const _l = String(ACCOUNT_LABELS[acc] || acc || '').toLowerCase();
+    const cls = _l.includes('nubank') ? 'account-nubank' : _l.includes('santander') ? 'account-santander' : _l.includes('c6') ? 'account-c6' : 'account-other';
+    const label = escapeHTML(ACCOUNT_LABELS[acc] || acc || '—');
     return `<span class="account-badge ${cls}"><span class="dot"></span>${label}</span>`;
   }
   const STATUS_LABELS = {pendente:'Pendente', pago:'Pago', atrasado:'Atrasado'};
+  function accountLabel(acc){ return ACCOUNT_LABELS[acc] || acc || ''; }
 
   /* ============================================================
      TOAST
@@ -657,10 +682,13 @@
     let aReceber = 0, recebido = 0, pendente = 0, atrasado = 0;
     clients.forEach(c => c.installments.forEach(inst => {
       if(cobMonth && (inst.dueDate || '').slice(0,7) !== cobMonth) return;
-      aReceber += Number(inst.value) || 0;
-      if(inst.status === 'pago') recebido += Number(inst.value) || 0;
-      else if(inst.status === 'pendente') pendente += Number(inst.value) || 0;
-      else if(inst.status === 'atrasado') atrasado += Number(inst.value) || 0;
+      const _v = Number(inst.value) || 0;
+      const _p = inst.status === 'pago' ? _v : Math.min(Number(inst.partial) || 0, _v);
+      aReceber += _v;
+      recebido += _p;
+      if(inst.status === 'pago'){ /* já somado em recebido */ }
+      else if(inst.status === 'pendente') pendente += _v - _p;
+      else if(inst.status === 'atrasado') atrasado += _v - _p;
     }));
     document.getElementById('cobDashboard').innerHTML = `
       <div class="stat-card">
@@ -726,6 +754,7 @@
             <div class="inst-info">
               <span class="inst-num">Parcela ${inst.number}/${totalCount}</span>
               <span class="inst-due ${overdue?'late':''}">Vence ${fmtDate(inst.dueDate)}<span class="inst-value">${fmtBRL(inst.value)}</span></span>
+              ${inst.status !== 'pago' && Number(inst.partial) > 0 ? `<span class="inst-partial">Entrada <b>${fmtBRL(inst.partial)}</b> · Resta <span class="rest">${fmtBRL(Math.max(inst.value - inst.partial, 0))}</span></span>` : ''}
             </div>
             <div class="inst-actions">
               <select class="status-select" data-action="inst-status">
@@ -733,6 +762,7 @@
                 <option value="pago" ${inst.status==='pago'?'selected':''}>Pago</option>
                 <option value="atrasado" ${inst.status==='atrasado'?'selected':''}>Atrasado</option>
               </select>
+              <button type="button" class="icon-action-sm pay" data-action="inst-partial" title="Registrar entrada">💵</button>
               <button type="button" class="icon-action-sm" data-action="inst-delete" title="Excluir parcela">✕</button>
             </div>
           </div>
@@ -784,6 +814,7 @@
             showToast('Status da parcela atualizado.');
           }
         });
+        row.querySelector('[data-action="inst-partial"]').addEventListener('click', () => openPartialModal(clientId, instId));
         row.querySelector('[data-action="inst-delete"]').addEventListener('click', () => {
           const client = clients.find(c => c.id === clientId);
           if(client){
@@ -805,6 +836,42 @@
     renderClientsList();
   }
 
+  /* ---------- MODAL: entrada / pagamento parcial ---------- */
+  let partialTarget = null;
+  function getPartialInst(){
+    if(!partialTarget) return null;
+    const c = clients.find(x => x.id === partialTarget.clientId);
+    return c && c.installments.find(i => i.id === partialTarget.instId);
+  }
+  function openPartialModal(clientId, instId){
+    partialTarget = {clientId, instId};
+    const inst = getPartialInst();
+    if(!inst) return;
+    const paid = Math.min(Number(inst.partial) || 0, inst.value);
+    document.getElementById('partialInfo').textContent = `Restante (parcela de ${fmtBRL(inst.value)})`;
+    document.getElementById('partialRest').textContent = fmtBRL(inst.value - paid);
+    document.getElementById('partialHint').textContent = paid > 0 ? `Já recebido: ${fmtBRL(paid)}` : '';
+    document.getElementById('partialValue').value = '';
+    openModal('partialModalOverlay');
+  }
+  document.getElementById('btnPartialSave').addEventListener('click', () => {
+    const inst = getPartialInst();
+    const v = Number(document.getElementById('partialValue').value) || 0;
+    if(!inst || v <= 0){ showToast('Informe o valor recebido.'); return; }
+    inst.partial = (Number(inst.partial) || 0) + v;
+    if(inst.partial >= inst.value){ inst.partial = inst.value; inst.status = 'pago'; }
+    saveClients();
+    closeModal('partialModalOverlay');
+    renderCobrancas();
+    showToast(inst.status === 'pago' ? 'Parcela quitada!' : 'Entrada registrada.');
+  });
+  document.getElementById('btnPartialReset').addEventListener('click', () => {
+    const inst = getPartialInst();
+    if(inst){ inst.partial = 0; saveClients(); renderCobrancas(); }
+    closeModal('partialModalOverlay');
+    showToast('Entrada zerada.');
+  });
+
   /* ---------- MODAL: novo/editar cliente ---------- */
   let editingClientId = null;
   const clientForm = document.getElementById('clientForm');
@@ -821,12 +888,13 @@
   function openClientModal(id){
     editingClientId = id || null;
     clientForm.reset();
+    document.getElementById('bancosList').innerHTML = [...new Set(clients.map(c => accountLabel(c.account)).filter(Boolean))].map(b => `<option value="${escapeHTML(b)}">`).join('');
     if(id){
       const c = clients.find(x => x.id === id);
       document.getElementById('clientModalTitle').textContent = 'Editar cliente';
       document.getElementById('cobClientName').value = c.name || '';
       document.getElementById('cobDescription').value = c.description || '';
-      document.getElementById('cobAccount').value = c.account || 'nubank';
+      document.getElementById('cobAccount').value = accountLabel(c.account);
       cobInstallmentFields.hidden = true;
     } else {
       document.getElementById('clientModalTitle').textContent = 'Novo cliente';
@@ -842,7 +910,7 @@
     e.preventDefault();
     const name = document.getElementById('cobClientName').value.trim();
     const description = document.getElementById('cobDescription').value.trim();
-    const account = document.getElementById('cobAccount').value;
+    const account = document.getElementById('cobAccount').value.trim();
 
     if(!name){
       showToast('Informe o nome do cliente.');
@@ -1135,4 +1203,4 @@
 })();
 </script>
 </body>
-</html>
+  </html>
