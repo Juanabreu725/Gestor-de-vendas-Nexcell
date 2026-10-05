@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sorteador de 1 a 48</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; padding: 32px 16px; background: #f2f5fa; color: #182438; font-family: system-ui, sans-serif; display: grid; place-items: center; }
+    main { width: min(100%, 560px); padding: 32px; background: white; border-radius: 24px; box-shadow: 0 12px 45px #18243812; text-align: center; }
+    .tag { color: #315bdd; font-size: 12px; font-weight: 750; letter-spacing: 2px; }
+    h1 { margin: 12px 0 8px; font-size: clamp(26px, 5vw, 34px); }
+    p { color: #647084; line-height: 1.5; }
+    #numero { display: grid; place-items: center; margin: 26px auto 18px; width: 160px; height: 160px; border-radius: 32px; background: #eef2ff; color: #315bdd; font-size: 80px; font-weight: 800; font-variant-numeric: tabular-nums; }
+    #status { min-height: 24px; }
+    button { width: 100%; min-height: 52px; border: 0; border-radius: 12px; font: inherit; font-weight: 700; cursor: pointer; }
+    #sortear { background: #315bdd; color: white; }
+    #sortear:hover { background: #2347bb; }
+    button:disabled { opacity: .5; cursor: default; }
+    button:focus-visible { outline: 3px solid #99b1ff; outline-offset: 4px; }
+    #reiniciar { margin-top: 10px; background: #f2f5fa; color: #536174; }
+    h2 { margin: 28px 0 14px; text-align: left; font-size: 16px; }
+    #historico { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+    #historico li { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 10px; background: #f2f5fa; font-weight: 650; }
+    #historico li:last-child { background: #315bdd; color: white; }
+    #vazio { text-align: left; font-size: 14px; margin-bottom: 0; }
+    .nota { font-size: 12px; margin: 24px 0 0; }
+    @media (max-width: 400px) { main { padding: 24px 18px; } }
+  </style>
+</head>
+<body>
+  <main>
+    <span class="tag">SEM REPETIÇÃO</span>
+    <h1>Sorteador de 1 a 48</h1>
+    <p>Cada número sai uma única vez por rodada.</p>
+    <div id="numero" aria-live="polite" aria-label="Último número sorteado">—</div>
+    <p id="status" role="status"></p>
+    <button id="sortear" type="button">Sortear número</button>
+    <button id="reiniciar" type="button">Reiniciar sorteio</button>
+    <h2>Números sorteados <span id="contador"></span></h2>
+    <ol id="historico" aria-label="Números na ordem do sorteio"></ol>
+    <p id="vazio">Os números sorteados aparecerão aqui.</p>
+    <p class="nota" id="nota">O progresso fica salvo neste navegador.</p>
+  </main>
+  <script>
+    const CHAVE = 'sorteador-1-48-v1';
+    const numero = document.getElementById('numero');
+    const status = document.getElementById('status');
+    const historico = document.getElementById('historico');
+    const sortear = document.getElementById('sortear');
+    let sorteados = [];
+    try {
+      const salvo = JSON.parse(localStorage.getItem(CHAVE) || '[]');
+      if (Array.isArray(salvo) && salvo.length <= 48 && new Set(salvo).size === salvo.length && salvo.every(n => Number.isInteger(n) && n >= 1 && n <= 48)) sorteados = salvo;
+    } catch (_) {}
+
+    function salvar() {
+      try { localStorage.setItem(CHAVE, JSON.stringify(sorteados)); }
+      catch (_) { document.getElementById('nota').textContent = 'Mantenha esta página aberta para preservar o sorteio.'; }
+    }
+    function atualizar() {
+      numero.textContent = sorteados.length ? sorteados[sorteados.length - 1] : '—';
+      const restantes = 48 - sorteados.length;
+      status.textContent = restantes ? `${restantes} ${restantes === 1 ? 'número disponível' : 'números disponíveis'}` : 'Todos os 48 números já foram sorteados!';
+      sortear.disabled = restantes === 0;
+      sortear.textContent = restantes ? 'Sortear número' : 'Sorteio concluído';
+      document.getElementById('contador').textContent = `(${sorteados.length}/48)`;
+      document.getElementById('vazio').hidden = sorteados.length > 0;
+      historico.replaceChildren(...sorteados.map(n => {
+        const item = document.createElement('li');
+        item.textContent = n;
+        return item;
+      }));
+    }
+    function indiceAleatorio(limite) {
+      const valor = new Uint32Array(1);
+      const teto = Math.floor(4294967296 / limite) * limite;
+      do { crypto.getRandomValues(valor); } while (valor[0] >= teto);
+      return valor[0] % limite;
+    }
+    sortear.addEventListener('click', () => {
+      // Lê o progresso mais recente, inclusive se houver outra aba aberta.
+      try {
+        const salvo = JSON.parse(localStorage.getItem(CHAVE) || '[]');
+        if (Array.isArray(salvo) && salvo.length <= 48 && new Set(salvo).size === salvo.length && salvo.every(n => Number.isInteger(n) && n >= 1 && n <= 48)) sorteados = salvo;
+      } catch (_) {}
+      const disponiveis = Array.from({ length: 48 }, (_, i) => i + 1).filter(n => !sorteados.includes(n));
+      if (!disponiveis.length) { atualizar(); return; }
+      sorteados.push(disponiveis[indiceAleatorio(disponiveis.length)]);
+      salvar();
+      atualizar();
+    });
+    document.getElementById('reiniciar').addEventListener('click', () => {
+      if (sorteados.length && !confirm('Apagar os números sorteados e começar uma nova rodada?')) return;
+      sorteados = [];
+      salvar();
+      atualizar();
+    });
+    window.addEventListener('storage', event => {
+      if (event.key === CHAVE) location.reload();
+    });
+    atualizar();
+  </script>
+</body>
+</html>
