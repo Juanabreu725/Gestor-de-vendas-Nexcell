@@ -10,7 +10,7 @@
 <style>
   :root{
     --bg:#0A0A0F;
-    --bg-grad: radial-gradient(1200px 600px at 50% -10%, rgba(138,77,255,.18), transparent 60%), #0A0A0F;
+    --bg-grad:radial-gradient(1200px 600px at 50% -10%,rgba(138,77,255,.18),transparent 60%),#0A0A0F;
     --surface:#151320;
     --surface-2:#1B1828;
     --surface-3:#211C33;
@@ -24,20 +24,23 @@
     --brand-light:#241B3D;
     --brand-magenta:#E54DFF;
     --brand-purple:#8A4DFF;
-    --brand-gradient: linear-gradient(135deg, #8A4DFF 0%, #B23FEF 55%, #E54DFF 100%);
-    --brand-gradient-soft: linear-gradient(135deg, rgba(138,77,255,.16) 0%, rgba(229,77,255,.16) 100%);
-    --pago-bg:rgba(46,158,82,.16); --pago-text:#5FE39A; --pago-dot:#2E9E52;
-    --aberto-bg:rgba(242,169,59,.16); --aberto-text:#F2C168; --aberto-dot:#F2A93B;
-    --atrasado-bg:rgba(220,38,38,.16); --atrasado-text:#FF6B6B; --atrasado-dot:#DC2626;
-    --nubank-bg:rgba(147,51,234,.20); --nubank-text:#D6AFFF; --nubank-dot:#9333EA;
-    --santander-bg:rgba(236,0,0,.16); --santander-text:#FF8A8A; --santander-dot:#EC0000;
-    --c6-bg:rgba(255,255,255,.09); --c6-text:#E4E4EA; --c6-dot:#B9B9C6;
-    --shadow-sm: 0 1px 2px rgba(0,0,0,.35), 0 1px 1px rgba(0,0,0,.2);
-    --shadow-md: 0 8px 28px rgba(138,77,255,.16), 0 2px 8px rgba(0,0,0,.4);
-    --shadow-glow: 0 0 0 1px rgba(138,77,255,.25), 0 8px 24px rgba(138,77,255,.18);
-    --radius-md: 14px;
-    --radius-lg: 18px;
-    --radius-sm: 10px;
+    --brand-gradient:linear-gradient(135deg,#8A4DFF 0%,#B23FEF 55%,#E54DFF 100%);
+    --brand-gradient-soft:linear-gradient(135deg,rgba(138,77,255,.16) 0%,rgba(229,77,255,.16) 100%);
+    --pago-bg:rgba(46,158,82,.16);
+    --pago-text:#5FE39A;
+    --pago-dot:#2E9E52;
+    --aberto-bg:rgba(242,169,59,.16);
+    --aberto-text:#F2C168;
+    --aberto-dot:#F2A93B;
+    --atrasado-bg:rgba(220,38,38,.16);
+    --atrasado-text:#FF6B6B;
+    --atrasado-dot:#DC2626;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.35),0 1px 1px rgba(0,0,0,.2);
+    --shadow-md:0 8px 28px rgba(138,77,255,.16),0 2px 8px rgba(0,0,0,.4);
+    --shadow-glow:0 0 0 1px rgba(138,77,255,.25),0 8px 24px rgba(138,77,255,.18);
+    --radius-md:14px;
+    --radius-lg:18px;
+    --radius-sm:10px;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
@@ -45,216 +48,414 @@
     background:var(--bg-grad);
     background-attachment:fixed;
     color:var(--text);
-    font-family:'Inter', system-ui, -apple-system, sans-serif;
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
     -webkit-font-smoothing:antialiased;
     padding-bottom:40px;
   }
-  h1,h2,h3{font-family:'Plus Jakarta Sans', system-ui, sans-serif; margin:0;}
+  h1,h2,h3{font-family:'Plus Jakarta Sans',system-ui,sans-serif;margin:0;}
   button{font-family:inherit;}
-  #app{max-width:980px; margin:0 auto; padding:0 16px;}
+  #app{max-width:980px;margin:0 auto;padding:0 16px;}
 
-  /* ---------- TOPBAR ---------- */
-  .topbar{display:flex; align-items:center; justify-content:space-between; padding:20px 0 12px;}
-  .brand{display:flex; align-items:center; gap:10px;}
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:20px 0 12px;}
+  .brand{display:flex;align-items:center;gap:10px;}
   .brand-logo-box{
-    width:42px; height:42px; border-radius:12px; flex-shrink:0; display:flex; align-items:center; justify-content:center;
-    background:var(--brand-gradient); color:#fff; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; font-size:14px;
-    box-shadow:var(--shadow-glow); letter-spacing:.01em;
+    width:42px;height:42px;border-radius:12px;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--brand-gradient);color:#fff;
+    font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:14px;
+    box-shadow:var(--shadow-glow);letter-spacing:.01em;
   }
-  .brand h1{font-size:20px; font-weight:800; letter-spacing:-0.01em; background:var(--brand-gradient); -webkit-background-clip:text; background-clip:text; color:transparent;}
-  .brand p{margin:2px 0 0; font-size:12.5px; color:var(--text-soft);}
+  .brand h1{
+    font-size:20px;font-weight:800;letter-spacing:-0.01em;
+    background:var(--brand-gradient);-webkit-background-clip:text;
+    background-clip:text;color:transparent;
+  }
+  .brand p{margin:2px 0 0;font-size:12.5px;color:var(--text-soft);}
   .icon-btn{
-    width:40px; height:40px; border-radius:10px; border:1px solid var(--border);
-    background:var(--surface); cursor:pointer; font-size:17px; color:var(--text);
-    display:flex; align-items:center; justify-content:center; transition:.15s; flex-shrink:0;
+    width:40px;height:40px;border-radius:10px;border:1px solid var(--border);
+    background:var(--surface);cursor:pointer;font-size:17px;color:var(--text);
+    display:flex;align-items:center;justify-content:center;transition:.15s;flex-shrink:0;
   }
-  .icon-btn:hover{background:var(--surface-2); border-color:var(--brand-purple); box-shadow:0 0 0 3px rgba(138,77,255,.15);}
+  .icon-btn:hover{
+    background:var(--surface-2);border-color:var(--brand-purple);
+    box-shadow:0 0 0 3px rgba(138,77,255,.15);
+  }
 
-  /* ---------- PERIOD LABEL ---------- */
-  .period-label{display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px; font-size:12.5px; color:var(--text-soft); font-weight:600;}
+  .period-label{
+    display:flex;align-items:center;justify-content:space-between;gap:8px;
+    margin-bottom:10px;font-size:12.5px;color:var(--text-soft);font-weight:600;
+  }
   .period-label b{color:var(--brand-magenta);}
 
-  /* ---------- DASHBOARD / STAT CARDS ---------- */
-  .dashboard{display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:14px;}
-  .stat-card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md); padding:14px; box-shadow:var(--shadow-sm); position:relative; overflow:hidden;}
-  .stat-card .stat-label{font-size:11.5px; color:var(--text-soft); font-weight:600; text-transform:uppercase; letter-spacing:.03em;}
-  .stat-card .stat-value{font-family:'Plus Jakarta Sans', system-ui, sans-serif; font-size:19px; font-weight:800; margin-top:6px; color:var(--text);}
+  .dashboard{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px;}
+  .stat-card{
+    background:var(--surface);border:1px solid var(--border);
+    border-radius:var(--radius-md);padding:14px;box-shadow:var(--shadow-sm);
+    position:relative;overflow:hidden;
+  }
+  .stat-card .stat-label{
+    font-size:11.5px;color:var(--text-soft);font-weight:600;
+    text-transform:uppercase;letter-spacing:.03em;
+  }
+  .stat-card .stat-value{
+    font-family:'Plus Jakarta Sans',system-ui,sans-serif;
+    font-size:19px;font-weight:800;margin-top:6px;color:var(--text);
+  }
   .stat-card.accent-green .stat-value{color:var(--pago-text);}
   .stat-card.accent-amber .stat-value{color:var(--aberto-text);}
   .stat-card.accent-red .stat-value{color:var(--atrasado-text);}
-  .stat-card .stat-sub{font-size:11px; color:var(--text-faint); margin-top:3px;}
+  .stat-card .stat-sub{font-size:11px;color:var(--text-faint);margin-top:3px;}
 
-  /* ---------- SUMMARY CARD (Entregas: total a pagar) ---------- */
   .summary-card{
-    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md);
-    padding:18px; box-shadow:var(--shadow-sm); margin-bottom:16px; position:relative; overflow:hidden;
+    background:var(--surface);border:1px solid var(--border);
+    border-radius:var(--radius-md);padding:18px;box-shadow:var(--shadow-sm);
+    margin-bottom:16px;position:relative;overflow:hidden;
   }
-  .summary-card::before{content:''; position:absolute; inset:0; background:var(--brand-gradient-soft); opacity:.5; pointer-events:none;}
-  .summary-head{position:relative; z-index:1; font-size:12.5px; font-weight:700; color:var(--text-soft); text-transform:uppercase; letter-spacing:.03em;}
-  .summary-main{position:relative; z-index:1; display:flex; align-items:baseline; gap:10px; margin-top:8px; flex-wrap:wrap;}
-  .summary-number{font-family:'Plus Jakarta Sans', system-ui, sans-serif; font-size:28px; font-weight:800; background:var(--brand-gradient); -webkit-background-clip:text; background-clip:text; color:transparent;}
-  .summary-sub{position:relative; z-index:1; font-size:12.5px; color:var(--text-faint); margin-top:4px;}
-  .summary-foot{position:relative; z-index:1; display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:14px; flex-wrap:wrap;}
-  .summary-foot .paid-info{font-size:12px; color:var(--text-soft);}
+  .summary-card::before{
+    content:'';position:absolute;inset:0;background:var(--brand-gradient-soft);
+    opacity:.5;pointer-events:none;
+  }
+  .summary-head{
+    position:relative;z-index:1;font-size:12.5px;font-weight:700;
+    color:var(--text-soft);text-transform:uppercase;letter-spacing:.03em;
+  }
+  .summary-main{
+    position:relative;z-index:1;display:flex;align-items:baseline;
+    gap:10px;margin-top:8px;flex-wrap:wrap;
+  }
+  .summary-number{
+    font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:28px;font-weight:800;
+    background:var(--brand-gradient);-webkit-background-clip:text;
+    background-clip:text;color:transparent;
+  }
+  .summary-sub{position:relative;z-index:1;font-size:12.5px;color:var(--text-faint);margin-top:4px;}
+  .summary-foot{
+    position:relative;z-index:1;display:flex;justify-content:space-between;
+    align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap;
+  }
+  .summary-foot .paid-info{font-size:12px;color:var(--text-soft);}
   .summary-foot .paid-info b{color:var(--pago-text);}
 
-  /* ---------- TOOLBAR ---------- */
-  .toolbar{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:14px;}
-  .toolbar h2{font-size:17px; font-weight:700;}
+  .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px;}
+  .toolbar h2{font-size:17px;font-weight:700;}
   .search-box{flex:1 1 100%;}
-  .search-box input{width:100%; padding:11px 14px; border-radius:11px; border:1px solid var(--border); background:var(--surface); font-size:14px; color:var(--text); outline:none; transition:.15s;}
-  .search-box input::placeholder{color:var(--text-faint);}
-  .search-box input:focus{border-color:var(--brand-purple); box-shadow:0 0 0 3px var(--brand-light);}
-  .filters{display:flex; gap:6px; flex-wrap:wrap; flex:1;}
-  .chip{border:1px solid var(--border); background:var(--surface); padding:7px 13px; border-radius:20px; font-size:12.5px; font-weight:600; color:var(--text-soft); cursor:pointer; transition:.15s; white-space:nowrap;}
-  .chip.active{background:var(--brand-gradient); color:#fff; border-color:transparent;}
-  .period-row{display:flex; gap:8px; align-items:center; flex:1 1 100%; flex-wrap:wrap;}
-  .period-row label{font-size:12.5px; font-weight:600; color:var(--text-soft); white-space:nowrap;}
-  .period-row input[type="month"], .period-row input[type="date"]{
-    border:1px solid var(--border); background:var(--surface); padding:8px 12px; border-radius:20px;
-    font-size:12.5px; font-weight:600; color:var(--text); cursor:pointer; outline:none; transition:.15s;
-    font-family:inherit; color-scheme:dark;
+  .search-box input{
+    width:100%;padding:11px 14px;border-radius:11px;border:1px solid var(--border);
+    background:var(--surface);font-size:14px;color:var(--text);outline:none;transition:.15s;
   }
-  .period-row input[type="month"]:focus, .period-row input[type="date"]:focus{border-color:var(--brand-purple); box-shadow:0 0 0 3px var(--brand-light);}
-  .period-row input.active-filter{border-color:var(--brand-magenta); color:var(--brand-magenta);}
-  .chip-clear-month{border:1px solid var(--border); background:var(--surface); padding:7px 11px; border-radius:20px; font-size:12px; font-weight:600; color:var(--text-soft); cursor:pointer; transition:.15s;}
-  .chip-clear-month:hover{background:var(--atrasado-bg); color:var(--atrasado-text); border-color:#5c2424;}
+  .search-box input::placeholder{color:var(--text-faint);}
+  .search-box input:focus{border-color:var(--brand-purple);box-shadow:0 0 0 3px var(--brand-light);}
+  .filters{display:flex;gap:6px;flex-wrap:wrap;flex:1;}
+  .chip{
+    border:1px solid var(--border);background:var(--surface);padding:7px 13px;
+    border-radius:20px;font-size:12.5px;font-weight:600;color:var(--text-soft);
+    cursor:pointer;transition:.15s;white-space:nowrap;
+  }
+  .chip.active{background:var(--brand-gradient);color:#fff;border-color:transparent;}
+  .period-row{display:flex;gap:8px;align-items:center;flex:1 1 100%;flex-wrap:wrap;}
+  .period-row label{font-size:12.5px;font-weight:600;color:var(--text-soft);white-space:nowrap;}
+  .period-row input[type="month"],.period-row input[type="date"]{
+    border:1px solid var(--border);background:var(--surface);padding:8px 12px;
+    border-radius:20px;font-size:12.5px;font-weight:600;color:var(--text);
+    cursor:pointer;outline:none;transition:.15s;font-family:inherit;color-scheme:dark;
+  }
+  .period-row input[type="month"]:focus,.period-row input[type="date"]:focus{
+    border-color:var(--brand-purple);box-shadow:0 0 0 3px var(--brand-light);
+  }
+  .period-row input.active-filter{border-color:var(--brand-magenta);color:var(--brand-magenta);}
+  .chip-clear-month{
+    border:1px solid var(--border);background:var(--surface);padding:7px 11px;
+    border-radius:20px;font-size:12px;font-weight:600;color:var(--text-soft);
+    cursor:pointer;transition:.15s;
+  }
+  .chip-clear-month:hover{background:var(--atrasado-bg);color:var(--atrasado-text);border-color:#5c2424;}
 
-  /* ---------- BUTTONS ---------- */
-  .btn{border:none; border-radius:11px; padding:11px 18px; font-weight:700; font-size:13.5px; cursor:pointer; transition:.15s; display:inline-flex; align-items:center; gap:6px; white-space:nowrap;}
-  .btn-primary{background:var(--brand-gradient); color:#fff; box-shadow:var(--shadow-glow);}
+  .btn{
+    border:none;border-radius:11px;padding:11px 18px;font-weight:700;
+    font-size:13.5px;cursor:pointer;transition:.15s;display:inline-flex;
+    align-items:center;gap:6px;white-space:nowrap;
+  }
+  .btn-primary{background:var(--brand-gradient);color:#fff;box-shadow:var(--shadow-glow);}
   .btn-primary:hover{filter:brightness(1.08);}
-  .btn-ghost{background:var(--surface); color:var(--text); border:1px solid var(--border);}
-  .btn-ghost:hover{background:var(--surface-2); border-color:var(--brand-purple);}
-  .btn-danger{background:var(--surface); color:var(--atrasado-text); border:1px solid #4a2424;}
+  .btn-ghost{background:var(--surface);color:var(--text);border:1px solid var(--border);}
+  .btn-ghost:hover{background:var(--surface-2);border-color:var(--brand-purple);}
+  .btn-danger{background:var(--surface);color:var(--atrasado-text);border:1px solid #4a2424;}
   .btn-danger:hover{background:var(--atrasado-bg);}
-  .btn-success{background:var(--surface); color:var(--pago-text); border:1px solid #1e4a2c;}
+  .btn-success{background:var(--surface);color:var(--pago-text);border:1px solid #1e4a2c;}
   .btn-success:hover{background:var(--pago-bg);}
-  .btn-block{width:100%; justify-content:center;}
-  .btn-sm{padding:7px 11px; font-size:12px; border-radius:9px;}
+  .btn-block{width:100%;justify-content:center;}
+  .btn-sm{padding:7px 11px;font-size:12px;border-radius:9px;}
 
-  /* ---------- BADGES ---------- */
-  .badge{display:inline-flex; align-items:center; gap:5px; padding:4px 10px; border-radius:20px; font-size:11.5px; font-weight:700; cursor:default;}
-  .badge .dot{width:6px; height:6px; border-radius:50%;}
-  .badge-pago{background:var(--pago-bg); color:var(--pago-text);}
+  .badge{
+    display:inline-flex;align-items:center;gap:5px;padding:4px 10px;
+    border-radius:20px;font-size:11.5px;font-weight:700;cursor:default;
+  }
+  .badge .dot{width:6px;height:6px;border-radius:50%;}
+  .badge-pago{background:var(--pago-bg);color:var(--pago-text);}
   .badge-pago .dot{background:var(--pago-dot);}
-  .badge-pendente{background:var(--aberto-bg); color:var(--aberto-text);}
+  .badge-pendente{background:var(--aberto-bg);color:var(--aberto-text);}
   .badge-pendente .dot{background:var(--aberto-dot);}
   .badge.clickable{cursor:pointer;}
   .badge.clickable:hover{filter:brightness(1.15);}
 
-  /* ---------- ENTREGA CARDS ---------- */
-  .entregas-list{display:flex; flex-direction:column; gap:10px;}
-  .entrega-card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md); padding:14px; box-shadow:var(--shadow-sm); display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;}
+  .entregas-list{display:flex;flex-direction:column;gap:10px;}
+  .entrega-card{
+    background:var(--surface);border:1px solid var(--border);
+    border-radius:var(--radius-md);padding:14px;box-shadow:var(--shadow-sm);
+    display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
+  }
   .entrega-left{min-width:0;}
-  .entrega-service{font-weight:700; font-size:14.5px; color:var(--text); word-break:break-word;}
-  .entrega-date{font-size:12px; color:var(--text-soft); margin-top:2px;}
-  .entrega-right{display:flex; align-items:center; gap:8px; flex-shrink:0;}
-  .entrega-value{font-family:'Plus Jakarta Sans', system-ui, sans-serif; font-size:16px; font-weight:800; color:var(--brand-magenta); white-space:nowrap;}
+  .entrega-service{font-weight:700;font-size:14.5px;color:var(--text);word-break:break-word;}
+  .entrega-date{font-size:12px;color:var(--text-soft);margin-top:2px;}
+  .entrega-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+  .entrega-value{
+    font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:16px;
+    font-weight:800;color:var(--brand-magenta);white-space:nowrap;
+  }
+  .empty-state{
+    text-align:center;padding:50px 20px;color:var(--text-soft);background:var(--surface);
+    border:1px dashed var(--border);border-radius:var(--radius-md);
+  }
+  .empty-state .ee-icon{font-size:34px;margin-bottom:8px;}
+  .empty-state h3{font-size:15px;margin-bottom:4px;color:var(--text);}
+  .empty-state p{font-size:13px;margin:0;}
 
-  .empty-state{text-align:center; padding:50px 20px; color:var(--text-soft); background:var(--surface); border:1px dashed var(--border); border-radius:var(--radius-md);}
-  .empty-state .ee-icon{font-size:34px; margin-bottom:8px;}
-  .empty-state h3{font-size:15px; margin-bottom:4px; color:var(--text);}
-  .empty-state p{font-size:13px; margin:0;}
-
-  /* ---------- MODAL ---------- */
-  .modal-overlay{position:fixed; inset:0; background:rgba(5,4,10,.7); display:none; align-items:flex-end; justify-content:center; z-index:100; padding:0;}
+  .modal-overlay{
+    position:fixed;inset:0;background:rgba(5,4,10,.7);display:none;
+    align-items:flex-end;justify-content:center;z-index:100;padding:0;
+  }
   .modal-overlay.open{display:flex;}
-  .modal{background:var(--surface); border:1px solid var(--border); border-radius:20px 20px 0 0; width:100%; max-width:560px; max-height:92vh; overflow-y:auto; padding:18px 18px 22px; box-shadow:0 -8px 30px rgba(0,0,0,.5); animation:slideUp .2s ease;}
-  @keyframes slideUp{from{transform:translateY(24px); opacity:.4;} to{transform:translateY(0); opacity:1;}}
-  .modal-header{display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;}
-  .modal-header h3{font-size:16.5px; font-weight:800;}
-  .modal-close{border:none; background:var(--surface-2); width:30px; height:30px; border-radius:8px; font-size:16px; cursor:pointer; color:var(--text-soft);}
+  .modal{
+    background:var(--surface);border:1px solid var(--border);border-radius:20px 20px 0 0;
+    width:100%;max-width:560px;max-height:92vh;overflow-y:auto;padding:18px 18px 22px;
+    box-shadow:0 -8px 30px rgba(0,0,0,.5);animation:slideUp .2s ease;
+  }
+  @keyframes slideUp{from{transform:translateY(24px);opacity:.4;}to{transform:translateY(0);opacity:1;}}
+  .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+  .modal-header h3{font-size:16.5px;font-weight:800;}
+  .modal-close{
+    border:none;background:var(--surface-2);width:30px;height:30px;
+    border-radius:8px;font-size:16px;cursor:pointer;color:var(--text-soft);
+  }
   .field{margin-bottom:13px;}
-  .field label{display:block; font-size:12px; font-weight:700; color:var(--text-soft); margin-bottom:5px;}
-  .field input, .field select, .field textarea{width:100%; padding:11px 12px; border-radius:10px; border:1px solid var(--border); background:var(--surface-2); font-size:14px; color:var(--text); outline:none; font-family:inherit; transition:.15s; color-scheme:dark;}
-  .field input::placeholder, .field textarea::placeholder{color:var(--text-faint);}
-  .field input:focus, .field select:focus, .field textarea:focus{border-color:var(--brand); background:var(--surface); box-shadow:0 0 0 3px var(--brand-light);}
-  .field textarea{resize:vertical; min-height:54px;}
-  .row2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
-  .calc-preview{background:var(--brand-light); border-radius:12px; padding:12px; text-align:center; margin:6px 0 16px; border:1px solid var(--border-soft);}
-  .calc-preview span{display:block; font-size:9.5px; text-transform:uppercase; color:var(--brand-magenta); font-weight:700; opacity:.85;}
-  .calc-preview b{font-size:17px; color:var(--text);}
-  .modal-buttons{display:flex; gap:10px; margin-top:6px;}
+  .field label{display:block;font-size:12px;font-weight:700;color:var(--text-soft);margin-bottom:5px;}
+  .field input,.field select,.field textarea{
+    width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--border);
+    background:var(--surface-2);font-size:14px;color:var(--text);outline:none;
+    font-family:inherit;transition:.15s;color-scheme:dark;
+  }
+  .field input::placeholder,.field textarea::placeholder{color:var(--text-faint);}
+  .field input:focus,.field select:focus,.field textarea:focus{
+    border-color:var(--brand);background:var(--surface);box-shadow:0 0 0 3px var(--brand-light);
+  }
+  .field textarea{resize:vertical;min-height:54px;}
+  .modal-buttons{display:flex;gap:10px;margin-top:6px;}
   .modal-buttons .btn{flex:1;}
-  .confirm-text{font-size:14px; color:var(--text-soft); line-height:1.5; margin-bottom:18px;}
-  .field-hint{font-size:11px; color:var(--text-faint); margin-top:4px;}
-  .yesno-group{display:flex; gap:6px;}
-  .yesno-btn{flex:1; border:1px solid var(--border); background:var(--surface-2); color:var(--text-soft); border-radius:9px; padding:9px 6px; font-size:12.5px; font-weight:700; cursor:pointer; transition:.15s;}
-  .yesno-btn.active{background:var(--brand-gradient); color:#fff; border-color:transparent;}
-  .section-title{font-size:11.5px; font-weight:800; color:var(--brand-magenta); text-transform:uppercase; letter-spacing:.04em; margin:18px 0 10px; padding-bottom:6px; border-bottom:1px solid var(--border-soft);}
+  .confirm-text{font-size:14px;color:var(--text-soft);line-height:1.5;margin-bottom:18px;}
+  .yesno-group{display:flex;gap:6px;}
+  .yesno-btn{
+    flex:1;border:1px solid var(--border);background:var(--surface-2);
+    color:var(--text-soft);border-radius:9px;padding:9px 6px;font-size:12.5px;
+    font-weight:700;cursor:pointer;transition:.15s;
+  }
+  .yesno-btn.active{background:var(--brand-gradient);color:#fff;border-color:transparent;}
+  .section-title{
+    font-size:11.5px;font-weight:800;color:var(--brand-magenta);text-transform:uppercase;
+    letter-spacing:.04em;margin:18px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--border-soft);
+  }
   .section-title:first-child{margin-top:0;}
 
-  /* ---------- TOAST ---------- */
-  #toastWrap{position:fixed; bottom:18px; left:0; right:0; display:flex; flex-direction:column; align-items:center; gap:8px; z-index:200; pointer-events:none;}
-  .toast{background:var(--surface-3); border:1px solid var(--border); color:var(--text); padding:10px 18px; border-radius:30px; font-size:13px; font-weight:600; box-shadow:var(--shadow-md); animation:toastIn .2s ease, toastOut .2s ease 2.2s forwards; opacity:0;}
-  @keyframes toastIn{to{opacity:1; transform:translateY(0);} from{opacity:0; transform:translateY(8px);}}
+  #toastWrap{
+    position:fixed;bottom:18px;left:0;right:0;display:flex;flex-direction:column;
+    align-items:center;gap:8px;z-index:200;pointer-events:none;
+  }
+  .toast{
+    background:var(--surface-3);border:1px solid var(--border);color:var(--text);
+    padding:10px 18px;border-radius:30px;font-size:13px;font-weight:600;
+    box-shadow:var(--shadow-md);animation:toastIn .2s ease,toastOut .2s ease 2.2s forwards;opacity:0;
+  }
+  @keyframes toastIn{to{opacity:1;transform:translateY(0);}from{opacity:0;transform:translateY(8px);}}
   @keyframes toastOut{to{opacity:0;}}
 
-  /* ---------- RESPONSIVE ---------- */
   @media(min-width:680px){
     .dashboard{grid-template-columns:repeat(4,1fr);}
     .modal-overlay{align-items:center;}
-    .modal{border-radius:20px; margin:20px;}
+    .modal{border-radius:20px;margin:20px;}
     .entrega-card{flex-wrap:nowrap;}
   }
-
-  [hidden]{display:none!important}
-  button:focus-visible,input:focus-visible{outline:2px solid var(--brand-magenta);outline-offset:3px}
-  .entrega-left{flex:1;overflow-wrap:anywhere}
-  .entrega-right{flex-wrap:wrap;justify-content:flex-end;max-width:100%}
-  .entrega-service{white-space:pre-wrap;overflow-wrap:anywhere}
-  .icon-action-sm{color:var(--text);width:36px;height:36px}
-  .badge{font-family:inherit}
-  .summary-note{position:relative;color:var(--text-soft);font-size:12px;margin:8px 0}
-  .period-row{flex-wrap:wrap;min-width:0}
-  .period-row input{max-width:100%;min-width:0}
-  .stat-value{overflow-wrap:anywhere}
-  .summary-number{overflow-wrap:anywhere;font-size:clamp(26px,7vw,36px)}
-  .modal-overlay:last-of-type{z-index:110}
-  @media(max-width:540px){#entFilters{width:100%;display:flex;flex-wrap:nowrap}#entFilters .chip{flex:1}#btnNewEntrega{width:100%}}
-  @media(max-width:400px){.entrega-card{align-items:flex-start}.entrega-right{width:100%;justify-content:flex-start}.summary-foot{align-items:stretch}.summary-foot .btn{white-space:normal}.dashboard{grid-template-columns:1fr 1fr}.stat-card{padding:10px}}
+  [hidden]{display:none!important;}
+  button:focus-visible,input:focus-visible{outline:2px solid var(--brand-magenta);outline-offset:3px;}
+  .entrega-left{flex:1;overflow-wrap:anywhere;}
+  .entrega-right{flex-wrap:wrap;justify-content:flex-end;max-width:100%;}
+  .entrega-service{white-space:pre-wrap;overflow-wrap:anywhere;}
+  .icon-action-sm{color:var(--text);width:36px;height:36px;}
+  .badge{font-family:inherit;}
+  .summary-note{position:relative;color:var(--text-soft);font-size:12px;margin:8px 0;}
+  .period-row{flex-wrap:wrap;min-width:0;}
+  .period-row input{max-width:100%;min-width:0;}
+  .stat-value{overflow-wrap:anywhere;}
+  .summary-number{overflow-wrap:anywhere;font-size:clamp(26px,7vw,36px);}
+  .modal-overlay:last-of-type{z-index:110;}
+  @media(max-width:540px){
+    #entFilters{width:100%;display:flex;flex-wrap:nowrap;}
+    #entFilters .chip{flex:1;}
+    #btnNewEntrega{width:100%;}
+  }
+  @media(max-width:400px){
+    .entrega-card{align-items:flex-start;}
+    .entrega-right{width:100%;justify-content:flex-start;}
+    .summary-foot{align-items:stretch;}
+    .summary-foot .btn{white-space:normal;}
+    .dashboard{grid-template-columns:1fr 1fr;}
+    .stat-card{padding:10px;}
+  }
+  button:disabled{opacity:.5;cursor:wait;}
+  .login-shell{max-width:440px;margin:8vh auto;padding:0 16px;}
+  .login-card{
+    background:var(--surface);border:1px solid var(--border);border-radius:20px;
+    padding:24px;box-shadow:var(--shadow-md);
+  }
+  .login-card .brand{margin-bottom:28px;}
+  .login-card h2{font-size:20px;margin-bottom:8px;}
+  .login-hint,.session-bar{font-size:12px;color:var(--text-soft);line-height:1.6;}
+  .login-error{color:var(--atrasado-text);font-size:13px;line-height:1.5;overflow-wrap:anywhere;}
+  .session-bar{
+    display:flex;align-items:center;justify-content:space-between;gap:8px;
+    flex-wrap:wrap;margin-bottom:16px;
+  }
+  .session-actions{display:flex;gap:6px;}
+  #migrationResult{font-size:13px;color:var(--text-soft);line-height:1.6;}
 </style>
 </head>
 <body>
-<div id="app"><header class="topbar"><div class="brand"><div class="brand-logo-box" aria-label="Logotipo EN">EN</div><div><h1>Nex Cell</h1><p>Controle de Entregas</p></div></div><button class="icon-btn" id="btnSettings" aria-label="Configurações e backup">⚙️</button></header><main>
+
+<section class="login-shell" id="authLoadingPanel" aria-label="Verificando sessão" aria-busy="true">
+  <div class="login-card">
+    <div class="brand">
+      <div class="brand-logo-box" aria-label="Logotipo EN">EN</div>
+      <div><h1>Nex Cell</h1><p>Controle de Entregas</p></div>
+    </div>
+    <p class="login-hint" role="status">Verificando sua sessão…</p>
+  </div>
+</section>
+
+<section class="login-shell" id="loginPanel" aria-label="Entrar no sistema" hidden>
+  <div class="login-card">
+    <div class="brand">
+      <div class="brand-logo-box" aria-label="Logotipo EN">EN</div>
+      <div><h1>Nex Cell</h1><p>Controle de Entregas</p></div>
+    </div>
+    <h2>Bem-vindo de volta</h2>
+    <p class="login-hint">Entre com sua conta para consultar as entregas e os pagamentos.</p>
+
+    <form id="loginForm">
+      <div class="field">
+        <label for="loginEmail">E-mail</label>
+        <input id="loginEmail" type="email" autocomplete="username" required>
+      </div>
+      <div class="field">
+        <label for="loginPassword">Senha</label>
+        <input id="loginPassword" type="password" autocomplete="current-password" required>
+      </div>
+      <p id="loginError" class="login-error" role="alert"></p>
+      <p id="loginStatus" class="login-hint" role="status"></p>
+      <button id="loginSubmit" disabled class="btn btn-primary btn-block" type="submit">Entrar</button>
+    </form>
+
+    <button id="btnRetryAccess" class="btn btn-ghost btn-block" style="margin-top:10px">
+      Verificar acesso novamente
+    </button>
+    <p class="login-hint">
+      Use somente uma conta já cadastrada. Ao terminar em um aparelho compartilhado,
+      toque em Sair da conta.
+    </p>
+  </div>
+</section>
+
+<div id="app" hidden>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-logo-box" aria-label="Logotipo EN">EN</div>
+      <div><h1>Nex Cell</h1><p>Controle de Entregas</p></div>
+    </div>
+    <button class="icon-btn" id="btnSettings" aria-label="Configurações e backup">⚙️</button>
+  </header>
+
+  <div class="session-bar">
+    <div>
+      <strong id="userRole"></strong><br>
+      <span id="syncStatus" role="status">Conectando…</span>
+    </div>
+    <div class="session-actions">
+      <button id="btnRefresh" class="btn btn-ghost btn-sm">Atualizar</button>
+      <button id="btnLogout" class="btn btn-ghost btn-sm">Sair da conta</button>
+    </div>
+  </div>
+
+  <main>
     <section id="tab-entregas">
       <div class="summary-card">
         <div class="summary-head">Total a pagar ao entregador</div>
         <div class="summary-main">
           <span class="summary-number" id="entTotalPendente">R$ 0,00</span>
         </div>
-        <p class="summary-note">Saldo geral pendente · todas as datas, independentemente dos filtros</p>
+        <p class="summary-note">
+          Saldo geral pendente · todas as datas, independentemente dos filtros
+        </p>
         <div class="summary-sub" id="entCountPendente">0 corrida(s) pendente(s)</div>
         <div class="summary-foot">
-          <span class="paid-info">Pago no período filtrado: <b id="entTotalPagoPeriodo">R$ 0,00</b></span>
-          <button class="btn btn-success btn-sm" id="btnFecharCiclo">✅ Fechar ciclo — marcar tudo como pago</button>
+          <span class="paid-info">
+            Pago no período filtrado: <b id="entTotalPagoPeriodo">R$ 0,00</b>
+          </span>
+          <button class="btn btn-success btn-sm" id="btnFecharCiclo" data-admin>
+            ✅ Fechar ciclo — marcar tudo como pago
+          </button>
         </div>
       </div>
 
       <div class="dashboard" aria-label="Resumo do período">
-        <div class="stat-card accent-green"><div class="stat-label">Pago no período</div><div class="stat-value" id="periodPaid"></div></div>
-        <div class="stat-card accent-amber"><div class="stat-label">Corridas pendentes</div><div class="stat-value" id="periodPendingCount"></div><div class="stat-sub">No período selecionado</div></div>
-        <div class="stat-card accent-green"><div class="stat-label">Corridas pagas</div><div class="stat-value" id="periodPaidCount"></div><div class="stat-sub">No período selecionado</div></div>
-        <div class="stat-card"><div class="stat-label">Total das corridas</div><div class="stat-value" id="periodTotal"></div><div class="stat-sub">No período selecionado</div></div>
+        <div class="stat-card accent-green">
+          <div class="stat-label">Pago no período</div>
+          <div class="stat-value" id="periodPaid"></div>
+        </div>
+        <div class="stat-card accent-amber">
+          <div class="stat-label">Corridas pendentes</div>
+          <div class="stat-value" id="periodPendingCount"></div>
+          <div class="stat-sub">No período selecionado</div>
+        </div>
+        <div class="stat-card accent-green">
+          <div class="stat-label">Corridas pagas</div>
+          <div class="stat-value" id="periodPaidCount"></div>
+          <div class="stat-sub">No período selecionado</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total das corridas</div>
+          <div class="stat-value" id="periodTotal"></div>
+          <div class="stat-sub">No período selecionado</div>
+        </div>
       </div>
+
       <div class="period-label" id="entPeriodLabel"></div>
 
       <div class="toolbar">
-        <div class="search-box"><input id="entSearchInput" placeholder="🔎 Buscar por serviço/descrição..."></div>
+        <div class="search-box">
+          <input id="entSearchInput" placeholder="🔎 Buscar por serviço/descrição...">
+        </div>
         <div class="period-row">
           <label for="entMonthFilter">Mês:</label>
           <input type="month" id="entMonthFilter" title="Filtrar por mês da corrida">
           <label for="entDayFilter">Dia:</label>
           <input type="date" id="entDayFilter" title="Filtrar por um dia específico">
-          <button class="chip-clear-month" id="btnEntClearPeriod" title="Ver todos os períodos">✕ Ver tudo</button>
+          <button class="chip-clear-month" id="btnEntClearPeriod" title="Ver todos os períodos">
+            ✕ Ver tudo
+          </button>
         </div>
         <div class="filters" id="entFilters">
           <button class="chip active" data-filter="todos">Todos</button>
           <button class="chip" data-filter="pendente">Pendentes</button>
           <button class="chip" data-filter="pago">Pagos</button>
         </div>
-        <button class="btn btn-primary" id="btnNewEntrega">＋ Nova corrida</button>
+        <button class="btn btn-primary" id="btnNewEntrega" data-admin>＋ Nova corrida</button>
       </div>
 
       <div class="entregas-list" id="entregasList"></div>
@@ -265,7 +466,9 @@
         <p>Registre uma entrega ou ajuste os filtros de busca.</p>
       </div>
     </section>
-</main></div>
+  </main>
+</div>
+
 <div class="modal-overlay" id="entregaModalOverlay">
   <div class="modal">
     <div class="modal-header">
@@ -300,7 +503,6 @@
   </div>
 </div>
 
-<!-- MODAL: Settings / Backup -->
 <div class="modal-overlay" id="settingsModalOverlay">
   <div class="modal">
     <div class="modal-header">
@@ -308,17 +510,23 @@
       <button class="modal-close" data-close="settingsModalOverlay">&times;</button>
     </div>
     <div class="section-title" style="margin-top:0;">Backup de dados</div>
-    <p style="font-size:13px; color:var(--text-soft); margin-top:0;">As entregas ficam salvas neste navegador e endereço. Para mudar de dispositivo ou abrir o arquivo em outro endereço, exporte e importe um backup. Cobranças e outros dados não serão alterados.</p>
-    <div class="modal-buttons" style="flex-direction:column;">
+    <p style="font-size:13px;color:var(--text-soft);margin-top:0;">
+      As entregas ficam no banco compartilhado. A importação adiciona registros novos
+      sem substituir IDs existentes. Os dados antigos deste navegador só serão enviados
+      quando você confirmar a migração.
+    </p>
+    <div class="modal-buttons" data-admin style="flex-direction:column;">
       <button class="btn btn-ghost btn-block" id="btnExport">⬇️ Exportar backup (JSON)</button>
       <button class="btn btn-ghost btn-block" id="btnImport">⬆️ Importar backup (JSON)</button>
       <input type="file" id="fileImport" accept="application/json" hidden>
-      <button class="btn btn-danger btn-block" id="btnClearAll">🗑️ Limpar todas as entregas</button>
+      <button class="btn btn-ghost btn-block" id="btnExportLocal">⬇️ Backup das entregas locais antigas</button>
+      <button class="btn btn-ghost btn-block" id="btnMigrate">☁️ Migrar entregas locais ao Supabase</button>
+      <button class="btn btn-danger btn-block" id="btnClearAll">🗑️ Limpar entregas online</button>
     </div>
+    <p id="migrationResult" role="status"></p>
   </div>
 </div>
 
-<!-- MODAL: Generic Confirm -->
 <div class="modal-overlay" id="confirmModalOverlay">
   <div class="modal">
     <div class="modal-header">
@@ -334,122 +542,1245 @@
 </div>
 
 <div id="toastWrap" role="status" aria-live="polite"></div>
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"
+  integrity="sha384-BWcjm9OdFth9TbhCxZPdm+gAOUMAzQy9nmTs12ioXdCcbVnJaPMn+fMUoQCLt60R"
+  crossorigin="anonymous">
+</script>
+
 <script>
 (function(){
 'use strict';
-const KEY='nc_entregas_items';
-const $=id=>document.getElementById(id);
-const todayISO=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
-const money=cents=>(cents/100).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
-const cents=item=>Math.round(item.value*100);
-const sum=items=>items.reduce((n,item)=>n+cents(item),0);
-const fmtDate=date=>date.split('-').reverse().join('/');
-const escapeHTML=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+const LOCAL_KEY = 'nc_entregas_items';
+const SUPABASE_URL = 'https://pgirjowjmxgxdsmmaiur.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_SfCoW1I3G5RN50hbcfvd_w_X28FVqyx';
+
+const $ = id => document.getElementById(id);
+
+const todayISO = () => {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+};
+
+const money = n => (n / 100).toLocaleString('pt-BR',{
+  style:'currency',
+  currency:'BRL'
+});
+
+const cents = e => Math.round(e.value * 100);
+const sum = list => list.reduce((n,e) => n + cents(e),0);
+const fmtDate = s => s.split('-').reverse().join('/');
+
+const escapeHTML = s => String(s ?? '').replace(/[&<>"']/g,c => ({
+  '&':'&amp;',
+  '<':'&lt;',
+  '>':'&gt;',
+  '"':'&quot;',
+  "'":'&#39;'
+}[c]));
+
+function validDate(s){
+  if(typeof s !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(s)) return false;
+  const d = new Date(s + 'T12:00:00Z');
+  return Number.isFinite(d.getTime()) && d.toISOString().slice(0,10) === s;
+}
+
+function validateRecord(e){
+  if(
+    !e ||
+    typeof e !== 'object' ||
+    Array.isArray(e) ||
+    typeof e.id !== 'string' ||
+    !e.id.trim() ||
+    !validDate(e.date) ||
+    typeof e.service !== 'string' ||
+    !e.service.trim() ||
+    typeof e.value !== 'number' ||
+    !Number.isFinite(e.value) ||
+    e.value <= 0 ||
+    !Number.isSafeInteger(Math.round(e.value * 100)) ||
+    !['pendente','pago'].includes(e.status)
+  ){
+    throw new Error('Registro inválido: confira ID, data, descrição, valor e status.');
+  }
+
+  for(const k of ['createdAt','updatedAt','paidAt']){
+    if(
+      e[k] != null &&
+      (typeof e[k] !== 'string' || !Number.isFinite(Date.parse(e[k])))
+    ){
+      throw new Error('Data inválida no registro.');
+    }
+  }
+
+  return {...e};
+}
+
+const isUUID = id =>
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id);
+
 function uid(){
-  if(globalThis.crypto?.randomUUID)return crypto.randomUUID();
-  const bytes=new Uint8Array(16);
-  if(globalThis.crypto?.getRandomValues)crypto.getRandomValues(bytes);
-  else for(let i=0;i<16;i++)bytes[i]=Math.floor(Math.random()*256);
-  bytes[6]=(bytes[6]&15)|64;bytes[8]=(bytes[8]&63)|128;
-  const h=Array.from(bytes,b=>b.toString(16).padStart(2,'0')).join('');
+  if(crypto.randomUUID) return crypto.randomUUID();
+
+  const a = crypto.getRandomValues(new Uint8Array(16));
+  a[6] = (a[6] & 15) | 64;
+  a[8] = (a[8] & 63) | 128;
+
+  const h = Array.from(a,v => v.toString(16).padStart(2,'0')).join('');
   return `${h.slice(0,8)}-${h.slice(8,12)}-${h.slice(12,16)}-${h.slice(16,20)}-${h.slice(20)}`;
 }
-function validDate(value){
-  if(typeof value!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(value))return false;
-  const d=new Date(value+'T12:00:00Z');return Number.isFinite(d.getTime())&&d.toISOString().slice(0,10)===value;
+
+// Repetir a migração do mesmo ID antigo produz o mesmo UUID.
+// Os dados originais do LocalStorage permanecem intactos.
+async function onlineID(id){
+  if(isUUID(id)) return id.toLowerCase();
+
+  const a = new Uint8Array(await crypto.subtle.digest(
+    'SHA-256',
+    new TextEncoder().encode('nexcell:entregas:legacy:v1:' + id)
+  ));
+
+  a[6] = (a[6] & 15) | 80;
+  a[8] = (a[8] & 63) | 128;
+
+  const h = Array.from(a.slice(0,16),v =>
+    v.toString(16).padStart(2,'0')
+  ).join('');
+
+  return `${h.slice(0,8)}-${h.slice(8,12)}-${h.slice(12,16)}-${h.slice(16,20)}-${h.slice(20)}`;
 }
-function validateRecords(records){
-  if(!Array.isArray(records))throw new Error('O backup deve conter uma lista de entregas.');
-  const ids=new Set();
-  return records.map((item,index)=>{
-    if(!item||typeof item!=='object'||Array.isArray(item)||typeof item.id!=='string'||!item.id.trim()||!validDate(item.date)||typeof item.service!=='string'||!item.service.trim()||typeof item.value!=='number'||!Number.isFinite(item.value)||item.value<=0||!Number.isSafeInteger(Math.round(item.value*100))||!['pendente','pago'].includes(item.status))throw new Error(`Corrida ${index+1} inválida. Verifique identificador, data, descrição, valor e status.`);
-    if(ids.has(item.id))throw new Error('O backup contém identificadores duplicados. Nenhum dado foi substituído.');
-    ids.add(item.id);
-    for(const field of ['createdAt','updatedAt','paidAt'])if(item[field]!=null&&(typeof item[field]!=='string'||!Number.isFinite(Date.parse(item[field]))))throw new Error(`Data ${field} inválida na corrida ${index+1}.`);
-    return {...item};
+
+function timestamp(s){
+  if(!s) return null;
+  return /^\d{4}-\d{2}-\d{2}$/.test(s)
+    ? s + 'T12:00:00Z'
+    : new Date(s).toISOString();
+}
+
+const toDB = e => ({
+  id:e.id,
+  data:e.date,
+  servico:e.service,
+  valor:e.value,
+  status:e.status,
+  criado_em:timestamp(e.createdAt) || new Date().toISOString(),
+  atualizado_em:timestamp(e.updatedAt) || new Date().toISOString(),
+  pago_em:e.status === 'pago' ? timestamp(e.paidAt) : null
+});
+
+const fromDB = e => validateRecord({
+  id:e.id,
+  date:e.data,
+  service:e.servico,
+  value:Number(e.valor),
+  status:e.status,
+  createdAt:e.criado_em,
+  updatedAt:e.atualizado_em,
+  paidAt:e.pago_em
+});
+
+let db = null;
+let session = null;
+let role = null;
+let items = [];
+let busy = false;
+let loading = false;
+let editing = null;
+let creatingId = null;
+let channel = null;
+
+let authGeneration = 0;
+let readGeneration = 0;
+let refreshTimer = null;
+let pollTimer = null;
+let confirmCallback = null;
+
+const filters = {month:'',day:'',status:'todos',search:''};
+
+// A interface aplica o perfil; a proteção efetiva é feita pelas políticas RLS.
+const policy = {canWrite:() => !!session && role === 'admin'};
+
+function toast(text){
+  const n = document.createElement('div');
+  n.className = 'toast';
+  n.textContent = text;
+  $('toastWrap').append(n);
+  setTimeout(() => n.remove(),5000);
+}
+
+function errorText(error){
+  const msg = String(error?.message || '');
+
+  if(error?.status === 401 || /JWT expired|invalid JWT|refresh token/i.test(msg)){
+    return 'Sessão expirada. Saia e entre novamente.';
+  }
+
+  if(
+    error?.code === '42501' ||
+    error?.status === 403 ||
+    /permission|row.level|not authorized/i.test(msg)
+  ){
+    return 'Permissão negada. Apenas o administrador pode realizar esta ação.';
+  }
+
+  if(
+    /Failed to fetch|NetworkError|fetch failed|Load failed/i.test(msg) ||
+    !navigator.onLine
+  ){
+    return 'Falha de conexão. Confira a internet e tente novamente.';
+  }
+
+  if(error?.code === 'PGRST202' || /function.*schema cache/i.test(msg)){
+    return 'A operação do banco ainda não está configurada. Execute o SQL de integração no Supabase.';
+  }
+
+  if(error?.code === '40001'){
+    return 'Os registros mudaram em outro aparelho. Atualize os dados e confirme a ação novamente.';
+  }
+
+  return msg || 'Não foi possível concluir a operação. Tente novamente.';
+}
+
+function fail(error){toast(errorText(error));}
+function syncStatus(text){$('syncStatus').textContent = text;}
+
+const focusStack = [];
+
+function openModal(id){
+  const o = $(id);
+  focusStack.push({id,trigger:document.activeElement});
+  o.classList.add('open');
+  o.setAttribute('role','dialog');
+  o.setAttribute('aria-modal','true');
+
+  const h = o.querySelector('h3');
+  if(!h.id) h.id = id + 'Title';
+
+  o.setAttribute('aria-labelledby',h.id);
+  o.querySelector('input:not([type=file]),button')?.focus();
+}
+
+function closeModal(id){
+  $(id).classList.remove('open');
+  if(id === 'confirmModalOverlay') confirmCallback = null;
+
+  const i = focusStack.findLastIndex(x => x.id === id);
+  if(i >= 0){
+    const a = focusStack.splice(i,1)[0];
+    if(a.trigger?.isConnected) a.trigger.focus();
+  }
+}
+
+function confirmAction(title,text,action){
+  $('confirmTitle').textContent = title;
+  $('confirmText').textContent = text;
+  confirmCallback = action;
+  openModal('confirmModalOverlay');
+}
+
+function writeAccess(){
+  if(!policy.canWrite()){
+    throw new Error('Permissão negada. Apenas o administrador pode realizar esta ação.');
+  }
+  if(!navigator.onLine){
+    throw new Error('Falha de conexão. Confira a internet e tente novamente.');
+  }
+}
+
+function check(result){
+  if(result.error) throw result.error;
+  return result.data;
+}
+
+const store = {
+  async list(){
+    const all = [];
+
+    for(let offset = 0; ; offset += 500){
+      const data = check(await db
+        .from('entregas')
+        .select('*')
+        .order('id')
+        .range(offset,offset + 499)
+      );
+
+      all.push(...data);
+      if(data.length < 500) break;
+    }
+
+    return Array.from(new Map(all.map(e => [e.id,e])).values()).map(fromDB);
+  },
+
+  async create(data,id){
+    writeAccess();
+
+    const now = new Date().toISOString();
+    const row = {
+      ...data,
+      id,
+      createdAt:now,
+      updatedAt:now,
+      paidAt:data.status === 'pago' ? now : null
+    };
+
+    const result = await db.from('entregas').insert(toDB(row)).select().single();
+
+    if(result.error?.code === '23505'){
+      const existing = fromDB(check(await db
+        .from('entregas')
+        .select('*')
+        .eq('id',id)
+        .single()
+      ));
+
+      if(
+        existing.date !== data.date ||
+        existing.service !== data.service ||
+        existing.value !== data.value ||
+        existing.status !== data.status
+      ){
+        throw new Error(
+          'Esta corrida já foi salva com outros dados. Feche o formulário, atualize e use Editar.'
+        );
+      }
+
+      return existing;
+    }
+
+    return fromDB(check(result));
+  },
+
+  async update(old,data){
+    writeAccess();
+
+    const now = new Date().toISOString();
+    const payment = data.status === 'pago'
+      ? (old.status === 'pago' ? old.paidAt || now : now)
+      : null;
+
+    let q = db.from('entregas').update({
+      data:data.date ?? old.date,
+      servico:data.service ?? old.service,
+      valor:data.value ?? old.value,
+      status:data.status ?? old.status,
+      atualizado_em:now,
+      pago_em:payment
+    }).eq('id',old.id);
+
+    q = old.updatedAt
+      ? q.eq('atualizado_em',old.updatedAt)
+      : q.is('atualizado_em',null);
+
+    const result = check(await q.select());
+    if(result.length !== 1) throw {code:'40001'};
+
+    return fromDB(result[0]);
+  },
+
+  async remove(old){
+    writeAccess();
+
+    let q = db.from('entregas').delete().eq('id',old.id);
+
+    q = old.updatedAt
+      ? q.eq('atualizado_em',old.updatedAt)
+      : q.is('atualizado_em',null);
+
+    const rows = check(await q.select('id'));
+    if(rows.length !== 1) throw {code:'40001'};
+
+    return rows;
+  },
+
+  async settle(pending){
+    writeAccess();
+    return check(await db.rpc('nexcell_fechar_ciclo',{
+      p_ids:pending.map(e => e.id),
+      p_total:sum(pending) / 100
+    }));
+  },
+
+  async importBatch(records){
+    writeAccess();
+    return check(await db.rpc('nexcell_importar_entregas',{
+      p_registros:records.map(toDB)
+    }));
+  },
+
+  async clear(snapshot){
+    writeAccess();
+    return check(await db.rpc('nexcell_limpar_entregas',{
+      p_ids:snapshot.map(e => e.id)
+    }));
+  }
+};
+
+async function refresh(quiet = false){
+  if(!session || !role) return false;
+
+  const generation = authGeneration;
+  const read = ++readGeneration;
+
+  loading = true;
+  $('btnRefresh').disabled = true;
+
+  try{
+    const rows = await store.list();
+
+    if(generation !== authGeneration || read !== readGeneration){
+      return false;
+    }
+
+    items = rows;
+    render();
+
+    syncStatus('Dados atualizados · ' + new Date().toLocaleTimeString(
+      'pt-BR',{hour:'2-digit',minute:'2-digit'}
+    ));
+
+    return true;
+  }catch(error){
+    if(generation === authGeneration && read === readGeneration){
+      syncStatus('Não foi possível carregar os dados · tente atualizar');
+      if(!quiet) fail(error);
+    }
+
+    return false;
+  }finally{
+    if(read === readGeneration){
+      loading = false;
+      $('btnRefresh').disabled = false;
+    }
+  }
+}
+
+function scheduleRefresh(){
+  clearTimeout(refreshTimer);
+  refreshTimer = setTimeout(() => refresh(true),200);
+}
+
+async function mutate(operation,message){
+  if(busy) return false;
+
+  try{
+    writeAccess();
+  }catch(error){
+    fail(error);
+    return false;
+  }
+
+  busy = true;
+  render();
+
+  const generation = authGeneration;
+
+  try{
+    const result = await operation();
+
+    if(generation !== authGeneration) return false;
+
+    const loaded = await refresh(true);
+
+    toast(message + (
+      loaded ? '' :
+      ' A gravação foi confirmada, mas a lista não pôde ser atualizada. Toque em Atualizar.'
+    ));
+
+    return result ?? true;
+  }catch(error){
+    if(generation === authGeneration){
+      fail(error);
+      if(error.code === '40001') await refresh(true);
+    }
+
+    return false;
+  }finally{
+    busy = false;
+    render();
+  }
+}
+
+function periodItems(){
+  return items.filter(e =>
+    filters.day
+      ? e.date === filters.day
+      : filters.month
+        ? e.date.slice(0,7) === filters.month
+        : true
+  );
+}
+
+function render(){
+  const pending = items.filter(e => e.status === 'pendente');
+  const period = periodItems();
+  const paid = period.filter(e => e.status === 'pago');
+
+  $('entTotalPendente').textContent = money(sum(pending));
+  $('entCountPendente').textContent = `${pending.length} corrida(s) pendente(s)`;
+  $('entTotalPagoPeriodo').textContent = money(sum(paid));
+  $('periodPaid').textContent = money(sum(paid));
+  $('periodPendingCount').textContent = period.length - paid.length;
+  $('periodPaidCount').textContent = paid.length;
+  $('periodTotal').textContent = money(sum(period));
+
+  $('entPeriodLabel').textContent = '📅 Mostrando: ' + (
+    filters.day
+      ? fmtDate(filters.day)
+      : filters.month
+        ? new Date(filters.month + '-01T12:00:00').toLocaleDateString(
+            'pt-BR',{month:'long',year:'numeric'}
+          )
+        : 'todos os períodos'
+  );
+
+  const list = period.filter(e =>
+    (filters.status === 'todos' || e.status === filters.status) &&
+    e.service.toLocaleLowerCase('pt-BR').includes(filters.search)
+  ).sort((a,b) =>
+    b.date.localeCompare(a.date) || a.id.localeCompare(b.id)
+  );
+
+  $('emptyEntregas').hidden = !!list.length;
+
+  $('entregasList').innerHTML = list.map(e => `
+    <article class="entrega-card" data-id="${escapeHTML(e.id)}">
+      <div class="entrega-left">
+        <div class="entrega-service">${escapeHTML(e.service)}</div>
+        <div class="entrega-date">${fmtDate(e.date)}</div>
+      </div>
+      <div class="entrega-right">
+        <span class="entrega-value">${money(cents(e))}</span>
+
+        ${policy.canWrite() ? `
+          <button
+            class="badge clickable ${e.status === 'pago' ? 'badge-pago' : 'badge-pendente'}"
+            data-action="status"
+            aria-label="${e.status === 'pago' ? 'Marcar como pendente' : 'Marcar como pago'}"
+            ${busy ? 'disabled' : ''}>
+            <span class="dot"></span>${e.status === 'pago' ? 'Pago' : 'Pendente'}
+          </button>
+
+          <button class="icon-action-sm" data-action="edit"
+            aria-label="Editar corrida" title="Editar corrida"
+            ${busy ? 'disabled' : ''}>✎</button>
+
+          <button class="icon-action-sm" data-action="delete"
+            aria-label="Excluir corrida" title="Excluir corrida"
+            ${busy ? 'disabled' : ''}>✕</button>
+        ` : `
+          <span class="badge ${e.status === 'pago' ? 'badge-pago' : 'badge-pendente'}">
+            <span class="dot"></span>${e.status === 'pago' ? 'Pago' : 'Pendente'}
+          </span>
+        `}
+      </div>
+    </article>
+  `).join('');
+
+  document.querySelectorAll('[data-admin]').forEach(n => {
+    n.hidden = !policy.canWrite();
+  });
+
+  $('btnSettings').hidden = !policy.canWrite();
+
+  document.querySelectorAll('[data-admin] button,button[data-admin]').forEach(n => {
+    n.disabled = busy;
+  });
+
+  $('btnFecharCiclo').disabled = busy || !pending.length || !policy.canWrite();
+  $('confirmActionBtn').disabled = busy;
+  $('entregaForm').querySelector('button[type=submit]').disabled = busy;
+}
+
+function setPaid(paid){
+  document.querySelectorAll('[data-yesno="entPaid"] button').forEach(b => {
+    const active = (b.dataset.val === 'Sim') === paid;
+    b.classList.toggle('active',active);
+    b.setAttribute('aria-pressed',String(active));
   });
 }
-// Storage adapter: replace this layer with authenticated async requests in a future integration.
-// Future read-only courier access must be enforced by Supabase RLS, never only by UI controls.
-const store={
-  async list(){const raw=localStorage.getItem(KEY);return raw===null?[]:validateRecords(JSON.parse(raw));},
-  async replace(records){const checked=validateRecords(records);localStorage.setItem(KEY,JSON.stringify(checked));return checked;},
-  async create(data){const items=await this.list();const now=new Date().toISOString();const item={...data,id:uid(),createdAt:now,updatedAt:now,paidAt:data.status==='pago'?todayISO():null};return this.replace([...items,item]);},
-  async update(id,data){const items=await this.list();const index=items.findIndex(e=>e.id===id);if(index<0)throw new Error('Corrida não encontrada. Atualize a página.');const old=items[index];items[index]={...old,...data,id:old.id,updatedAt:new Date().toISOString(),paidAt:data.status==='pago'?(old.status==='pago'?old.paidAt||todayISO():todayISO()):null};return this.replace(items);},
-  async remove(id){return this.replace((await this.list()).filter(e=>e.id!==id));},
-  async settle(){const now=new Date().toISOString();return this.replace((await this.list()).map(e=>e.status==='pendente'?{...e,status:'pago',paidAt:todayISO(),updatedAt:now}:e));},
-  async clear(){localStorage.removeItem(KEY);return [];}
-};
-// Separate future profile policy from data access; no login or online service in this version.
-const policy={role:'admin',canWrite(){return this.role==='admin';}};
-let items=[],editingId=null,busy=false,storageReady=false;
-const filters={month:'',day:'',status:'todos',search:''};
-function toast(message){const node=document.createElement('div');node.className='toast';node.textContent=message;$('toastWrap').append(node);setTimeout(()=>node.remove(),4000);}
-const focusStack=[];
-function openModal(id){const overlay=$(id);focusStack.push({id,trigger:document.activeElement});overlay.classList.add('open');overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');const title=overlay.querySelector('h3');if(!title.id)title.id=id+'Title';overlay.setAttribute('aria-labelledby',title.id);overlay.querySelector('input:not([type=file]),button')?.focus();}
-let confirmCallback=null;
-function closeModal(id){$(id).classList.remove('open');if(id==='confirmModalOverlay')confirmCallback=null;const index=focusStack.findLastIndex(x=>x.id===id);if(index>=0){const entry=focusStack.splice(index,1)[0];if(entry.trigger?.isConnected)entry.trigger.focus();}}
-function confirmAction(title,text,action){$('confirmTitle').textContent=title;$('confirmText').textContent=text;confirmCallback=action;openModal('confirmModalOverlay');}
-function fail(error){toast(error.name==='QuotaExceededError'?'Não foi possível salvar: armazenamento cheio. Exporte um backup e libere espaço.':error.name==='SecurityError'?'O navegador bloqueou o armazenamento local. Permita o acesso para salvar as entregas.':error.message||'Não foi possível concluir a operação.');}
-async function mutate(operation,message){
-  if(busy)return false;
-  if(!policy.canWrite()){toast('Este perfil permite somente consulta.');return false;}
-  if(!storageReady){toast('O armazenamento não está disponível ou contém dados inválidos. Importe um backup válido para recuperar os dados.');return false;}
-  busy=true;
-  try{items=await operation();render();toast(message);return true;}catch(error){fail(error);return false;}finally{busy=false;}
-}
-$('confirmActionBtn').addEventListener('click',async()=>{if(busy||!confirmCallback)return;const action=confirmCallback;const ok=await action();if(ok!==false)closeModal('confirmModalOverlay');});
-document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>closeModal(b.dataset.close)));
-document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o&&!busy)closeModal(o.id);}));
-document.addEventListener('keydown',e=>{const open=Array.from(document.querySelectorAll('.modal-overlay.open')).at(-1);if(!open)return;if(e.key==='Escape'&&!busy){closeModal(open.id);return;}if(e.key==='Tab'){const nodes=Array.from(open.querySelectorAll('button,input,textarea,select')).filter(n=>!n.hidden&&!n.disabled&&n.offsetParent!==null);const first=nodes[0],last=nodes.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}});
-function setPaid(paid){document.querySelectorAll('[data-yesno="entPaid"] button').forEach(b=>{const active=(b.dataset.val==='Sim')===paid;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));});}
-document.querySelectorAll('[data-yesno="entPaid"] button').forEach(b=>b.addEventListener('click',()=>setPaid(b.dataset.val==='Sim')));
-function periodItems(){return items.filter(e=>filters.day?e.date===filters.day:filters.month?e.date.slice(0,7)===filters.month:true);}
-function render(){
-  $('emptyEntregas').querySelector('h3').textContent='Nenhuma corrida encontrada';
-  $('emptyEntregas').querySelector('p').textContent='Registre uma entrega ou ajuste os filtros de busca.';
-  const pending=items.filter(e=>e.status==='pendente');
-  $('entTotalPendente').textContent=money(sum(pending));$('entCountPendente').textContent=`${pending.length} corrida(s) pendente(s)`;
-  const period=periodItems(),paid=period.filter(e=>e.status==='pago');
-  $('entTotalPagoPeriodo').textContent=money(sum(paid));$('periodPaid').textContent=money(sum(paid));$('periodPendingCount').textContent=period.length-paid.length;$('periodPaidCount').textContent=paid.length;$('periodTotal').textContent=money(sum(period));
-  $('entPeriodLabel').textContent='📅 Mostrando: '+(filters.day?fmtDate(filters.day):filters.month?new Date(filters.month+'-01T12:00:00').toLocaleDateString('pt-BR',{month:'long',year:'numeric'}):'todos os períodos');
-  const list=period.filter(e=>(filters.status==='todos'||e.status===filters.status)&&e.service.toLocaleLowerCase('pt-BR').includes(filters.search)).sort((a,b)=>b.date.localeCompare(a.date));
-  $('emptyEntregas').hidden=list.length>0;
-  $('entregasList').innerHTML=list.map(e=>`<article class="entrega-card" data-id="${escapeHTML(e.id)}"><div class="entrega-left"><div class="entrega-service">${escapeHTML(e.service)}</div><div class="entrega-date">${fmtDate(e.date)}</div></div><div class="entrega-right"><span class="entrega-value">${money(cents(e))}</span><button class="badge clickable ${e.status==='pago'?'badge-pago':'badge-pendente'}" data-action="status" aria-label="${e.status==='pago'?'Marcar como pendente':'Marcar como pago'}"><span class="dot"></span>${e.status==='pago'?'Pago':'Pendente'}</button><button class="icon-action-sm" data-action="edit" title="Editar corrida" aria-label="Editar corrida">✎</button><button class="icon-action-sm" data-action="delete" title="Excluir corrida" aria-label="Excluir corrida">✕</button></div></article>`).join('');
-  $('btnFecharCiclo').disabled=!pending.length||!policy.canWrite();
-}
-function openEntry(item=null){editingId=item?.id??null;$('entregaForm').reset();$('entregaModalTitle').textContent=item?'Editar corrida':'Nova corrida';$('entDate').value=item?.date||todayISO();$('entService').value=item?.service||'';$('entValue').value=item?.value??'';setPaid(item?.status==='pago');openModal('entregaModalOverlay');$('entDate').focus();}
-$('btnNewEntrega').addEventListener('click',()=>openEntry());
-$('entregaForm').addEventListener('submit',async e=>{
-  e.preventDefault();const value=Number($('entValue').value),date=$('entDate').value,service=$('entService').value.trim();
-  if(!validDate(date)||!service||!Number.isFinite(value)||value<=0||!Number.isSafeInteger(Math.round(value*100))){toast('Preencha data, descrição e um valor válido maior que zero.');return;}
-  const data={date,service,value:Math.round(value*100)/100,status:document.querySelector('[data-yesno="entPaid"] .active').dataset.val==='Sim'?'pago':'pendente'};
-  const ok=await mutate(()=>editingId?store.update(editingId,data):store.create(data),editingId?'Corrida atualizada.':'Corrida registrada.');if(ok)closeModal('entregaModalOverlay');
-});
-$('entregasList').addEventListener('click',e=>{const b=e.target.closest('[data-action]');if(!b)return;const item=items.find(x=>x.id===b.closest('[data-id]').dataset.id);if(!item)return;
-  if(b.dataset.action==='edit')openEntry(item);
-  if(b.dataset.action==='status')mutate(()=>store.update(item.id,{status:item.status==='pago'?'pendente':'pago'}),'Status atualizado.');
-  if(b.dataset.action==='delete')confirmAction('Excluir corrida','Tem certeza de que deseja excluir esta corrida? Essa ação não poderá ser desfeita.',()=>mutate(()=>store.remove(item.id),'Corrida excluída.'));
-});
-$('btnFecharCiclo').addEventListener('click',()=>{const pending=items.filter(e=>e.status==='pendente');if(!pending.length)return;confirmAction('Fechar ciclo de pagamento',`Serão quitadas ${pending.length} corrida(s), totalizando ${money(sum(pending))}. Isso inclui todas as corridas pendentes, independentemente dos filtros ativos. Nenhuma corrida será apagada; todas permanecerão no histórico como pagas. Deseja continuar?`,()=>mutate(()=>store.settle(),'Ciclo fechado. Todas as corridas continuam no histórico.'));});
-$('entMonthFilter').addEventListener('change',e=>{filters.month=e.target.value;filters.day='';$('entDayFilter').value='';render();});
-$('entDayFilter').addEventListener('change',e=>{filters.day=e.target.value;filters.month='';$('entMonthFilter').value='';render();});
-$('btnEntClearPeriod').addEventListener('click',()=>{filters.month=filters.day='';$('entMonthFilter').value=$('entDayFilter').value='';render();});
-$('entSearchInput').addEventListener('input',e=>{filters.search=e.target.value.trim().toLocaleLowerCase('pt-BR');render();});
-document.querySelectorAll('#entFilters .chip').forEach(b=>b.addEventListener('click',()=>{filters.status=b.dataset.filter;document.querySelectorAll('#entFilters .chip').forEach(c=>{c.classList.toggle('active',c===b);c.setAttribute('aria-pressed',String(c===b));});render();}));
-$('btnSettings').addEventListener('click',()=>openModal('settingsModalOverlay'));
-$('btnExport').addEventListener('click',async()=>{try{const records=await store.list();const payload={version:1,entregas:records,exportedAt:new Date().toISOString()};const url=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=`nexcell-entregas-${todayISO()}.json`;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('Backup exportado.');}catch(error){fail(error);}});
-$('btnImport').addEventListener('click',()=>$('fileImport').click());
-$('fileImport').addEventListener('change',async e=>{const file=e.target.files[0];e.target.value='';if(!file)return;try{const parsed=JSON.parse(await file.text());const records=validateRecords(Array.isArray(parsed)?parsed:parsed?.entregas);confirmAction('Importar backup',`Restaurar ${records.length} corrida(s)? Isso substituirá somente as entregas atuais. Cobranças e outros dados serão preservados.`,async()=>{
-    // Explicit recovery is allowed even when existing stored data is malformed.
-    if(busy||!policy.canWrite())return false;busy=true;try{items=await store.replace(records);storageReady=true;render();closeModal('settingsModalOverlay');toast('Backup importado com sucesso.');return true;}catch(error){fail(error);return false;}finally{busy=false;}
-  });}catch(error){fail(error);}});
-$('btnClearAll').addEventListener('click',()=>confirmAction('Limpar todas as entregas','Apagar todas as entregas deste navegador? Essa ação não pode ser desfeita. Cobranças e outros dados serão preservados.',async()=>{const ok=await mutate(()=>store.clear(),'Entregas apagadas.');if(ok)closeModal('settingsModalOverlay');return ok;}));
-async function refresh(){try{items=await store.list();storageReady=true;render();}catch(error){storageReady=false;fail(error);$('emptyEntregas').hidden=false;$('emptyEntregas').querySelector('h3').textContent='Não foi possível carregar as entregas';$('emptyEntregas').querySelector('p').textContent='Os dados originais foram preservados. Confira o armazenamento ou importe um backup válido pelas configurações.';}}
-window.addEventListener('storage',e=>{if(e.key===KEY||e.key===null)refresh();});
-setPaid(false);render();refresh();
-})();
 
+function openEntry(item = null){
+  if(!policy.canWrite() || busy) return;
+
+  editing = item ? {...item} : null;
+  creatingId = item ? null : uid();
+
+  $('entregaForm').reset();
+  $('entregaModalTitle').textContent = item ? 'Editar corrida' : 'Nova corrida';
+  $('entDate').value = item?.date || todayISO();
+  $('entService').value = item?.service || '';
+  $('entValue').value = item?.value ?? '';
+
+  setPaid(item?.status === 'pago');
+  openModal('entregaModalOverlay');
+  $('entDate').focus();
+}
+
+$('btnNewEntrega').addEventListener('click',() => openEntry());
+
+document.querySelectorAll('[data-yesno="entPaid"] button').forEach(b => {
+  b.addEventListener('click',() => setPaid(b.dataset.val === 'Sim'));
+});
+
+$('entregaForm').addEventListener('submit',async e => {
+  e.preventDefault();
+
+  const value = Number($('entValue').value);
+  const date = $('entDate').value;
+  const service = $('entService').value.trim();
+
+  if(
+    !validDate(date) || !service || !Number.isFinite(value) ||
+    value <= 0 || !Number.isSafeInteger(Math.round(value * 100))
+  ){
+    toast('Preencha data, descrição e um valor maior que zero.');
+    return;
+  }
+
+  const data = {
+    date,
+    service,
+    value:Math.round(value * 100) / 100,
+    status:document.querySelector(
+      '[data-yesno="entPaid"] .active'
+    ).dataset.val === 'Sim' ? 'pago' : 'pendente'
+  };
+
+  const old = editing;
+
+  const ok = await mutate(
+    () => old ? store.update(old,data) : store.create(data,creatingId),
+    old ? 'Corrida atualizada.' : 'Corrida registrada.'
+  );
+
+  if(ok !== false) closeModal('entregaModalOverlay');
+});
+
+$('entregasList').addEventListener('click',e => {
+  const btn = e.target.closest('[data-action]');
+
+  if(!btn || busy || !policy.canWrite()) return;
+
+  const item = items.find(x => x.id === btn.closest('[data-id]').dataset.id);
+  if(!item) return;
+
+  if(btn.dataset.action === 'edit') openEntry(item);
+
+  if(btn.dataset.action === 'status'){
+    mutate(() => store.update(item,{
+      status:item.status === 'pago' ? 'pendente' : 'pago'
+    }),'Status atualizado.');
+  }
+
+  if(btn.dataset.action === 'delete'){
+    confirmAction(
+      'Excluir corrida',
+      'Tem certeza de que deseja excluir esta corrida? Essa ação não poderá ser desfeita.',
+      () => mutate(() => store.remove(item),'Corrida excluída.')
+    );
+  }
+});
+
+$('btnFecharCiclo').addEventListener('click',async () => {
+  if(!policy.canWrite() || busy) return;
+  if(!await refresh()) return;
+
+  const pending = items.filter(e => e.status === 'pendente');
+
+  if(!pending.length){
+    toast('Não há corridas pendentes.');
+    return;
+  }
+
+  confirmAction(
+    'Fechar ciclo de pagamento',
+    `Serão quitadas ${pending.length} corrida(s), totalizando ${money(sum(pending))}. Isso inclui todas as corridas pendentes, independentemente dos filtros. Nenhuma será apagada. Se os dados mudarem antes da confirmação, será necessário confirmar novamente.`,
+    () => mutate(() => store.settle(pending),'Ciclo fechado. O histórico foi preservado.')
+  );
+});
+
+$('entMonthFilter').addEventListener('change',e => {
+  filters.month = e.target.value;
+  filters.day = '';
+  $('entDayFilter').value = '';
+  render();
+});
+
+$('entDayFilter').addEventListener('change',e => {
+  filters.day = e.target.value;
+  filters.month = '';
+  $('entMonthFilter').value = '';
+  render();
+});
+
+$('btnEntClearPeriod').addEventListener('click',() => {
+  filters.day = filters.month = '';
+  $('entDayFilter').value = $('entMonthFilter').value = '';
+  render();
+});
+
+$('entSearchInput').addEventListener('input',e => {
+  filters.search = e.target.value.trim().toLocaleLowerCase('pt-BR');
+  render();
+});
+
+document.querySelectorAll('#entFilters .chip').forEach(b => {
+  b.addEventListener('click',() => {
+    filters.status = b.dataset.filter;
+
+    document.querySelectorAll('#entFilters .chip').forEach(n => {
+      n.classList.toggle('active',n === b);
+      n.setAttribute('aria-pressed',String(n === b));
+    });
+
+    render();
+  });
+});
+
+$('btnSettings').addEventListener('click',() => {
+  if(policy.canWrite()) openModal('settingsModalOverlay');
+});
+
+function download(payload,name){
+  const url = URL.createObjectURL(new Blob(
+    [JSON.stringify(payload,null,2)],
+    {type:'application/json'}
+  ));
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = name;
+  document.body.append(a);
+  a.click();
+  a.remove();
+
+  setTimeout(() => URL.revokeObjectURL(url),1000);
+}
+
+$('btnExport').addEventListener('click',async () => {
+  if(!policy.canWrite()) return;
+
+  try{
+    download({
+      version:2,
+      entregas:await store.list(),
+      exportedAt:new Date().toISOString()
+    },`nexcell-entregas-online-${todayISO()}.json`);
+
+    toast('Backup exportado.');
+  }catch(error){
+    fail(error);
+  }
+});
+
+function localRecords(){
+  const raw = localStorage.getItem(LOCAL_KEY);
+  if(raw === null) return [];
+
+  const parsed = JSON.parse(raw);
+
+  if(!Array.isArray(parsed)){
+    throw new Error('Os dados locais não contêm uma lista de entregas.');
+  }
+
+  return parsed;
+}
+
+$('btnExportLocal').addEventListener('click',() => {
+  if(!policy.canWrite()) return;
+
+  try{
+    download({
+      entregas:localRecords(),
+      exportedAt:new Date().toISOString()
+    },`nexcell-entregas-local-${todayISO()}.json`);
+
+    toast('Backup local exportado. Nenhum dado foi enviado.');
+  }catch(error){
+    fail(error);
+  }
+});
+
+async function prepareImport(records,strict){
+  if(!Array.isArray(records)){
+    throw new Error('O JSON deve conter uma lista entregas.');
+  }
+
+  const ready = [];
+  const seen = new Set();
+  let failed = 0;
+
+  for(const raw of records){
+    try{
+      const item = validateRecord(raw);
+      item.id = await onlineID(item.id);
+
+      if(seen.has(item.id)){
+        throw new Error('O arquivo contém IDs duplicados.');
+      }
+
+      seen.add(item.id);
+      ready.push(item);
+    }catch(error){
+      if(strict) throw error;
+      failed++;
+    }
+  }
+
+  return {records:ready,failed};
+}
+
+async function importRecords(prepared){
+  let migrated = 0;
+  let skipped = 0;
+  let failed = prepared.failed;
+
+  const ok = await mutate(async () => {
+    for(let i = 0; i < prepared.records.length; i += 200){
+      const batch = prepared.records.slice(i,i + 200);
+
+      try{
+        const result = await store.importBatch(batch);
+        migrated += result.inseridos;
+        skipped += result.existentes;
+      }catch(error){
+        failed += batch.length;
+        toast(
+          'Lote não confirmado: ' + errorText(error) +
+          ' Repetir é seguro; IDs existentes não serão duplicados.'
+        );
+      }
+    }
+
+    return true;
+  },'Processamento dos lotes encerrado. Consulte o resultado abaixo.');
+
+  if(ok !== false){
+    $('migrationResult').textContent =
+      `${migrated} migrado(s), ${skipped} já existente(s), ${failed} inválido(s) ou não confirmado(s). Dados locais preservados. Registros online existentes não foram sobrescritos.`;
+
+    toast(
+      `${migrated} migrado(s), ${skipped} existente(s), ${failed} inválido(s) ou não confirmado(s).`
+    );
+  }
+
+  return ok;
+}
+
+$('btnMigrate').addEventListener('click',async () => {
+  if(!policy.canWrite() || busy) return;
+
+  try{
+    const raw = localRecords();
+
+    if(!raw.length){
+      toast('Não há entregas locais neste navegador e endereço.');
+      return;
+    }
+
+    const prepared = await prepareImport(raw,false);
+
+    confirmAction(
+      'Migrar entregas antigas',
+      `Enviar ${prepared.records.length} registro(s) válido(s) ao Supabase? ${prepared.failed} inválido(s) não serão enviados. Registros existentes serão preservados. IDs antigos serão convertidos em UUIDs estáveis. O LocalStorage não será apagado. Exporte um backup local antes de continuar.`,
+      () => importRecords(prepared)
+    );
+  }catch(error){
+    fail(error);
+  }
+});
+
+$('btnImport').addEventListener('click',() => {
+  if(policy.canWrite() && !busy) $('fileImport').click();
+});
+
+$('fileImport').addEventListener('change',async e => {
+  const file = e.target.files[0];
+  e.target.value = '';
+
+  if(!file || !policy.canWrite() || busy) return;
+
+  try{
+    const json = JSON.parse(await file.text());
+
+    const prepared = await prepareImport(
+      Array.isArray(json) ? json : json?.entregas,
+      true
+    );
+
+    confirmAction(
+      'Importar backup online',
+      `Importar ${prepared.records.length} corrida(s)? Os registros existentes no banco serão preservados e IDs repetidos serão ignorados. Apenas registros novos serão adicionados; cobranças e dados locais não serão alterados.`,
+      () => importRecords(prepared)
+    );
+  }catch(error){
+    fail(error);
+  }
+});
+
+$('btnClearAll').addEventListener('click',async () => {
+  if(!policy.canWrite() || busy) return;
+  if(!await refresh()) return;
+
+  const snapshot = items.map(e => ({...e}));
+
+  confirmAction(
+    'Limpar entregas online',
+    `Excluir permanentemente ${snapshot.length} entrega(s) do banco compartilhado? Essa ação afeta todos os aparelhos e não pode ser desfeita. Exporte um backup antes. Cobranças e dados locais serão preservados.`,
+    () => mutate(() => store.clear(snapshot),'Entregas online apagadas.')
+  );
+});
+
+$('confirmActionBtn').addEventListener('click',async () => {
+  if(busy || !confirmCallback) return;
+
+  const action = confirmCallback;
+  const result = await action();
+
+  if(result !== false) closeModal('confirmModalOverlay');
+});
+
+document.querySelectorAll('[data-close]').forEach(b => {
+  b.addEventListener('click',() => {
+    if(!busy) closeModal(b.dataset.close);
+  });
+});
+
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click',e => {
+    if(e.target === o && !busy) closeModal(o.id);
+  });
+});
+
+document.addEventListener('keydown',e => {
+  const o = Array.from(document.querySelectorAll('.modal-overlay.open')).at(-1);
+  if(!o) return;
+
+  if(e.key === 'Escape' && !busy){
+    closeModal(o.id);
+    return;
+  }
+
+  if(e.key === 'Tab'){
+    const nodes = Array.from(
+      o.querySelectorAll('button,input,textarea')
+    ).filter(n => !n.disabled && !n.hidden && n.offsetParent !== null);
+
+    const first = nodes[0];
+    const last = nodes.at(-1);
+
+    if(e.shiftKey && document.activeElement === first){
+      e.preventDefault();
+      last?.focus();
+    }else if(!e.shiftKey && document.activeElement === last){
+      e.preventDefault();
+      first?.focus();
+    }
+  }
+});
+
+// Exibe apenas uma das três telas: carregamento, login ou painel.
+function showAuthView(view){
+  $('authLoadingPanel').hidden = view !== 'loading';
+  $('loginPanel').hidden = view !== 'login';
+  $('app').hidden = view !== 'app';
+}
+
+function resetPanel(showLogin = true){
+  items = [];
+  editing = null;
+  role = null;
+  session = null;
+  readGeneration++;
+  loading = false;
+
+  $('btnRefresh').disabled = false;
+
+  clearInterval(pollTimer);
+  clearTimeout(refreshTimer);
+
+  if(channel && db) db.removeChannel(channel);
+  channel = null;
+
+  document.querySelectorAll('.modal-overlay.open').forEach(o => closeModal(o.id));
+
+  showAuthView(showLogin ? 'login' : 'loading');
+  render();
+}
+
+function startRealtime(){
+  if(channel) db.removeChannel(channel);
+
+  const generation = authGeneration;
+
+  channel = db.channel('nexcell-entregas-' + session.user.id)
+    .on('postgres_changes',{
+      event:'*',
+      schema:'public',
+      table:'entregas'
+    },() => {
+      if(generation === authGeneration) scheduleRefresh();
+    })
+    .on('postgres_changes',{
+      event:'*',
+      schema:'public',
+      table:'perfis',
+      filter:'id=eq.' + session.user.id
+    },() => {
+      if(generation === authGeneration) revalidateAccess();
+    })
+    .subscribe(status => {
+      if(generation !== authGeneration) return;
+
+      if(status === 'SUBSCRIBED') scheduleRefresh();
+
+      if(['CHANNEL_ERROR','TIMED_OUT','CLOSED'].includes(status)){
+        syncStatus('Tempo real indisponível · atualização periódica ativa');
+      }
+    });
+
+  clearInterval(pollTimer);
+
+  pollTimer = setInterval(() => {
+    if(!document.hidden && session) revalidateAccess();
+  },30000);
+}
+
+async function revalidateAccess(){
+  if(!session || !role) return;
+
+  const current = session;
+  const generation = authGeneration;
+
+  try{
+    const profile = check(await db
+      .from('perfis')
+      .select('papel')
+      .eq('id',current.user.id)
+      .maybeSingle()
+    );
+
+    if(generation !== authGeneration) return;
+
+    if(!profile || !['admin','entregador'].includes(profile.papel)){
+      authGeneration++;
+      resetPanel();
+
+      $('loginError').textContent =
+        'Seu perfil não está mais autorizado. Solicite acesso ao administrador.';
+
+      return;
+    }
+
+    if(profile.papel !== role){
+      await authorize(current,true);
+      return;
+    }
+
+    await refresh(true);
+  }catch(error){
+    if(generation === authGeneration){
+      syncStatus('Não foi possível verificar o acesso · tente atualizar');
+      fail(error);
+    }
+  }
+}
+
+async function authorize(next,force = false){
+  if(!force && next && session?.user.id === next.user.id && role){
+    session = next;
+    return;
+  }
+
+  const generation = ++authGeneration;
+
+  // Não mostra o login enquanto uma sessão está sendo restaurada.
+  resetPanel(false);
+  $('loginError').textContent = '';
+
+  if(!next){
+    showAuthView('login');
+    $('loginSubmit').disabled = false;
+    return;
+  }
+
+  $('loginStatus').textContent = 'Verificando acesso…';
+  $('loginSubmit').disabled = true;
+
+  try{
+    const profile = check(await db
+      .from('perfis')
+      .select('papel')
+      .eq('id',next.user.id)
+      .maybeSingle()
+    );
+
+    if(generation !== authGeneration) return;
+
+    if(!profile || !['admin','entregador'].includes(profile.papel)){
+      throw new Error(
+        'Seu usuário não possui um perfil autorizado. Solicite acesso ao administrador.'
+      );
+    }
+
+    session = next;
+    role = profile.papel;
+
+    $('userRole').textContent = role === 'admin'
+      ? 'Administrador'
+      : 'Entregador · somente leitura';
+
+    showAuthView('app');
+    render();
+
+    await refresh();
+
+    if(generation === authGeneration && session) startRealtime();
+  }catch(error){
+    if(generation === authGeneration){
+      resetPanel();
+      $('loginError').textContent = errorText(error);
+      $('loginStatus').textContent = '';
+    }
+  }finally{
+    if(generation === authGeneration){
+      $('loginSubmit').disabled = false;
+      $('loginStatus').textContent = '';
+    }
+  }
+}
+
+$('loginForm').addEventListener('submit',async e => {
+  e.preventDefault();
+  if(!db) return;
+
+  $('loginError').textContent = '';
+  $('loginSubmit').disabled = true;
+  $('loginStatus').textContent = 'Entrando…';
+
+  try{
+    const result = await db.auth.signInWithPassword({
+      email:$('loginEmail').value.trim(),
+      password:$('loginPassword').value
+    });
+
+    if(result.error){
+      $('loginError').textContent =
+        /Invalid login credentials/i.test(result.error.message)
+          ? 'E-mail ou senha inválidos.'
+          : errorText(result.error);
+
+      return;
+    }
+
+    // A senha nunca é armazenada manualmente.
+    $('loginPassword').value = '';
+    await authorize(result.data.session);
+  }catch(error){
+    $('loginError').textContent = errorText(error);
+  }finally{
+    $('loginSubmit').disabled = false;
+    $('loginStatus').textContent = '';
+  }
+});
+
+$('btnLogout').addEventListener('click',async () => {
+  $('btnLogout').disabled = true;
+
+  try{
+    // Encerra a sessão deste navegador sem desconectar os outros aparelhos.
+    check(await db.auth.signOut({scope:'local'}));
+
+    authGeneration++;
+    resetPanel();
+    $('loginPassword').value = '';
+
+    toast('Você saiu do sistema.');
+  }catch(error){
+    fail(error);
+  }finally{
+    $('btnLogout').disabled = false;
+  }
+});
+
+$('btnRefresh').addEventListener('click',() => revalidateAccess());
+
+$('btnRetryAccess').addEventListener('click',async () => {
+  if(!db) return;
+
+  const {data,error} = await db.auth.getSession();
+
+  if(error){
+    $('loginError').textContent = errorText(error);
+    return;
+  }
+
+  await authorize(data.session,true);
+});
+
+window.addEventListener('online',() => {
+  if(session) revalidateAccess();
+});
+
+window.addEventListener('offline',() => {
+  syncStatus('Sem conexão · dados exibidos podem estar desatualizados');
+});
+
+document.addEventListener('visibilitychange',() => {
+  if(!document.hidden && session) revalidateAccess();
+});
+
+async function init(){
+  render();
+
+  if(!globalThis.supabase?.createClient){
+    showAuthView('login');
+
+    $('loginError').textContent =
+      'Não foi possível carregar a conexão Supabase. Confira a internet e recarregue a página.';
+
+    $('loginSubmit').disabled = true;
+    return;
+  }
+
+  try{
+    db = supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{
+      auth:{
+        persistSession:true,
+        autoRefreshToken:true,
+        detectSessionInUrl:false,
+        storageKey:'nexcell-entregas-auth'
+      }
+    });
+
+    db.auth.onAuthStateChange((event,next) => {
+      if(event === 'SIGNED_OUT'){
+        authGeneration++;
+        resetPanel();
+        $('loginError').textContent = 'Sessão encerrada. Entre novamente.';
+      }else if(event !== 'INITIAL_SESSION'){
+        setTimeout(() => authorize(next),0);
+      }
+    });
+
+    // O SDK restaura a sessão e renova tokens expirados quando possível.
+    const result = await db.auth.getSession();
+
+    if(result.error) throw result.error;
+
+    // O perfil é consultado antes de abrir o painel.
+    await authorize(result.data.session);
+  }catch(error){
+    showAuthView('login');
+    $('loginError').textContent = errorText(error);
+    $('loginSubmit').disabled = !db;
+  }
+}
+
+init();
+})();
 </script>
 </body>
 </html>
