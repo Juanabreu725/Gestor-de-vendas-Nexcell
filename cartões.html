@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0B0E2A">
+<title>Nex Cell — Controle de Cartões</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23FF24C9'/%3E%3Ctext x='32' y='42' font-family='Arial' font-size='28' font-weight='800' fill='white' text-anchor='middle'%3EEN%3C/text%3E%3C/svg%3E">
+<style>
+:root{color-scheme:dark;--bg:#0B0E2A;--surface:#151832;--surface2:#1B1E3D;--border:#32365B;--text:#F5F3FA;--muted:#A89FC2;--pink:#FF24C9;--green:#5FE39A;--amber:#F2C168;--red:#FF818E;--gradient:linear-gradient(135deg,#8A4DFF,#FF24C9);--radius:16px}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(900px 450px at 50% 0,rgba(255,36,201,.12),transparent 65%),var(--bg);color:var(--text);font:14px Inter,system-ui,-apple-system,sans-serif;padding-bottom:40px}
+h1,h2,h3{font-family:'Plus Jakarta Sans',system-ui,sans-serif;margin:0}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.5;cursor:default}
+[hidden]{display:none!important}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--pink);outline-offset:3px}
+main{max-width:980px;margin:auto;padding:0 16px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:24px 0 18px}
+.brand{display:flex;gap:12px;align-items:center}
+.logo{width:46px;height:46px;flex-shrink:0;display:grid;place-items:center;border-radius:13px;background:var(--gradient);font-size:16px;font-weight:800;box-shadow:0 8px 25px #FF24C922}
+.brand h1{font-size:22px;color:var(--pink)}
+.brand p{margin:3px 0 0;color:var(--muted);font-size:12px}
+.icon{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:11px;min-width:42px;min-height:42px}
+.hero,.panel,.card,.stat{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);box-shadow:0 8px 28px #0002}
+.hero{padding:22px;background:linear-gradient(135deg,#8A4DFF18,#FF24C916),var(--surface);margin-bottom:12px}
+.eyebrow{text-transform:uppercase;font-size:11px;letter-spacing:.06em;color:var(--muted);font-weight:700}
+.hero .amount{font-size:clamp(28px,7vw,40px);font-weight:800;color:var(--pink);margin:8px 0;overflow-wrap:anywhere}
+.hint{font-size:12px;color:var(--muted);line-height:1.6;margin:8px 0 0}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
+.stat{padding:15px;min-width:0}
+.stat strong{display:block;margin-top:8px;font-size:20px;overflow-wrap:anywhere}
+.green{color:var(--green)}
+.amber{color:var(--amber)}
+.red{color:var(--red)}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:14px 0}
+.search{width:100%}
+input,select,textarea{border:1px solid var(--border);border-radius:10px;background:var(--surface2);color:var(--text);padding:11px 12px;max-width:100%;min-width:0}
+input::placeholder,textarea::placeholder{color:#8885A5}
+.search input{width:100%}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--border);border-radius:11px;background:var(--surface2);color:var(--text);padding:11px 15px;font-weight:700;min-height:42px}
+.btn:hover,.icon:hover{border-color:var(--pink)}
+.primary{border-color:transparent;background:var(--gradient);color:white}
+.danger{color:var(--red)}
+.small{padding:7px 11px;font-size:12px;min-height:36px}
+.tabs{display:flex;gap:6px;margin-bottom:16px;background:var(--surface);padding:4px;border:1px solid var(--border);border-radius:13px}
+.tab{flex:1;padding:11px 8px;border:0;background:transparent;color:var(--muted);font-weight:700;border-radius:10px}
+.tab.active{background:var(--gradient);color:#fff}
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:18px 0 12px}
+.section-head h2{font-size:17px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.card{padding:16px;min-width:0}
+.card h3{font-size:16px;overflow-wrap:anywhere}
+.card-head{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.card-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.card-meta{color:var(--muted);font-size:12px;line-height:1.6;margin-top:6px;overflow-wrap:anywhere}
+.card-total{color:var(--pink);font-size:22px;font-weight:800;margin-top:12px}
+.list{display:flex;flex-direction:column;gap:10px}
+.panel{padding:18px;margin:12px 0}
+.invoice-controls{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
+.invoice-controls label{flex:1;min-width:130px}
+.invoice-controls select,.invoice-controls input{width:100%;margin-top:6px}
+.invoice-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}
+.invoice-stats div{min-width:0;background:var(--surface2);border-radius:12px;padding:13px}
+.invoice-stats strong{display:block;font-size:20px;margin-top:7px;overflow-wrap:anywhere}
+.installment{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.installment .details{flex:1;min-width:180px;overflow-wrap:anywhere}
+.description{white-space:pre-wrap;overflow-wrap:anywhere}
+.payment-values{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--muted)}
+.payment-values b{display:block;color:var(--text);margin-top:4px;font-size:14px}
+.badge{display:inline-flex;gap:5px;align-items:center;font-size:11px;font-weight:700;padding:5px 9px;border-radius:20px;margin:8px 4px 0 0;background:#F2C16818;color:var(--amber)}
+.badge.paid{color:var(--green);background:#5FE39A18}
+.badge.partial{color:#D3ADFF;background:#8A4DFF25}
+.badge.late{color:var(--red);background:#FF818E18}
+.empty{padding:30px 18px;text-align:center;color:var(--muted);border:1px dashed var(--border);border-radius:var(--radius);line-height:1.7}
+.purchase-progress{margin:12px 0 0;padding-top:12px;border-top:1px solid var(--border);font-size:12px;color:var(--muted)}
+.modal-overlay{position:fixed;inset:0;background:#050616BB;z-index:100;display:none;align-items:center;justify-content:center;padding:16px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:20px;max-width:560px;width:100%;max-height:92dvh;overflow:auto;padding:20px}
+.modal-header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
+.modal-header h3{font-size:18px}
+.modal-close{border:1px solid var(--border);background:var(--surface2);color:var(--muted);border-radius:9px;min-width:34px;min-height:34px}
+.field{margin-bottom:14px}
+.field label,.invoice-controls label{display:block;color:var(--muted);font-size:12px;font-weight:700}
+.field input,.field select,.field textarea{width:100%;margin-top:6px}
+.field textarea{min-height:70px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.modal-buttons{display:flex;gap:8px;margin-top:16px}
+.modal-buttons .btn{flex:1}
+.preview{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px;color:var(--muted);font-size:12px;line-height:1.7}
+.history{margin-top:15px}
+.history-item{padding:12px 0;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:space-between;align-items:center;flex-wrap:wrap}
+.history-item strong{color:var(--green)}
+.confirm-text{color:var(--muted);line-height:1.7;white-space:pre-wrap}
+.error-banner{border:1px solid var(--red);background:#FF818E15;border-radius:12px;color:var(--red);padding:12px;line-height:1.6;margin-bottom:12px}
+.notice{color:var(--muted);font-size:12px;line-height:1.7;padding-bottom:12px}
+#confirmOverlay{z-index:110}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:200;background:var(--surface2);border:1px solid var(--border);border-radius:15px;padding:12px 18px;max-width:calc(100% - 32px);box-shadow:0 8px 30px #0006;font-size:13px;line-height:1.6;width:max-content}
+@media(max-width:600px){
+.grid{grid-template-columns:1fr}
+.stats{grid-template-columns:1fr 1fr}
+.stats .stat:last-child{grid-column:1/-1}
+.invoice-stats{gap:6px}
+.invoice-stats div{padding:10px}
+.invoice-stats strong{font-size:16px}
+.invoice-stats .eyebrow{font-size:10px}
+.toolbar>.btn{flex:1}
+.modal-overlay{padding:0;align-items:flex-end}
+.modal{border-radius:20px 20px 0 0;max-height:94dvh}
+.row{gap:8px}
+.card{padding:14px}
+.section-head{flex-wrap:wrap}
+.installment .details{min-width:150px}
+}
+</style>
+</head>
+<body>
+<main>
+<header class="topbar">
+  <div class="brand">
+    <div class="logo" aria-label="Logotipo EN">EN</div>
+    <div><h1>Nex Cell</h1><p>Controle de Cartões</p></div>
+  </div>
+  <button class="icon" id="settingsBtn" aria-label="Configurações e backup">⚙️</button>
+</header>
+
+<div id="storageError" class="error-banner" role="alert" hidden></div>
+
+<section class="hero">
+  <div class="eyebrow">Total geral a receber</div>
+  <div class="amount" id="overallPending">R$ 0,00</div>
+  <p class="hint">Saldo de todas as compras de terceiros · todos os cartões e períodos</p>
+</section>
+
+<div class="stats">
+  <div class="stat"><span class="eyebrow">Já recebi</span><strong class="green" id="overallReceived"></strong></div>
+  <div class="stat"><span class="eyebrow">Atrasado a receber</span><strong class="red" id="overallLate"></strong></div>
+  <div class="stat"><span class="eyebrow">Compras de terceiros</span><strong id="overallTotal"></strong></div>
+</div>
+
+<div class="toolbar">
+  <div class="search">
+    <input id="searchInput" type="search" aria-label="Pesquisar pessoa, compra ou cartão" placeholder="🔎 Buscar pessoa, compra ou cartão...">
+  </div>
+  <button class="btn primary" id="newPurchaseBtn">＋ Nova compra</button>
+  <button class="btn" id="newCardBtn">＋ Novo cartão</button>
+</div>
+
+<nav class="tabs" aria-label="Seções">
+  <button class="tab active" data-tab="cards">Cartões</button>
+  <button class="tab" data-tab="invoices">Faturas</button>
+  <button class="tab" data-tab="purchases">Compras</button>
+</nav>
+
+<section id="cardsSection">
+  <div class="section-head"><h2>Meus cartões</h2><span class="hint" id="cardCount"></span></div>
+  <div class="grid" id="cardsList"></div>
+  <div id="cardsEmpty" class="empty" hidden>Nenhum cartão encontrado.<br>Cadastre um cartão para começar ou ajuste a pesquisa.</div>
+</section>
+
+<section id="invoicesSection" hidden>
+  <div class="panel">
+    <div class="invoice-controls">
+      <label for="invoiceCard">Cartão<select id="invoiceCard"></select></label>
+      <label for="invoiceMonth">Mês de vencimento da fatura<input type="month" id="invoiceMonth" required></label>
+    </div>
+    <div class="invoice-stats">
+      <div><span class="eyebrow">Total da fatura</span><strong id="invoiceTotal"></strong></div>
+      <div><span class="eyebrow">Já recebi</span><strong class="green" id="invoiceReceived"></strong></div>
+      <div><span class="eyebrow">Falta receber</span><strong class="amber" id="invoicePending"></strong></div>
+    </div>
+    <p class="hint">Somente parcelas de terceiros cadastradas neste mês, não a fatura bancária completa. Recebimentos antecipados contam na fatura da parcela. Os totais não mudam com a pesquisa.</p>
+  </div>
+  <div class="list" id="invoiceList"></div>
+  <div class="empty" id="invoiceEmpty" hidden>Nenhuma parcela encontrada nesta fatura ou pesquisa.</div>
+</section>
+
+<section id="purchasesSection" hidden>
+  <div class="section-head"><h2>Histórico de compras</h2><span class="hint">Todos os períodos</span></div>
+  <div class="list" id="purchasesList"></div>
+  <div class="empty" id="purchasesEmpty" hidden>Nenhuma compra encontrada.</div>
+</section>
+
+<p class="notice">Dados salvos somente neste navegador e endereço. Exporte backups para guardar o histórico ou trocar de aparelho. Este painel não controla pagamentos ao banco.</p>
+</main>
+
+<div class="modal-overlay" id="cardOverlay">
+<div class="modal">
+  <div class="modal-header">
+    <h3 id="cardTitle">Novo cartão</h3>
+    <button class="modal-close" data-close="cardOverlay" aria-label="Fechar">×</button>
+  </div>
+  <form id="cardForm">
+    <div class="field">
+      <label for="cardName">Nome do cartão</label>
+      <input id="cardName" required maxlength="100" placeholder="Ex.: Nubank">
+    </div>
+    <div class="row">
+      <div class="field">
+        <label for="cardClosing">Dia de fechamento</label>
+        <input id="cardClosing" type="number" min="1" max="31" required>
+      </div>
+      <div class="field">
+        <label for="cardDue">Dia de vencimento</label>
+        <input id="cardDue" type="number" min="1" max="31" required>
+      </div>
+    </div>
+    <p class="hint">Em meses curtos, dias 29, 30 e 31 usam o último dia do mês. Alterações do cartão serão usadas nas próximas compras; o histórico já cadastrado não muda.</p>
+    <div class="modal-buttons">
+      <button type="button" class="btn" data-close="cardOverlay">Cancelar</button>
+      <button class="btn primary" type="submit">Salvar cartão</button>
+    </div>
+  </form>
+</div>
+</div>
+
+<div class="modal-overlay" id="purchaseOverlay">
+<div class="modal">
+  <div class="modal-header">
+    <h3 id="purchaseTitle">Nova compra</h3>
+    <button class="modal-close" data-close="purchaseOverlay" aria-label="Fechar">×</button>
+  </div>
+  <form id="purchaseForm">
+    <div class="field">
+      <label for="purchasePerson">Nome da pessoa</label>
+      <input id="purchasePerson" required maxlength="200">
+    </div>
+    <div class="field">
+      <label for="purchaseDescription">O que comprou</label>
+      <textarea id="purchaseDescription" required maxlength="4000"></textarea>
+    </div>
+    <div class="field">
+      <label for="purchaseCard">Cartão utilizado</label>
+      <select id="purchaseCard" required></select>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label for="purchaseDate">Data da compra</label>
+        <input id="purchaseDate" type="date" required>
+      </div>
+      <div class="field">
+        <label for="purchaseTotal">Valor total (R$)</label>
+        <input id="purchaseTotal" inputmode="decimal" required placeholder="1500,00">
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label for="purchaseCount">Quantidade de parcelas</label>
+        <input id="purchaseCount" type="number" min="1" max="120" required value="1">
+      </div>
+      <div class="field">
+        <label for="purchaseFirstMonth">Primeira fatura · mês de vencimento</label>
+        <input id="purchaseFirstMonth" type="month" required>
+      </div>
+    </div>
+    <div class="field">
+      <label for="purchaseExpected">Primeira data prevista para a pessoa pagar</label>
+      <input id="purchaseExpected" type="date" required>
+      <p class="hint">As demais parcelas vencem mensalmente a partir desta data. Atrasos usam esta previsão, não a data de pagamento ao banco.</p>
+    </div>
+    <div class="preview" id="purchasePreview"></div>
+    <p class="hint">Sugestão: compras no dia do fechamento ou depois entram no próximo ciclo. Confira a fatura do banco e corrija o mês se necessário.</p>
+    <div class="modal-buttons">
+      <button type="button" class="btn" data-close="purchaseOverlay">Cancelar</button>
+      <button class="btn primary" type="submit">Salvar compra</button>
+    </div>
+  </form>
+</div>
+</div>
+
+<div class="modal-overlay" id="paymentOverlay">
+<div class="modal">
+  <div class="modal-header">
+    <h3 id="paymentTitle">Pagamentos da parcela</h3>
+    <button class="modal-close" data-close="paymentOverlay" aria-label="Fechar">×</button>
+  </div>
+  <div class="preview" id="paymentSummary"></div>
+  <form id="paymentForm">
+    <div class="row">
+      <div class="field">
+        <label for="paymentDate">Data do recebimento</label>
+        <input id="paymentDate" type="date" required>
+      </div>
+      <div class="field">
+        <label for="paymentAmount">Valor recebido (R$)</label>
+        <input id="paymentAmount" inputmode="decimal" required placeholder="0,00">
+      </div>
+    </div>
+    <div class="modal-buttons">
+      <button type="button" class="btn" id="fillRemainingBtn">Preencher saldo</button>
+      <button class="btn primary" type="submit" id="savePaymentBtn">Registrar pagamento</button>
+    </div>
+    <button type="button" class="btn small" id="cancelPaymentEditBtn" hidden style="margin-top:10px">Cancelar correção</button>
+  </form>
+  <div class="history">
+    <h3 style="font-size:14px">Histórico de pagamentos</h3>
+    <div id="paymentHistory"></div>
+  </div>
+</div>
+</div>
+
+<div class="modal-overlay" id="settingsOverlay">
+<div class="modal">
+  <div class="modal-header">
+    <h3>Configurações e backup</h3>
+    <button class="modal-close" data-close="settingsOverlay" aria-label="Fechar">×</button>
+  </div>
+  <p class="hint">O backup inclui cartões, compras, parcelas e todo o histórico de pagamentos. Guarde o arquivo em um local seguro.</p>
+  <div class="list" style="margin-top:16px">
+    <button class="btn" id="exportBtn">⬇️ Exportar backup JSON</button>
+    <button class="btn" id="importBtn">⬆️ Restaurar backup JSON</button>
+    <input id="backupFile" type="file" accept=".json,application/json" hidden>
+  </div>
+</div>
+</div>
+
+<div class="modal-overlay" id="confirmOverlay">
+<div class="modal">
+  <div class="modal-header">
+    <h3 id="confirmTitle">Confirmar ação</h3>
+    <button class="modal-close" data-close="confirmOverlay" aria-label="Fechar">×</button>
+  </div>
+  <p class="confirm-text" id="confirmText"></p>
+  <div class="modal-buttons">
+    <button class="btn" data-close="confirmOverlay">Cancelar</button>
+    <button class="btn danger" id="confirmBtn">Confirmar</button>
+  </div>
+</div>
+</div>
+
+<div id="toast" role="status" aria-live="polite" hidden></div>
+
+<script>
+(function(){
+'use strict';
+
+const KEY='nexcell_cartoes_v1';
+const $=id=>document.getElementById(id);
+
+let state={version:1,cards:[],purchases:[]};
+let ready=false,search='',tab='cards';
+let editingCard=null,editingPurchase=null;
+let selectedInstallment=null,editingPayment=null;
+let monthManual=false,expectedManual=false;
+let confirmCallback=null,toastTimer;
+const focusStack=[];
+
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({
+  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+}[c]));
+
+const brl=n=>(n/100).toLocaleString('pt-BR',{
+  style:'currency',currency:'BRL'
+});
+
+const today=()=>{
+  const d=new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+};
+
+const dateBR=d=>d.split('-').reverse().join('/');
+const monthBR=m=>new Date(m+'-01T12:00:00').toLocaleDateString('pt-BR',{
+  month:'long',year:'numeric'
+});
+
+function uuid(){
+  if(globalThis.crypto?.randomUUID)return crypto.randomUUID();
+  return Date.now().toString(36)+'-'+Math.random().toString(36).slice(2)+'-'+Math.random().toString(36).slice(2);
+}
+
+function validDate(d){
+  if(typeof d!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(d))return false;
+  const t=new Date(d+'T12:00:00Z');
+  return Number.isFinite(t.getTime())&&t.toISOString().slice(0,10)===d;
+}
+
+function validMonth(m){
+  return typeof m==='string'&&/^\d{4}-(0[1-9]|1[0-2])$/.test(m)&&+m.slice(0,4)>=1;
+}
+
+function shiftMonth(m,offset){
+  const [y,n]=m.split('-').map(Number);
+  const d=new Date(Date.UTC(y,n-1+offset,1));
+  return `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}`;
+}
+
+function dayInMonth(m,day){
+  const [y,n]=m.split('-').map(Number);
+  const last=new Date(Date.UTC(y,n,0)).getUTCDate();
+  return `${m}-${String(Math.min(day,last)).padStart(2,'0')}`;
+}
+
+function monthlyDate(d,offset){
+  return dayInMonth(shiftMonth(d.slice(0,7),offset),+d.slice(8,10));
+}
+
+function parseMoney(raw){
+  const s=String(raw).trim();
+  if(!/^\d+(?:[.,]\d{1,2})?$/.test(s)){
+    throw new Error('Digite o valor em reais, sem separador de milhar. Ex.: 1500,50.');
+  }
+  const [a,b='']=s.replace(',','.').split('.');
+  const n=Number(a)*100+Number(b.padEnd(2,'0'));
+  if(!Number.isSafeInteger(n)||n<=0||n>100000000000){
+    throw new Error('Informe um valor válido maior que zero.');
+  }
+  return n;
+}
+
+const inputMoney=n=>`${Math.floor(n/100)},${String(n%100).padStart(2,'0')}`;
+
+function add(values){
+  return values.reduce((a,b)=>{
+    const n=a+b;
+    if(!Number.isSafeInteger(n)){
+      throw new Error('O total ultrapassa o limite de cálculo seguro.');
+    }
+    return n;
+  },0);
+}
+
+const received=i=>add(i.payments.map(p=>p.amountCents));
+const pending=i=>i.amountCents-received(i);
+const flat=(s=state)=>s.purchases.flatMap(p=>
+  p.installments.map(i=>({purchase:p,installment:i}))
+);
+
+function split(total,count){
+  if(!Number.isInteger(count)||count<1||count>120||total<count){
+    throw new Error('Use de 1 a 120 parcelas, com pelo menos R$ 0,01 por parcela.');
+  }
+  const base=Math.floor(total/count),extra=total%count;
+  return Array.from({length:count},(_,i)=>base+(i<extra?1:0));
+}
+
+function suggestMonth(card,date){
+  let closingMonth=date.slice(0,7);
+  if(date>=dayInMonth(closingMonth,card.closingDay)){
+    closingMonth=shiftMonth(closingMonth,1);
+  }
+  return card.dueDay<=card.closingDay
+    ?shiftMonth(closingMonth,1)
+    :closingMonth;
+}
+
+function validate(data){
+  if(!data||data.version!==1||!Array.isArray(data.cards)||!Array.isArray(data.purchases)){
+    throw new Error('Backup inválido: formato ou versão não reconhecidos.');
+  }
+
+  const ids=new Set(),cardIds=new Set();
+
+  const unique=id=>{
+    if(typeof id!=='string'||!id.trim()||ids.has(id)){
+      throw new Error('Backup inválido: identificadores ausentes ou duplicados.');
+    }
+    ids.add(id);
+  };
+
+  const text=s=>typeof s==='string'&&s.trim().length>0;
+  const amount=n=>Number.isSafeInteger(n)&&n>0&&n<=100000000000;
+
+  for(const c of data.cards){
+    unique(c.id);
+    if(!text(c.name)||
+       !Number.isInteger(c.closingDay)||c.closingDay<1||c.closingDay>31||
+       !Number.isInteger(c.dueDay)||c.dueDay<1||c.dueDay>31){
+      throw new Error('Há um cartão inválido no backup.');
+    }
+    cardIds.add(c.id);
+  }
+
+  for(const p of data.purchases){
+    unique(p.id);
+
+    if(!cardIds.has(p.cardId)||!text(p.person)||!text(p.description)||
+       !validDate(p.purchaseDate)||!amount(p.totalCents)||
+       !Number.isInteger(p.count)||p.count<1||p.count>120||
+       !validMonth(p.firstMonth)||!validDate(p.expectedDate)||
+       !Array.isArray(p.installments)||p.installments.length!==p.count){
+      throw new Error('Há uma compra inválida ou sem cartão no backup.');
+    }
+
+    const expected=split(p.totalCents,p.count);
+
+    p.installments.forEach((i,index)=>{
+      unique(i.id);
+
+      if(i.number!==index+1||i.amountCents!==expected[index]||
+         i.invoiceMonth!==shiftMonth(p.firstMonth,index)||
+         i.expectedDate!==monthlyDate(p.expectedDate,index)||
+         !Array.isArray(i.payments)){
+        throw new Error('Parcelas incompatíveis ou inválidas no backup.');
+      }
+
+      for(const pay of i.payments){
+        unique(pay.id);
+        if(!amount(pay.amountCents)||!validDate(pay.date)){
+          throw new Error('Há um pagamento inválido no backup.');
+        }
+      }
+
+      if(received(i)>i.amountCents){
+        throw new Error('O backup contém recebimentos acima do valor da parcela.');
+      }
+    });
+  }
+
+  add(data.purchases.map(p=>p.totalCents));
+  return data;
+}
+
+function clone(data){
+  return JSON.parse(JSON.stringify(data));
+}
+
+function toast(msg){
+  clearTimeout(toastTimer);
+  $('toast').textContent=msg;
+  $('toast').hidden=false;
+  toastTimer=setTimeout(()=>$('toast').hidden=true,5000);
+}
+
+function storageFailure(error){
+  return error.name==='QuotaExceededError'
+    ?'Armazenamento cheio. A alteração não foi salva. Exporte um backup e libere espaço.'
+    :error.name==='SecurityError'
+    ?'O navegador bloqueou o armazenamento local. Permita o armazenamento para salvar.'
+    :error.message||'Não foi possível salvar os dados.';
+}
+
+function commit(change,message){
+  if(!ready){
+    toast('Os dados não puderam ser carregados. Restaure um backup válido pelas configurações.');
+    return false;
+  }
+  try{
+    const next=clone(state);
+    change(next);
+    validate(next);
+    localStorage.setItem(KEY,JSON.stringify(next));
+    state=next;
+    render();
+    toast(message);
+    return true;
+  }catch(error){
+    toast(storageFailure(error));
+    return false;
+  }
+}
+
+function open(id){
+  const o=$(id),h=o.querySelector('h3');
+  focusStack.push({id,trigger:document.activeElement});
+  o.classList.add('open');
+  o.setAttribute('role','dialog');
+  o.setAttribute('aria-modal','true');
+  if(!h.id)h.id=id+'Title';
+  o.setAttribute('aria-labelledby',h.id);
+  o.querySelector('input,select,textarea,button')?.focus();
+}
+
+function close(id){
+  $(id).classList.remove('open');
+  if(id==='confirmOverlay')confirmCallback=null;
+  const index=focusStack.findLastIndex(x=>x.id===id);
+  if(index>=0){
+    const x=focusStack.splice(index,1)[0];
+    if(x.trigger?.isConnected)x.trigger.focus();
+  }
+}
+
+function confirm(title,message,action){
+  $('confirmTitle').textContent=title;
+  $('confirmText').textContent=message;
+  confirmCallback=action;
+  open('confirmOverlay');
+}
+
+$('confirmBtn').addEventListener('click',()=>{
+  if(confirmCallback&&confirmCallback()!==false)close('confirmOverlay');
+});
+
+document.querySelectorAll('[data-close]').forEach(b=>
+  b.addEventListener('click',()=>close(b.dataset.close))
+);
+
+document.querySelectorAll('.modal-overlay').forEach(o=>
+  o.addEventListener('click',e=>{
+    if(e.target===o)close(o.id);
+  })
+);
+
+document.addEventListener('keydown',e=>{
+  const o=Array.from(document.querySelectorAll('.modal-overlay.open')).at(-1);
+  if(!o)return;
+
+  if(e.key==='Escape'){
+    close(o.id);
+    return;
+  }
+
+  if(e.key==='Tab'){
+    const nodes=Array.from(o.querySelectorAll('button,input,select,textarea'))
+      .filter(n=>!n.hidden&&!n.disabled&&n.offsetParent!==null);
+    const first=nodes[0],last=nodes.at(-1);
+
+    if(e.shiftKey&&document.activeElement===first){
+      e.preventDefault();
+      last?.focus();
+    }else if(!e.shiftKey&&document.activeElement===last){
+      e.preventDefault();
+      first?.focus();
+    }
+  }
+});
+
+function matches(p){
+  const card=state.cards.find(c=>c.id===p.cardId);
+  return [p.person,p.description,card?.name].join(' ')
+    .toLocaleLowerCase('pt-BR').includes(search);
+}
+
+function render(){
+  const entries=flat();
+  const total=add(entries.map(x=>x.installment.amountCents));
+  const paid=add(entries.map(x=>received(x.installment)));
+  const late=add(entries.filter(x=>x.installment.expectedDate<today())
+    .map(x=>pending(x.installment)));
+
+  $('overallPending').textContent=brl(total-paid);
+  $('overallReceived').textContent=brl(paid);
+  $('overallLate').textContent=brl(late);
+  $('overallTotal').textContent=brl(total);
+
+  const currentMonth=$('invoiceMonth').value||today().slice(0,7);
+  $('invoiceMonth').value=currentMonth;
+
+  const old=$('invoiceCard').value;
+  $('invoiceCard').innerHTML=state.cards.map(c=>
+    `<option value="${esc(c.id)}">${esc(c.name)}</option>`
+  ).join('');
+
+  if(state.cards.some(c=>c.id===old))$('invoiceCard').value=old;
+
+  const cards=state.cards.filter(c=>
+    c.name.toLocaleLowerCase('pt-BR').includes(search)||
+    state.purchases.some(p=>p.cardId===c.id&&matches(p))
+  );
+
+  $('cardCount').textContent=`${state.cards.length} cartão(ões) cadastrado(s)`;
+  $('cardsEmpty').hidden=!!cards.length;
+
+  $('cardsList').innerHTML=cards.map(c=>{
+    const all=entries.filter(x=>x.purchase.cardId===c.id);
+    const month=all.filter(x=>x.installment.invoiceMonth===currentMonth);
+    const monthTotal=add(month.map(x=>x.installment.amountCents));
+    const monthPaid=add(month.map(x=>received(x.installment)));
+
+    return `
+      <article class="card" data-card="${esc(c.id)}">
+        <div class="card-head"><h3>💳 ${esc(c.name)}</h3></div>
+        <div class="card-meta">Fecha dia ${c.closingDay} · vence dia ${c.dueDay}</div>
+        <div class="card-total">${brl(add(all.map(x=>pending(x.installment))))}</div>
+        <div class="hint">A receber · todos os períodos</div>
+        <div class="purchase-progress">
+          Fatura ${esc(monthBR(currentMonth))}<br>
+          Total: <b>${brl(monthTotal)}</b> · recebi: <b>${brl(monthPaid)}</b><br>
+          Falta receber: <b>${brl(monthTotal-monthPaid)}</b>
+        </div>
+        <div class="card-actions">
+          <button class="btn small" data-action="invoice">Ver fatura</button>
+          <button class="btn small" data-action="edit-card">Editar</button>
+          <button class="btn small danger" data-action="delete-card">Excluir</button>
+        </div>
+      </article>`;
+  }).join('');
+
+  renderInvoices();
+  renderPurchases();
+  $('newPurchaseBtn').disabled=!ready||!state.cards.length;
+  $('newCardBtn').disabled=!ready;
+}
+
+function installmentHTML(p,i){
+  const paid=received(i),rest=i.amountCents-paid;
+  const status=rest===0?'Pago':paid?'Parcial':'Pendente';
+  const late=rest>0&&i.expectedDate<today();
+
+  return `
+    <article class="card installment">
+      <div class="details">
+        <h3>${esc(p.person)}</h3>
+        <div class="card-meta description">${esc(p.description)}</div>
+        <div class="card-meta">Parcela ${i.number}/${p.count} · previsão ${dateBR(i.expectedDate)}</div>
+        <span class="badge ${rest===0?'paid':paid?'partial':''}">${status}</span>
+        ${late?'<span class="badge late">Atrasado</span>':''}
+        <div class="payment-values">
+          <span>Parcela<b>${brl(i.amountCents)}</b></span>
+          <span>Recebido<b class="green">${brl(paid)}</b></span>
+          <span>Pendente<b>${brl(rest)}</b></span>
+        </div>
+      </div>
+      <button class="btn small" data-payment="${esc(i.id)}">
+        ${rest?'Receber / histórico':'Ver pagamentos'}
+      </button>
+    </article>`;
+}
+
+function renderInvoices(){
+  const list=flat().filter(x=>
+    x.purchase.cardId===$('invoiceCard').value&&
+    x.installment.invoiceMonth===$('invoiceMonth').value
+  );
+
+  const total=add(list.map(x=>x.installment.amountCents));
+  const paid=add(list.map(x=>received(x.installment)));
+
+  $('invoiceTotal').textContent=brl(total);
+  $('invoiceReceived').textContent=brl(paid);
+  $('invoicePending').textContent=brl(total-paid);
+
+  const shown=list.filter(x=>matches(x.purchase));
+  $('invoiceList').innerHTML=shown.map(x=>
+    installmentHTML(x.purchase,x.installment)
+  ).join('');
+  $('invoiceEmpty').hidden=!!shown.length;
+}
+
+function renderPurchases(){
+  const list=state.purchases.filter(matches).slice()
+    .sort((a,b)=>b.purchaseDate.localeCompare(a.purchaseDate));
+
+  $('purchasesEmpty').hidden=!!list.length;
+  $('purchasesList').innerHTML=list.map(p=>{
+    const c=state.cards.find(c=>c.id===p.cardId);
+    const paid=add(p.installments.map(received));
+
+    return `
+      <article class="card" data-purchase="${esc(p.id)}">
+        <h3>${esc(p.person)}</h3>
+        <div class="card-meta description">${esc(p.description)}</div>
+        <div class="card-meta">
+          ${esc(c.name)} · compra em ${dateBR(p.purchaseDate)}<br>
+          ${p.count} parcela(s) · primeira fatura ${esc(monthBR(p.firstMonth))}
+        </div>
+        <div class="payment-values">
+          <span>Total<b>${brl(p.totalCents)}</b></span>
+          <span>Recebido<b>${brl(paid)}</b></span>
+          <span>A receber<b>${brl(p.totalCents-paid)}</b></span>
+        </div>
+        <div class="card-actions">
+          <button class="btn small" data-action="edit-purchase">Editar compra</button>
+          <button class="btn small danger" data-action="delete-purchase">Excluir compra</button>
+        </div>
+        <details style="margin-top:14px">
+          <summary>Ver ${p.count} parcela(s)</summary>
+          <div class="list" style="margin-top:12px">
+            ${p.installments.map(i=>installmentHTML(p,i)).join('')}
+          </div>
+        </details>
+      </article>`;
+  }).join('');
+}
+
+function switchTab(name){
+  tab=name;
+  for(const n of ['cards','invoices','purchases']){
+    $(n+'Section').hidden=n!==name;
+  }
+  document.querySelectorAll('[data-tab]').forEach(b=>{
+    b.classList.toggle('active',b.dataset.tab===name);
+    b.setAttribute('aria-pressed',String(b.dataset.tab===name));
+  });
+}
+
+document.querySelectorAll('[data-tab]').forEach(b=>
+  b.addEventListener('click',()=>switchTab(b.dataset.tab))
+);
+
+$('searchInput').addEventListener('input',e=>{
+  search=e.target.value.trim().toLocaleLowerCase('pt-BR');
+  render();
+});
+
+$('invoiceMonth').addEventListener('change',()=>{
+  if(validMonth($('invoiceMonth').value)){
+    render();
+  }else{
+    $('invoiceMonth').value=today().slice(0,7);
+    render();
+  }
+});
+
+$('invoiceCard').addEventListener('change',renderInvoices);
+
+function openCard(c=null){
+  editingCard=c?.id??null;
+  $('cardForm').reset();
+  $('cardTitle').textContent=c?'Editar cartão':'Novo cartão';
+  $('cardName').value=c?.name||'';
+  $('cardClosing').value=c?.closingDay??'';
+  $('cardDue').value=c?.dueDay??'';
+  open('cardOverlay');
+  $('cardName').focus();
+}
+
+$('newCardBtn').addEventListener('click',()=>openCard());
+
+$('cardForm').addEventListener('submit',e=>{
+  e.preventDefault();
+
+  const name=$('cardName').value.trim();
+  const closingDay=Number($('cardClosing').value);
+  const dueDay=Number($('cardDue').value);
+
+  if(!name||![closingDay,dueDay].every(n=>Number.isInteger(n)&&n>=1&&n<=31)){
+    toast('Informe o nome e dias entre 1 e 31.');
+    return;
+  }
+
+  const id=editingCard;
+
+  if(commit(s=>{
+    if(id){
+      const c=s.cards.find(c=>c.id===id);
+      if(!c)throw new Error('Cartão não encontrado.');
+      Object.assign(c,{name,closingDay,dueDay});
+    }else{
+      s.cards.push({id:uuid(),name,closingDay,dueDay});
+    }
+  },'Cartão salvo.')){
+    close('cardOverlay');
+  }
+});
+
+$('cardsList').addEventListener('click',e=>{
+  const b=e.target.closest('[data-action]');
+  if(!b)return;
+
+  const c=state.cards.find(c=>c.id===b.closest('[data-card]').dataset.card);
+  if(!c)return;
+
+  if(b.dataset.action==='edit-card')openCard(c);
+
+  if(b.dataset.action==='invoice'){
+    $('invoiceCard').value=c.id;
+    renderInvoices();
+    switchTab('invoices');
+  }
+
+  if(b.dataset.action==='delete-card'){
+    const purchases=state.purchases.filter(p=>p.cardId===c.id);
+    const payments=purchases.reduce((n,p)=>
+      n+p.installments.reduce((m,i)=>m+i.payments.length,0),0);
+
+    confirm(
+      'Excluir cartão',
+      `Excluir o cartão ${c.name}? Também serão excluídas ${purchases.length} compra(s), todas as parcelas associadas e ${payments} pagamento(s) do histórico. Essa ação não pode ser desfeita. Exporte um backup antes.`,
+      ()=>commit(s=>{
+        s.cards=s.cards.filter(x=>x.id!==c.id);
+        s.purchases=s.purchases.filter(p=>p.cardId!==c.id);
+      },'Cartão e registros associados excluídos.')
+    );
+  }
+});
+
+function updateSuggestion(){
+  const c=state.cards.find(c=>c.id===$('purchaseCard').value);
+  const date=$('purchaseDate').value;
+
+  if(c&&validDate(date)){
+    if(!monthManual)$('purchaseFirstMonth').value=suggestMonth(c,date);
+    if(!expectedManual&&validMonth($('purchaseFirstMonth').value)){
+      $('purchaseExpected').value=dayInMonth($('purchaseFirstMonth').value,c.dueDay);
+    }
+  }
+  updatePreview();
+}
+
+function updatePreview(){
+  try{
+    const total=parseMoney($('purchaseTotal').value);
+    const count=Number($('purchaseCount').value);
+    const values=split(total,count);
+
+    $('purchasePreview').textContent=
+      `${count} parcela(s): ${brl(values[0])}${values.at(-1)!==values[0]?' a '+brl(values.at(-1)):''}. Total exato: ${brl(add(values))}. Centavos extras são distribuídos nas primeiras parcelas.`;
+  }catch{
+    $('purchasePreview').textContent='Preencha valor e quantidade para conferir o parcelamento.';
+  }
+}
+
+function openPurchase(p=null){
+  if(!state.cards.length){
+    toast('Cadastre um cartão primeiro.');
+    return;
+  }
+
+  editingPurchase=p?.id??null;
+  monthManual=!!p;
+  expectedManual=!!p;
+  $('purchaseForm').reset();
+  $('purchaseTitle').textContent=p?'Editar compra':'Nova compra';
+
+  $('purchaseCard').innerHTML=state.cards.map(c=>
+    `<option value="${esc(c.id)}">${esc(c.name)}</option>`
+  ).join('');
+
+  if(p)$('purchaseCard').value=p.cardId;
+  $('purchasePerson').value=p?.person||'';
+  $('purchaseDescription').value=p?.description||'';
+  $('purchaseDate').value=p?.purchaseDate||today();
+  $('purchaseTotal').value=p?inputMoney(p.totalCents):'';
+  $('purchaseCount').value=p?.count||1;
+  $('purchaseFirstMonth').value=p?.firstMonth||'';
+  $('purchaseExpected').value=p?.expectedDate||'';
+
+  updateSuggestion();
+  open('purchaseOverlay');
+  $('purchasePerson').focus();
+}
+
+$('newPurchaseBtn').addEventListener('click',()=>openPurchase());
+
+for(const id of ['purchaseDate','purchaseCard']){
+  $(id).addEventListener('change',updateSuggestion);
+}
+
+$('purchaseFirstMonth').addEventListener('change',()=>{
+  monthManual=true;
+  updateSuggestion();
+});
+
+$('purchaseExpected').addEventListener('change',()=>{
+  expectedManual=true;
+});
+
+for(const id of ['purchaseTotal','purchaseCount']){
+  $(id).addEventListener('input',updatePreview);
+}
+
+$('purchaseForm').addEventListener('submit',e=>{
+  e.preventDefault();
+
+  try{
+    const data={
+      person:$('purchasePerson').value.trim(),
+      description:$('purchaseDescription').value.trim(),
+      cardId:$('purchaseCard').value,
+      purchaseDate:$('purchaseDate').value,
+      totalCents:parseMoney($('purchaseTotal').value),
+      count:Number($('purchaseCount').value),
+      firstMonth:$('purchaseFirstMonth').value,
+      expectedDate:$('purchaseExpected').value
+    };
+
+    if(!data.person||!data.description||
+       !validDate(data.purchaseDate)||!validDate(data.expectedDate)||
+       !validMonth(data.firstMonth)){
+      throw new Error('Preencha corretamente todos os campos da compra.');
+    }
+
+    const values=split(data.totalCents,data.count);
+    const id=editingPurchase;
+
+    if(commit(s=>{
+      const old=id?s.purchases.find(p=>p.id===id):null;
+      if(id&&!old)throw new Error('Compra não encontrada.');
+
+      const changed=old&&(
+        old.totalCents!==data.totalCents||
+        old.count!==data.count||
+        old.cardId!==data.cardId||
+        old.firstMonth!==data.firstMonth
+      );
+
+      if(changed&&old.installments.some(i=>i.payments.length)){
+        throw new Error('Esta compra já possui pagamentos. Para alterar valor, quantidade, cartão ou primeira fatura, corrija/exclua os pagamentos antes. Nenhum histórico foi apagado.');
+      }
+
+      const installments=values.map((value,index)=>({
+        id:old&&!changed?old.installments[index].id:uuid(),
+        number:index+1,
+        amountCents:value,
+        invoiceMonth:shiftMonth(data.firstMonth,index),
+        expectedDate:monthlyDate(data.expectedDate,index),
+        payments:old&&!changed?old.installments[index].payments:[]
+      }));
+
+      if(old){
+        Object.assign(old,data,{installments});
+      }else{
+        s.purchases.push({id:uuid(),...data,installments});
+      }
+    },'Compra salva e parcelas distribuídas.')){
+      close('purchaseOverlay');
+    }
+  }catch(error){
+    toast(error.message);
+  }
+});
+
+$('purchasesList').addEventListener('click',e=>{
+  const b=e.target.closest('[data-action]');
+  if(!b)return;
+
+  const p=state.purchases.find(p=>
+    p.id===b.closest('[data-purchase]').dataset.purchase
+  );
+  if(!p)return;
+
+  if(b.dataset.action==='edit-purchase')openPurchase(p);
+
+  if(b.dataset.action==='delete-purchase'){
+    const n=p.installments.reduce((n,i)=>n+i.payments.length,0);
+
+    confirm(
+      'Excluir compra',
+      `Excluir a compra de ${p.person}: ${p.description}? Serão removidas ${p.count} parcela(s) e ${n} pagamento(s) associados. Essa ação não pode ser desfeita.`,
+      ()=>commit(s=>{
+        s.purchases=s.purchases.filter(x=>x.id!==p.id);
+      },'Compra e registros associados excluídos.')
+    );
+  }
+});
+
+function findInstallment(id,s=state){
+  for(const p of s.purchases){
+    const i=p.installments.find(i=>i.id===id);
+    if(i)return {purchase:p,installment:i};
+  }
+  throw new Error('Parcela não encontrada.');
+}
+
+function resetPayment(){
+  editingPayment=null;
+  $('paymentDate').value=today();
+  $('paymentAmount').value='';
+  $('savePaymentBtn').textContent='Registrar pagamento';
+  $('cancelPaymentEditBtn').hidden=true;
+}
+
+function renderPayment(){
+  const {purchase:p,installment:i}=findInstallment(selectedInstallment);
+
+  $('paymentSummary').textContent=
+    `${p.person} · ${p.description}\nParcela ${i.number}/${p.count}: ${brl(i.amountCents)} · recebido ${brl(received(i))} · saldo ${brl(pending(i))}\nFatura ${monthBR(i.invoiceMonth)} · previsão ${dateBR(i.expectedDate)}`;
+
+  $('paymentSummary').style.whiteSpace='pre-wrap';
+
+  $('paymentHistory').innerHTML=i.payments.length
+    ?i.payments.slice().sort((a,b)=>b.date.localeCompare(a.date)).map(pay=>`
+      <div class="history-item" data-pay="${esc(pay.id)}">
+        <div>
+          <strong>${brl(pay.amountCents)}</strong>
+          <div class="hint">${dateBR(pay.date)}${pay.date<i.expectedDate?' · antecipado':''}</div>
+        </div>
+        <div class="card-actions" style="margin:0">
+          <button class="btn small" data-action="edit-pay">Corrigir</button>
+          <button class="btn small danger" data-action="delete-pay">Excluir</button>
+        </div>
+      </div>`).join('')
+    :'<p class="hint">Nenhum pagamento registrado.</p>';
+}
+
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-payment]');
+  if(!b)return;
+  selectedInstallment=b.dataset.payment;
+  resetPayment();
+  renderPayment();
+  open('paymentOverlay');
+});
+
+$('fillRemainingBtn').addEventListener('click',()=>{
+  const i=findInstallment(selectedInstallment).installment;
+  const old=i.payments.find(p=>p.id===editingPayment);
+  $('paymentAmount').value=inputMoney(pending(i)+(old?.amountCents||0));
+});
+
+$('cancelPaymentEditBtn').addEventListener('click',resetPayment);
+
+$('paymentForm').addEventListener('submit',e=>{
+  e.preventDefault();
+
+  try{
+    const amountCents=parseMoney($('paymentAmount').value);
+    const date=$('paymentDate').value;
+
+    if(!validDate(date))throw new Error('Informe a data do recebimento.');
+
+    if(date>today()){
+      throw new Error('Um recebimento não pode ter data futura. Para pagar antecipadamente, use a data em que recebeu.');
+    }
+
+    if(commit(s=>{
+      const i=findInstallment(selectedInstallment,s).installment;
+      const old=i.payments.find(p=>p.id===editingPayment);
+      const other=received(i)-(old?.amountCents||0);
+
+      if(other+amountCents>i.amountCents){
+        throw new Error(`O pagamento ultrapassa o saldo permitido de ${brl(i.amountCents-other)}.`);
+      }
+
+      if(editingPayment){
+        if(!old)throw new Error('Pagamento não encontrado.');
+        Object.assign(old,{amountCents,date});
+      }else{
+        i.payments.push({id:uuid(),amountCents,date});
+      }
+    },editingPayment?'Pagamento corrigido.':'Pagamento registrado.')){
+      resetPayment();
+      renderPayment();
+    }
+  }catch(error){
+    toast(error.message);
+  }
+});
+
+$('paymentHistory').addEventListener('click',e=>{
+  const b=e.target.closest('[data-action]');
+  if(!b)return;
+
+  const id=b.closest('[data-pay]').dataset.pay;
+  const i=findInstallment(selectedInstallment).installment;
+  const pay=i.payments.find(p=>p.id===id);
+  if(!pay)return;
+
+  if(b.dataset.action==='edit-pay'){
+    editingPayment=id;
+    $('paymentDate').value=pay.date;
+    $('paymentAmount').value=inputMoney(pay.amountCents);
+    $('savePaymentBtn').textContent='Salvar correção';
+    $('cancelPaymentEditBtn').hidden=false;
+    $('paymentAmount').focus();
+  }
+
+  if(b.dataset.action==='delete-pay'){
+    confirm(
+      'Excluir pagamento',
+      `Excluir o recebimento de ${brl(pay.amountCents)} em ${dateBR(pay.date)}? O saldo da parcela voltará a ficar pendente.`,
+      ()=>{
+        const ok=commit(s=>{
+          const i=findInstallment(selectedInstallment,s).installment;
+          i.payments=i.payments.filter(p=>p.id!==id);
+        },'Pagamento excluído.');
+
+        if(ok){
+          resetPayment();
+          renderPayment();
+        }
+        return ok;
+      }
+    );
+  }
+});
+
+$('settingsBtn').addEventListener('click',()=>open('settingsOverlay'));
+
+$('exportBtn').addEventListener('click',()=>{
+  try{
+    if(!ready){
+      throw new Error('Os dados armazenados estão inválidos. Eles foram preservados; restaure um backup válido antes de exportar.');
+    }
+
+    const payload={...state,exportedAt:new Date().toISOString()};
+    const url=URL.createObjectURL(new Blob(
+      [JSON.stringify(payload,null,2)],
+      {type:'application/json'}
+    ));
+
+    const a=document.createElement('a');
+    a.href=url;
+    a.download=`nexcell-cartoes-${today()}.json`;
+    document.body.append(a);
+    a.click();
+    a.remove();
+
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+    toast('Backup exportado.');
+  }catch(error){
+    toast(error.message);
+  }
+});
+
+$('importBtn').addEventListener('click',()=>$('backupFile').click());
+
+$('backupFile').addEventListener('change',async e=>{
+  const file=e.target.files[0];
+  e.target.value='';
+  if(!file)return;
+
+  try{
+    const imported=clone(validate(JSON.parse(await file.text())));
+
+    confirm(
+      'Restaurar backup',
+      `Substituir os dados atuais por ${imported.cards.length} cartão(ões) e ${imported.purchases.length} compra(s) deste backup? Todos os pagamentos atuais serão substituídos pelo histórico do arquivo. Exporte um backup antes. Dados de outros sistemas não serão alterados.`,
+      ()=>{
+        try{
+          localStorage.setItem(KEY,JSON.stringify(imported));
+          state=imported;
+          ready=true;
+          $('storageError').hidden=true;
+          close('settingsOverlay');
+          render();
+          toast('Backup restaurado.');
+          return true;
+        }catch(error){
+          toast(storageFailure(error));
+          return false;
+        }
+      }
+    );
+  }catch(error){
+    toast('Arquivo não restaurado. '+error.message);
+  }
+});
+
+function load(){
+  try{
+    const raw=localStorage.getItem(KEY);
+    state=raw===null
+      ?{version:1,cards:[],purchases:[]}
+      :validate(JSON.parse(raw));
+
+    ready=true;
+    $('storageError').hidden=true;
+    render();
+  }catch(error){
+    ready=false;
+    state={version:1,cards:[],purchases:[]};
+
+    $('storageError').textContent=
+      'Não foi possível carregar os dados. O conteúdo original foi preservado. '+
+      storageFailure(error)+
+      ' Use as configurações para restaurar um backup válido.';
+
+    $('storageError').hidden=false;
+    render();
+  }
+}
+
+window.addEventListener('storage',e=>{
+  if(e.key===KEY||e.key===null){
+    document.querySelectorAll('.modal-overlay.open').forEach(o=>close(o.id));
+    load();
+  }
+});
+
+document.addEventListener('visibilitychange',()=>{
+  if(!document.hidden)render();
+});
+
+$('invoiceMonth').value=today().slice(0,7);
+load();
+
+})();
+</script>
+</body>
+</html>
