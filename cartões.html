@@ -1369,13 +1369,21 @@ function render(){
  visible.forEach(e=>e.parts.forEach(p=>{if(p.month===selected){total+=p.value;paid+=p.paid||0}}));
  $('ownTotal').textContent=money(total);$('ownPaid').textContent=money(paid);$('ownDue').textContent=money(total-paid);
  $('ownEmpty').hidden=!!visible.length;
- $('ownList').innerHTML=visible.map(e=>{
-  const c=cards.find(c=>c.id===e.cardId);
-  const parts=e.parts.map((p,i)=>{
-   const rest=p.value-(p.paid||0);
-   return `<div class="own-row"><div class="card-head"><div><strong>Parcela ${i+1}/${e.parts.length} · ${esc(p.month.split('-').reverse().join('/'))}</strong><div class="card-meta">Valor ${money(p.value)} · pago ${money(p.paid||0)} · falta ${money(rest)}</div></div><span class="badge ${rest===0?'paid':''}">${rest===0?'Pago':'Pendente'}</span></div>${rest>0?`<div class="own-pay-actions"><button class="btn primary small" data-own-action="pay" data-own-id="${esc(e.id)}" data-own-part="${i}">✓ Marcar como paga</button><button class="btn small" data-own-action="partial" data-own-id="${esc(e.id)}" data-own-part="${i}">Pagar parte</button></div>`:`<div class="own-pay-actions"><button class="btn small" data-own-action="undo" data-own-id="${esc(e.id)}" data-own-part="${i}">Corrigir pagamento</button></div>`}</div>`
+ // Agrupa todas as despesas pelo cartão pessoal, sem misturar com terceiros.
+ const groups=new Map();
+ visible.forEach(e=>{if(!groups.has(e.cardId))groups.set(e.cardId,[]);groups.get(e.cardId).push(e)});
+ $('ownList').innerHTML=Array.from(groups,([cardId,items])=>{
+  const c=cards.find(c=>c.id===cardId);
+  let cardTotal=0,cardPaid=0;
+  items.forEach(e=>e.parts.forEach(p=>{if(p.month===selected){cardTotal+=p.value;cardPaid+=p.paid||0}}));
+  const purchases=items.map(e=>{
+   const parts=e.parts.map((p,i)=>{
+    const rest=p.value-(p.paid||0);
+    return `<div class="own-row"><div class="card-head"><div><strong>Parcela ${i+1}/${e.parts.length} · ${esc(p.month.split('-').reverse().join('/'))}</strong><div class="card-meta">Valor ${money(p.value)} · pago ${money(p.paid||0)} · falta ${money(rest)}</div></div><span class="badge ${rest===0?'paid':''}">${rest===0?'Pago':'Pendente'}</span></div>${rest>0?`<div class="own-pay-actions"><button class="btn primary small" data-own-action="pay" data-own-id="${esc(e.id)}" data-own-part="${i}">✓ Marcar como paga</button><button class="btn small" data-own-action="partial" data-own-id="${esc(e.id)}" data-own-part="${i}">Pagar parte</button></div>`:`<div class="own-pay-actions"><button class="btn small" data-own-action="undo" data-own-id="${esc(e.id)}" data-own-part="${i}">Corrigir pagamento</button></div>`}</div>`;
+   }).join('');
+   return `<div style="padding:14px 0;border-top:1px solid rgba(180,170,230,.16)"><div class="card-head"><div><h3>${esc(e.description)}</h3><div class="card-meta">Total ${money(e.total)}</div></div></div><div class="card-actions"><button class="btn small" data-own-action="edit" data-own-id="${esc(e.id)}">Editar</button><button class="btn small danger" data-own-action="delete" data-own-id="${esc(e.id)}">Excluir</button></div><details style="margin-top:14px"><summary>Ver ${e.parts.length} parcela(s)</summary>${parts}</details></div>`;
   }).join('');
-  return `<article class="card"><div class="card-head"><div><h3>${esc(e.description)}</h3><div class="card-meta">💳 ${esc(c?.name||'Cartão excluído')} · Total ${money(e.total)}</div></div></div><div class="card-actions"><button class="btn small" data-own-action="edit" data-own-id="${esc(e.id)}">Editar</button><button class="btn small danger" data-own-action="delete" data-own-id="${esc(e.id)}">Excluir</button></div><details style="margin-top:14px" ${e.parts.some(p=>p.month===selected)?'open':''}><summary>Ver ${e.parts.length} parcela(s)</summary>${parts}</details></article>`;
+  return `<article class="card"><h3>💳 ${esc(c?.name||'Cartão excluído')}</h3><div class="card-meta">Fatura ${esc(selected.split('-').reverse().join('/'))} · Total ${money(cardTotal)} · Pago ${money(cardPaid)} · Falta ${money(cardTotal-cardPaid)}</div><details style="margin-top:14px"><summary>Ver ${items.length} compra(s) deste cartão</summary>${purchases}</details></article>`;
  }).join('');
 }
 function openForm(e){const cards=getCards();if(!cards.length){alert('Cadastre primeiro um cartão em Meus cartões pessoais, nesta aba.');return}
