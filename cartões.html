@@ -713,6 +713,7 @@ function installmentHTML(p,i){
           <span>Pendente<b>${brl(rest)}</b></span>
         </div>
       </div>
+      ${rest ? `<button class="btn small primary" data-quick-pay="${esc(i.id)}">✓ Marcar como paga</button>` : ''}
       <button class="btn small" data-payment="${esc(i.id)}">
         ${rest?'Receber / histórico':'Ver pagamentos'}
       </button>
@@ -1075,6 +1076,26 @@ function renderPayment(){
       </div>`).join('')
     :'<p class="hint">Nenhum pagamento registrado.</p>';
 }
+
+// Quita exclusivamente a parcela escolhida, inclusive de meses futuros, sem alterar outras parcelas.
+document.addEventListener('click',e=>{
+  const button=e.target.closest('[data-quick-pay]');
+  if(!button)return;
+  const id=button.dataset.quickPay;
+  const {purchase,installment}=findInstallment(id);
+  const month=installment.invoiceMonth;
+  const balance=pending(installment);
+  if(balance<=0){toast('Esta parcela já está paga.');return;}
+  confirm('Marcar parcela como paga',
+    `Confirmar recebimento de ${brl(balance)} de ${purchase.person}, parcela ${installment.number}/${purchase.count}, fatura ${monthBR(month)}?`,
+    ()=>commit(next=>{
+      const i=findInstallment(id,next).installment;
+      if(i.invoiceMonth!==month)throw new Error('O mês da parcela foi alterado.');
+      const rest=pending(i);
+      if(rest<=0)throw new Error('Parcela já está paga.');
+      i.payments.push({id:uuid(),amountCents:rest,date:today()});
+    },'Parcela marcada como paga.'));
+});
 
 document.addEventListener('click',e=>{
   const b=e.target.closest('[data-payment]');
