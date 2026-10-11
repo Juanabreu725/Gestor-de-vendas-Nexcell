@@ -122,6 +122,7 @@ input::placeholder,textarea::placeholder{color:#8885A5}
 .section-head{flex-wrap:wrap}
 .installment .details{min-width:150px}
 }
+.own-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:16px}.own-stats>div{background:var(--surface2);border-radius:12px;padding:13px;min-width:0}.own-stats strong{display:block;font-size:clamp(15px,3vw,23px);margin-top:8px;overflow-wrap:anywhere}.own-pay-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.own-pay-actions .btn{flex:1}.own-row{padding:12px 0;border-top:1px solid var(--border)}.own-row:first-child{border-top:0}.own-row .card-meta{margin-bottom:7px}@media(max-width:600px){.tabs{flex-wrap:wrap}.tabs .tab{flex:1 1 40%}.own-stats{gap:5px}.own-stats>div{padding:9px}}
 </style>
 </head>
 <body>
@@ -160,6 +161,7 @@ input::placeholder,textarea::placeholder{color:#8885A5}
   <button class="tab active" data-tab="cards">Cartões</button>
   <button class="tab" data-tab="invoices">Faturas</button>
   <button class="tab" data-tab="purchases">Compras</button>
+  <button class="tab" data-tab="own">Minhas despesas</button>
 </nav>
 
 <section id="cardsSection">
@@ -185,6 +187,14 @@ input::placeholder,textarea::placeholder{color:#8885A5}
   <div class="empty" id="invoiceEmpty" hidden>Nenhuma parcela encontrada nesta fatura ou pesquisa.</div>
 </section>
 
+<section id="ownSection" hidden>
+  <div class="section-head"><h2>Minhas despesas</h2><button class="btn primary" id="ownAdd" type="button">＋ Nova despesa</button></div>
+  <p class="hint">Suas próprias compras, separadas dos valores a receber de outras pessoas.</p>
+  <div class="panel"><div class="invoice-controls"><label>Mês da fatura<input id="ownMonth" type="month"></label><label>Cartão<select id="ownCardFilter"><option value="">Todos os cartões</option></select></label></div>
+  <div class="own-stats"><div><span class="eyebrow">Total do mês</span><strong id="ownTotal">R$ 0,00</strong></div><div><span class="eyebrow">Já paguei</span><strong class="green" id="ownPaid">R$ 0,00</strong></div><div><span class="eyebrow">Falta pagar</span><strong id="ownDue">R$ 0,00</strong></div></div></div>
+  <div class="section-head"><h2>Minhas compras</h2><button class="btn small" id="ownBackup" type="button">⬇️ Backup das despesas</button></div>
+  <div id="ownList" class="list"></div><div id="ownEmpty" class="empty" hidden>Nenhuma despesa cadastrada.</div>
+</section>
 <section id="purchasesSection" hidden>
   <div class="section-head"><h2>Histórico de compras</h2><span class="hint">Todos os períodos</span></div>
   <div class="list" id="purchasesList"></div>
@@ -337,6 +347,16 @@ input::placeholder,textarea::placeholder{color:#8885A5}
   </div>
 </div>
 </div>
+
+<div class="modal-overlay" id="ownOverlay"><div class="modal">
+  <div class="modal-header"><h3 id="ownFormTitle">Nova despesa</h3><button class="modal-close" id="ownClose" type="button" aria-label="Fechar">×</button></div>
+  <form id="ownForm">
+    <div class="field"><label>O que comprei<input id="ownDescription" maxlength="200" required placeholder="Ex.: Celular, roupa, assinatura"></label></div>
+    <div class="field"><label>Cartão<select id="ownCard" required></select></label></div>
+    <div class="row"><div class="field"><label>Valor total (R$)<input id="ownValue" inputmode="decimal" placeholder="150,00" required></label></div><div class="field"><label>Parcelas<input id="ownCount" type="number" min="1" max="120" value="1" required></label></div></div>
+    <div class="field"><label>Primeira fatura (mês de vencimento)<input id="ownFirstMonth" type="month" required></label></div>
+    <div class="modal-buttons"><button type="button" class="btn" id="ownCancel">Cancelar</button><button class="btn primary" type="submit">Salvar despesa</button></div>
+  </form></div></div>
 
 <div id="toast" role="status" aria-live="polite" hidden></div>
 
@@ -778,7 +798,7 @@ function renderPurchases(){
 
 function switchTab(name){
   tab=name;
-  for(const n of ['cards','invoices','purchases']){
+  for(const n of ['cards','invoices','purchases','own']){
     $(n+'Section').hidden=n!==name;
   }
   document.querySelectorAll('[data-tab]').forEach(b=>{
@@ -1289,6 +1309,75 @@ document.addEventListener('visibilitychange',()=>{
 $('invoiceMonth').value=today().slice(0,7);
 load();
 
+})();
+</script>
+<script>
+(function(){
+'use strict';
+const K='nexcell_minhas_despesas_v1', C='nexcell_cartoes_v1';
+const $=id=>document.getElementById(id);
+const money=n=>(n/100).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const month=()=>new Date().toISOString().slice(0,7);
+const uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now()+'-'+Math.random();
+const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const getCards=()=>{try{return JSON.parse(localStorage.getItem(C)||'{}').cards||[]}catch{return []}};
+let expenses=[];let editId=null;
+try{const v=JSON.parse(localStorage.getItem(K)||'[]');if(Array.isArray(v))expenses=v}catch{}
+function persist(){try{localStorage.setItem(K,JSON.stringify(expenses));return true}catch(e){alert('Não foi possível salvar: '+e.message);return false}}
+function plusMonth(m,n){const [y,mo]=m.split('-').map(Number);const d=new Date(Date.UTC(y,mo-1+n,1));return d.toISOString().slice(0,7)}
+function split(total,count){const base=Math.floor(total/count),rest=total%count;return Array.from({length:count},(_,i)=>base+(i<rest?1:0))}
+function modal(show){$('ownOverlay').classList.toggle('open',show)}
+function render(){
+ const cards=getCards(),old=$('ownCardFilter').value;
+ $('ownCardFilter').innerHTML='<option value="">Todos os cartões</option>'+cards.map(c=>`<option value="${esc(c.id)}">${esc(c.name)}</option>`).join('');
+ $('ownCardFilter').value=cards.some(c=>c.id===old)?old:'';
+ const selected=$('ownMonth').value||month(),card=$('ownCardFilter').value;
+ const visible=expenses.filter(e=>!card||e.cardId===card);
+ let total=0,paid=0;
+ visible.forEach(e=>e.parts.forEach(p=>{if(p.month===selected){total+=p.value;paid+=p.paid||0}}));
+ $('ownTotal').textContent=money(total);$('ownPaid').textContent=money(paid);$('ownDue').textContent=money(total-paid);
+ $('ownEmpty').hidden=!!visible.length;
+ $('ownList').innerHTML=visible.map(e=>{
+  const c=cards.find(c=>c.id===e.cardId);
+  const parts=e.parts.map((p,i)=>{
+   const rest=p.value-(p.paid||0);
+   return `<div class="own-row"><div class="card-head"><div><strong>Parcela ${i+1}/${e.parts.length} · ${esc(p.month.split('-').reverse().join('/'))}</strong><div class="card-meta">Valor ${money(p.value)} · pago ${money(p.paid||0)} · falta ${money(rest)}</div></div><span class="badge ${rest===0?'paid':''}">${rest===0?'Pago':'Pendente'}</span></div>${rest>0?`<div class="own-pay-actions"><button class="btn primary small" data-own-action="pay" data-own-id="${esc(e.id)}" data-own-part="${i}">✓ Marcar como paga</button><button class="btn small" data-own-action="partial" data-own-id="${esc(e.id)}" data-own-part="${i}">Pagar parte</button></div>`:`<div class="own-pay-actions"><button class="btn small" data-own-action="undo" data-own-id="${esc(e.id)}" data-own-part="${i}">Corrigir pagamento</button></div>`}</div>`
+  }).join('');
+  return `<article class="card"><div class="card-head"><div><h3>${esc(e.description)}</h3><div class="card-meta">💳 ${esc(c?.name||'Cartão excluído')} · Total ${money(e.total)}</div></div></div><div class="card-actions"><button class="btn small" data-own-action="edit" data-own-id="${esc(e.id)}">Editar</button><button class="btn small danger" data-own-action="delete" data-own-id="${esc(e.id)}">Excluir</button></div><details style="margin-top:14px" ${e.parts.some(p=>p.month===selected)?'open':''}><summary>Ver ${e.parts.length} parcela(s)</summary>${parts}</details></article>`;
+ }).join('');
+}
+function openForm(e){const cards=getCards();if(!cards.length){alert('Cadastre primeiro um cartão na aba Cartões.');return}
+ editId=e?.id||null;$('ownFormTitle').textContent=e?'Editar despesa':'Nova despesa';
+ $('ownCard').innerHTML=cards.map(c=>`<option value="${esc(c.id)}">${esc(c.name)}</option>`).join('');
+ $('ownDescription').value=e?.description||'';$('ownCard').value=e?.cardId||cards[0].id;
+ $('ownValue').value=e?(e.total/100).toFixed(2).replace('.',','):'';
+ $('ownCount').value=e?.parts.length||1;$('ownFirstMonth').value=e?.firstMonth||$('ownMonth').value||month();modal(true)
+}
+$('ownAdd').onclick=()=>openForm();$('ownClose').onclick=$('ownCancel').onclick=()=>modal(false);
+$('ownOverlay').addEventListener('click',e=>{if(e.target===$('ownOverlay'))modal(false)});
+$('ownMonth').value=month();$('ownMonth').onchange=render;$('ownCardFilter').onchange=render;
+$('ownForm').onsubmit=e=>{e.preventDefault();const description=$('ownDescription').value.trim(),cardId=$('ownCard').value,raw=$('ownValue').value.trim().replace(',','.'),count=Number($('ownCount').value),firstMonth=$('ownFirstMonth').value;
+ if(!/^\d+(?:\.\d{1,2})?$/.test(raw)||!Number.isInteger(count)||count<1||count>120||!/^\d{4}-(0[1-9]|1[0-2])$/.test(firstMonth)){alert('Confira valor, parcelas e mês.');return}
+ const total=Math.round(Number(raw)*100);if(!description||!cardId||!Number.isSafeInteger(total)||total<count){alert('Confira os campos.');return}
+ const old=expenses.find(x=>x.id===editId),values=split(total,count);
+ if(old&&old.parts.some(p=>p.paid>0)&&(old.total!==total||old.parts.length!==count||old.firstMonth!==firstMonth)){alert('Esta compra tem pagamentos registrados. Para alterar valor, número de parcelas ou primeira fatura, corrija os pagamentos antes.');return}
+ const parts=values.map((v,i)=>({month:plusMonth(firstMonth,i),value:v,paid:old?.parts[i]?.paid||0}));
+ const item={id:old?.id||uid(),description,cardId,total,firstMonth,parts};const before=JSON.stringify(expenses);
+ if(old)expenses=expenses.map(x=>x.id===old.id?item:x);else expenses.push(item);
+ if(!persist()){expenses=JSON.parse(before);return}modal(false);render();
+};
+$('ownList').onclick=e=>{const b=e.target.closest('[data-own-action]');if(!b)return;const item=expenses.find(x=>x.id===b.dataset.ownId);if(!item)return;const action=b.dataset.ownAction,idx=Number(b.dataset.ownPart),part=item.parts[idx];
+ if(action==='edit'){openForm(item);return}
+ if(action==='delete'){if(!confirm('Excluir esta despesa e todos os seus pagamentos?'))return;expenses=expenses.filter(x=>x.id!==item.id)}
+ if(action==='pay'){if(!confirm(`Marcar como paga a parcela ${idx+1}/${item.parts.length} de ${money(part.value-part.paid)}?`))return;part.paid=part.value}
+ if(action==='partial'){const raw=prompt('Quanto você pagou? (R$)',((part.value-part.paid)/100).toFixed(2).replace('.',','));if(raw===null)return;const n=raw.trim().replace(',','.');if(!/^\d+(?:\.\d{1,2})?$/.test(n)){alert('Valor inválido.');return}const v=Math.round(Number(n)*100);if(v<=0||v>part.value-part.paid){alert('O valor deve ser maior que zero e não ultrapassar o saldo.');return}part.paid+=v}
+ if(action==='undo'){if(!confirm('Zerar o pagamento registrado nesta parcela?'))return;part.paid=0}
+ persist();render();
+};
+$('ownBackup').onclick=()=>{const blob=new Blob([JSON.stringify({version:1,expenses},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='nexcell-minhas-despesas.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
+window.addEventListener('storage',e=>{if(e.key===K){try{const v=JSON.parse(e.newValue||'[]');if(Array.isArray(v))expenses=v}catch{}}render()});
+const tabs=document.querySelectorAll('[data-tab]');tabs.forEach(t=>t.addEventListener('click',()=>{if(t.dataset.tab==='own')render()}));
+render();
 })();
 </script>
 </body>
