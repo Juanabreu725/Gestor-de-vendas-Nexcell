@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Nex Cell — Cobranças & Entregas</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238A4DFF'/%3E%3Cstop offset='1' stop-color='%23E54DFF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%230A0A0F'/%3E%3Crect x='6' y='6' width='52' height='52' rx='12' fill='url(%23g)'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-size='28' font-weight='800' fill='white' text-anchor='middle'%3ENC%3C/text%3E%3C/svg%3E">
+<title>Nex Cell — Controle de Entregas</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238A4DFF'/%3E%3Cstop offset='1' stop-color='%23E54DFF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%230A0A0F'/%3E%3Crect x='6' y='6' width='52' height='52' rx='12' fill='url(%23g)'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-size='28' font-weight='800' fill='white' text-anchor='middle'%3EEN%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -70,13 +70,6 @@
   }
   .icon-btn:hover{background:var(--surface-2); border-color:var(--brand-purple); box-shadow:0 0 0 3px rgba(138,77,255,.15);}
 
-  /* ---------- TABS ---------- */
-  .tabs{display:flex; gap:6px; background:var(--surface); padding:4px; border-radius:12px; border:1px solid var(--border); margin-bottom:18px;}
-  .tab{flex:1; border:none; background:transparent; padding:9px 8px; border-radius:9px; font-weight:600; font-size:13.5px; color:var(--text-soft); cursor:pointer; transition:.15s;}
-  .tab.active{background:var(--brand-gradient); color:#fff; box-shadow:var(--shadow-glow);}
-  .tab-panel{display:none;}
-  .tab-panel.active{display:block;}
-
   /* ---------- PERIOD LABEL ---------- */
   .period-label{display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px; font-size:12.5px; color:var(--text-soft); font-weight:600;}
   .period-label b{color:var(--brand-magenta);}
@@ -85,7 +78,7 @@
   .dashboard{display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:14px;}
   .stat-card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md); padding:14px; box-shadow:var(--shadow-sm); position:relative; overflow:hidden;}
   .stat-card .stat-label{font-size:11.5px; color:var(--text-soft); font-weight:600; text-transform:uppercase; letter-spacing:.03em;}
-  .stat-card .stat-value{font-family:'Plus Jakarta Sans'; font-size:19px; font-weight:800; margin-top:6px; color:var(--text);}
+  .stat-card .stat-value{font-family:'Plus Jakarta Sans', system-ui, sans-serif; font-size:19px; font-weight:800; margin-top:6px; color:var(--text);}
   .stat-card.accent-green .stat-value{color:var(--pago-text);}
   .stat-card.accent-amber .stat-value{color:var(--aberto-text);}
   .stat-card.accent-red .stat-value{color:var(--atrasado-text);}
@@ -99,7 +92,7 @@
   .summary-card::before{content:''; position:absolute; inset:0; background:var(--brand-gradient-soft); opacity:.5; pointer-events:none;}
   .summary-head{position:relative; z-index:1; font-size:12.5px; font-weight:700; color:var(--text-soft); text-transform:uppercase; letter-spacing:.03em;}
   .summary-main{position:relative; z-index:1; display:flex; align-items:baseline; gap:10px; margin-top:8px; flex-wrap:wrap;}
-  .summary-number{font-family:'Plus Jakarta Sans'; font-size:28px; font-weight:800; background:var(--brand-gradient); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .summary-number{font-family:'Plus Jakarta Sans', system-ui, sans-serif; font-size:28px; font-weight:800; background:var(--brand-gradient); -webkit-background-clip:text; background-clip:text; color:transparent;}
   .summary-sub{position:relative; z-index:1; font-size:12.5px; color:var(--text-faint); margin-top:4px;}
   .summary-foot{position:relative; z-index:1; display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:14px; flex-wrap:wrap;}
   .summary-foot .paid-info{font-size:12px; color:var(--text-soft);}
@@ -147,53 +140,8 @@
   .badge-pago .dot{background:var(--pago-dot);}
   .badge-pendente{background:var(--aberto-bg); color:var(--aberto-text);}
   .badge-pendente .dot{background:var(--aberto-dot);}
-  .badge-atrasado{background:var(--atrasado-bg); color:var(--atrasado-text);}
-  .badge-atrasado .dot{background:var(--atrasado-dot);}
   .badge.clickable{cursor:pointer;}
   .badge.clickable:hover{filter:brightness(1.15);}
-
-  .account-badge{display:inline-flex; align-items:center; gap:5px; padding:4px 10px; border-radius:20px; font-size:11px; font-weight:700; white-space:nowrap;}
-  .account-badge .dot{width:6px; height:6px; border-radius:50%;}
-  .account-nubank{background:var(--nubank-bg); color:var(--nubank-text);}
-  .account-nubank .dot{background:var(--nubank-dot);}
-  .account-santander{background:var(--santander-bg); color:var(--santander-text);}
-  .account-santander .dot{background:var(--santander-dot);}
-  .account-c6{background:var(--c6-bg); color:var(--c6-text);}
-  .account-c6 .dot{background:var(--c6-dot);}
-  .account-other{background:var(--brand-light); color:var(--brand-magenta);}
-  .account-other .dot{background:var(--brand-magenta);}
-  .inst-partial{font-size:11px; color:var(--text-soft); margin-top:2px;}
-  .inst-partial b{color:var(--pago-text);}
-  .inst-partial .rest{color:var(--aberto-text); font-weight:700;}
-  .icon-action-sm.pay:hover{border-color:var(--pago-text); color:var(--pago-text);}
-
-  /* ---------- CLIENT CARDS (Cobranças) ---------- */
-  .clients-list{display:flex; flex-direction:column; gap:10px;}
-  .client-card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md); padding:14px; box-shadow:var(--shadow-sm);}
-  .client-top{display:flex; justify-content:space-between; align-items:flex-start; gap:8px; flex-wrap:wrap;}
-  .client-name{font-weight:700; font-size:15px; color:var(--text);}
-  .client-desc{font-size:13px; color:var(--text-soft); margin-top:2px;}
-  .client-actions{display:flex; align-items:center; gap:6px; flex-shrink:0;}
-  .icon-action{width:32px; height:32px; border-radius:9px; border:1px solid var(--border); background:var(--surface-2); cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center; transition:.15s;}
-  .icon-action:hover{background:var(--surface-3); border-color:var(--brand-purple);}
-
-  .progress-wrap{margin-top:12px;}
-  .progress-labels{display:flex; justify-content:space-between; font-size:11.5px; color:var(--text-faint); margin-bottom:5px;}
-  .progress-labels b{color:var(--text-soft);}
-  .mini-track{width:100%; height:7px; border-radius:20px; background:var(--surface-3); overflow:hidden; border:1px solid var(--border-soft);}
-  .mini-fill{height:100%; border-radius:20px; background:var(--brand-gradient); transition:width .3s ease;}
-
-  .installments-list{display:flex; flex-direction:column; gap:8px; margin-top:12px; padding-top:12px; border-top:1px dashed var(--border);}
-  .installment-row{display:flex; justify-content:space-between; align-items:center; gap:8px; background:var(--surface-2); border:1px solid var(--border-soft); border-radius:10px; padding:9px 10px; flex-wrap:wrap;}
-  .inst-info{display:flex; flex-direction:column; gap:1px;}
-  .inst-num{font-size:12px; font-weight:700; color:var(--text);}
-  .inst-due{font-size:11px; color:var(--text-soft);}
-  .inst-due.late{color:var(--atrasado-text); font-weight:600;}
-  .inst-value{font-size:12.5px; font-weight:700; color:var(--brand-magenta); margin-left:4px;}
-  .inst-actions{display:flex; align-items:center; gap:6px;}
-  .status-select{border:1px solid var(--border); border-radius:9px; padding:6px 9px; font-size:11.5px; font-weight:700; cursor:pointer; background:var(--surface-3); color:var(--text); outline:none;}
-  .icon-action-sm{width:26px; height:26px; border-radius:8px; border:1px solid var(--border); background:var(--surface-3); cursor:pointer; font-size:12px; display:flex; align-items:center; justify-content:center; transition:.15s; flex-shrink:0;}
-  .icon-action-sm:hover{border-color:var(--atrasado-text); color:var(--atrasado-text);}
 
   /* ---------- ENTREGA CARDS ---------- */
   .entregas-list{display:flex; flex-direction:column; gap:10px;}
@@ -202,7 +150,7 @@
   .entrega-service{font-weight:700; font-size:14.5px; color:var(--text); word-break:break-word;}
   .entrega-date{font-size:12px; color:var(--text-soft); margin-top:2px;}
   .entrega-right{display:flex; align-items:center; gap:8px; flex-shrink:0;}
-  .entrega-value{font-family:'Plus Jakarta Sans'; font-size:16px; font-weight:800; color:var(--brand-magenta); white-space:nowrap;}
+  .entrega-value{font-family:'Plus Jakarta Sans', system-ui, sans-serif; font-size:16px; font-weight:800; color:var(--brand-magenta); white-space:nowrap;}
 
   .empty-state{text-align:center; padding:50px 20px; color:var(--text-soft); background:var(--surface); border:1px dashed var(--border); border-radius:var(--radius-md);}
   .empty-state .ee-icon{font-size:34px; margin-bottom:8px;}
@@ -250,66 +198,33 @@
     .modal{border-radius:20px; margin:20px;}
     .entrega-card{flex-wrap:nowrap;}
   }
+
+  [hidden]{display:none!important}
+  button:focus-visible,input:focus-visible{outline:2px solid var(--brand-magenta);outline-offset:3px}
+  .entrega-left{flex:1;overflow-wrap:anywhere}
+  .entrega-right{flex-wrap:wrap;justify-content:flex-end;max-width:100%}
+  .entrega-service{white-space:pre-wrap;overflow-wrap:anywhere}
+  .icon-action-sm{color:var(--text);width:36px;height:36px}
+  .badge{font-family:inherit}
+  .summary-note{position:relative;color:var(--text-soft);font-size:12px;margin:8px 0}
+  .period-row{flex-wrap:wrap;min-width:0}
+  .period-row input{max-width:100%;min-width:0}
+  .stat-value{overflow-wrap:anywhere}
+  .summary-number{overflow-wrap:anywhere;font-size:clamp(26px,7vw,36px)}
+  .modal-overlay:last-of-type{z-index:110}
+  @media(max-width:540px){#entFilters{width:100%;display:flex;flex-wrap:nowrap}#entFilters .chip{flex:1}#btnNewEntrega{width:100%}}
+  @media(max-width:400px){.entrega-card{align-items:flex-start}.entrega-right{width:100%;justify-content:flex-start}.summary-foot{align-items:stretch}.summary-foot .btn{white-space:normal}.dashboard{grid-template-columns:1fr 1fr}.stat-card{padding:10px}}
 </style>
 </head>
 <body>
-
-<div id="app">
-  <header class="topbar">
-    <div class="brand">
-      <div class="brand-logo-box">NC</div>
-      <div>
-        <h1>Nex Cell</h1>
-        <p>Cobranças &amp; entregas</p>
-      </div>
-    </div>
-    <button class="icon-btn" id="btnSettings" title="Configurações e backup">⚙️</button>
-  </header>
-
-  <nav class="tabs">
-    <button class="tab active" data-tab="cobrancas">Cobranças</button>
-    <button class="tab" data-tab="entregas">Entregas</button>
-  </nav>
-
-  <main>
-    <!-- =========================== COBRANÇAS =========================== -->
-    <section id="tab-cobrancas" class="tab-panel active">
-      <div class="period-label" id="cobPeriodLabel"></div>
-
-      <div class="dashboard" id="cobDashboard"></div>
-
-      <div class="toolbar">
-        <div class="search-box"><input id="cobSearchInput" placeholder="🔎 Buscar por cliente ou descrição..."></div>
-        <div class="period-row">
-          <label for="cobMonthFilter">Vencimento:</label>
-          <input type="month" id="cobMonthFilter" title="Filtrar por mês de vencimento">
-          <button class="chip-clear-month" id="btnCobClearMonth" title="Ver todos os períodos">✕ Ver tudo</button>
-        </div>
-        <div class="filters" id="cobFilters">
-          <button class="chip active" data-filter="todos">Todos</button>
-          <button class="chip" data-filter="pendente">Pendente</button>
-          <button class="chip" data-filter="pago">Pago</button>
-          <button class="chip" data-filter="atrasado">Atrasado</button>
-        </div>
-        <button class="btn btn-primary" id="btnNewClient">＋ Novo cliente</button>
-      </div>
-
-      <div class="clients-list" id="clientsList"></div>
-
-      <div class="empty-state" id="emptyClients" hidden>
-        <div class="ee-icon">💳</div>
-        <h3>Nenhuma cobrança encontrada</h3>
-        <p>Cadastre um novo cliente ou ajuste os filtros de busca.</p>
-      </div>
-    </section>
-
-    <!-- =========================== ENTREGAS =========================== -->
-    <section id="tab-entregas" class="tab-panel">
+<div id="app"><header class="topbar"><div class="brand"><div class="brand-logo-box" aria-label="Logotipo EN">EN</div><div><h1>Nex Cell</h1><p>Controle de Entregas</p></div></div><button class="icon-btn" id="btnSettings" aria-label="Configurações e backup">⚙️</button></header><main>
+    <section id="tab-entregas">
       <div class="summary-card">
         <div class="summary-head">Total a pagar ao entregador</div>
         <div class="summary-main">
           <span class="summary-number" id="entTotalPendente">R$ 0,00</span>
         </div>
+        <p class="summary-note">Saldo geral pendente · todas as datas, independentemente dos filtros</p>
         <div class="summary-sub" id="entCountPendente">0 corrida(s) pendente(s)</div>
         <div class="summary-foot">
           <span class="paid-info">Pago no período filtrado: <b id="entTotalPagoPeriodo">R$ 0,00</b></span>
@@ -317,6 +232,12 @@
         </div>
       </div>
 
+      <div class="dashboard" aria-label="Resumo do período">
+        <div class="stat-card accent-green"><div class="stat-label">Pago no período</div><div class="stat-value" id="periodPaid"></div></div>
+        <div class="stat-card accent-amber"><div class="stat-label">Corridas pendentes</div><div class="stat-value" id="periodPendingCount"></div><div class="stat-sub">No período selecionado</div></div>
+        <div class="stat-card accent-green"><div class="stat-label">Corridas pagas</div><div class="stat-value" id="periodPaidCount"></div><div class="stat-sub">No período selecionado</div></div>
+        <div class="stat-card"><div class="stat-label">Total das corridas</div><div class="stat-value" id="periodTotal"></div><div class="stat-sub">No período selecionado</div></div>
+      </div>
       <div class="period-label" id="entPeriodLabel"></div>
 
       <div class="toolbar">
@@ -330,8 +251,8 @@
         </div>
         <div class="filters" id="entFilters">
           <button class="chip active" data-filter="todos">Todos</button>
-          <button class="chip" data-filter="pendente">Pendente</button>
-          <button class="chip" data-filter="pago">Pago</button>
+          <button class="chip" data-filter="pendente">Pendentes</button>
+          <button class="chip" data-filter="pago">Pagos</button>
         </div>
         <button class="btn btn-primary" id="btnNewEntrega">＋ Nova corrida</button>
       </div>
@@ -344,80 +265,25 @@
         <p>Registre uma entrega ou ajuste os filtros de busca.</p>
       </div>
     </section>
-  </main>
-</div>
-
-<!-- MODAL: Novo/Editar cliente (cobrança) -->
-<div class="modal-overlay" id="clientModalOverlay">
-  <div class="modal">
-    <div class="modal-header">
-      <h3 id="clientModalTitle">Novo cliente</h3>
-      <button class="modal-close" data-close="clientModalOverlay">&times;</button>
-    </div>
-    <form id="clientForm">
-      <div class="field">
-        <label>Nome do cliente</label>
-        <input type="text" id="cobClientName" required placeholder="Ex: Maria Silva">
-      </div>
-      <div class="field">
-        <label>Descrição (opcional)</label>
-        <input type="text" id="cobDescription" placeholder="Ex: iPhone 11 parcelado">
-      </div>
-      <div class="field">
-        <label>Conta destino</label>
-        <input type="text" id="cobAccount" list="bancosList" required placeholder="Ex: Nubank Vanilton" autocomplete="off">
-        <datalist id="bancosList"></datalist>
-      </div>
-
-      <div id="cobInstallmentFields">
-        <div class="row2">
-          <div class="field">
-            <label>Valor de cada parcela (R$)</label>
-            <input type="number" id="cobInstallmentValue" min="0" step="0.01" placeholder="0,00">
-          </div>
-          <div class="field">
-            <label>Quantidade de parcelas</label>
-            <input type="number" id="cobInstallmentQty" min="1" step="1" placeholder="Ex: 3">
-          </div>
-        </div>
-        <div class="field">
-          <label>Data do primeiro vencimento</label>
-          <input type="date" id="cobFirstDue">
-          <div class="field-hint">As próximas parcelas vencem automaticamente no mesmo dia, um mês depois.</div>
-        </div>
-        <div class="calc-preview">
-          <span>Valor total da cobrança</span>
-          <b id="cobPreviewTotal">R$ 0,00</b>
-        </div>
-      </div>
-
-      <div class="modal-buttons">
-        <button type="button" class="btn btn-ghost" data-close="clientModalOverlay">Cancelar</button>
-        <button type="submit" class="btn btn-primary">Salvar</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<!-- MODAL: Nova entrega -->
+</main></div>
 <div class="modal-overlay" id="entregaModalOverlay">
   <div class="modal">
     <div class="modal-header">
-      <h3>Nova corrida</h3>
+      <h3 id="entregaModalTitle">Nova corrida</h3>
       <button class="modal-close" data-close="entregaModalOverlay">&times;</button>
     </div>
     <form id="entregaForm">
       <div class="field">
-        <label>Data da corrida</label>
+        <label for="entDate">Data da corrida</label>
         <input type="date" id="entDate" required>
       </div>
       <div class="field">
-        <label>Serviço / o que foi entregue</label>
+        <label for="entService">Serviço / o que foi entregue</label>
         <textarea id="entService" required placeholder="Ex: Entrega de celular para cliente no bairro X"></textarea>
       </div>
       <div class="field">
-        <label>Valor da corrida (R$)</label>
-        <input type="number" id="entValue" min="0" step="0.01" required placeholder="0,00">
+        <label for="entValue">Valor da corrida (R$)</label>
+        <input type="number" id="entValue" min="0.01" step="0.01" required placeholder="0,00">
       </div>
       <div class="field">
         <label>Já foi paga?</label>
@@ -442,12 +308,12 @@
       <button class="modal-close" data-close="settingsModalOverlay">&times;</button>
     </div>
     <div class="section-title" style="margin-top:0;">Backup de dados</div>
-    <p style="font-size:13px; color:var(--text-soft); margin-top:0;">Seus dados ficam salvos somente neste navegador. Faça backups regulares para não perder informações.</p>
+    <p style="font-size:13px; color:var(--text-soft); margin-top:0;">As entregas ficam salvas neste navegador e endereço. Para mudar de dispositivo ou abrir o arquivo em outro endereço, exporte e importe um backup. Cobranças e outros dados não serão alterados.</p>
     <div class="modal-buttons" style="flex-direction:column;">
       <button class="btn btn-ghost btn-block" id="btnExport">⬇️ Exportar backup (JSON)</button>
       <button class="btn btn-ghost btn-block" id="btnImport">⬆️ Importar backup (JSON)</button>
       <input type="file" id="fileImport" accept="application/json" hidden>
-      <button class="btn btn-danger btn-block" id="btnClearAll">🗑️ Limpar todos os dados</button>
+      <button class="btn btn-danger btn-block" id="btnClearAll">🗑️ Limpar todas as entregas</button>
     </div>
   </div>
 </div>
@@ -467,740 +333,123 @@
   </div>
 </div>
 
-<!-- MODAL: Entrada / pagamento parcial -->
-<div class="modal-overlay" id="partialModalOverlay">
-  <div class="modal">
-    <div class="modal-header">
-      <h3>Registrar entrada</h3>
-      <button class="modal-close" data-close="partialModalOverlay">&times;</button>
-    </div>
-    <div class="calc-preview"><span id="partialInfo">Restante</span><b id="partialRest">R$ 0,00</b></div>
-    <div class="field">
-      <label>Valor recebido agora (R$)</label>
-      <input type="number" id="partialValue" min="0" step="0.01" placeholder="0,00">
-      <div class="field-hint" id="partialHint"></div>
-    </div>
-    <div class="modal-buttons">
-      <button type="button" class="btn btn-danger" id="btnPartialReset">Zerar</button>
-      <button type="button" class="btn btn-primary" id="btnPartialSave">Salvar</button>
-    </div>
-  </div>
-</div>
-
-<div id="toastWrap"></div>
-
+<div id="toastWrap" role="status" aria-live="polite"></div>
 <script>
 (function(){
-  "use strict";
-
-  /* ============================================================
-     STORAGE
-  ============================================================ */
-  const CLIENTS_KEY = 'nc_cobrancas_clients';
-  const ENTREGAS_KEY = 'nc_entregas_items';
-
-  let clients = loadJSON(CLIENTS_KEY, []);
-  let entregas = loadJSON(ENTREGAS_KEY, []);
-
-  function loadJSON(key, fallback){
-    try{
-      const raw = localStorage.getItem(key);
-      if(raw === null) return fallback;
-      return JSON.parse(raw);
-    }catch(e){ return fallback; }
-  }
-  function saveClients(){ localStorage.setItem(CLIENTS_KEY, JSON.stringify(clients)); }
-  function saveEntregas(){ localStorage.setItem(ENTREGAS_KEY, JSON.stringify(entregas)); }
-
-  function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
-
-  /* ============================================================
-     UTILITIES
-  ============================================================ */
-  function fmtBRL(n){ return (Number(n)||0).toLocaleString('pt-BR', {style:'currency', currency:'BRL'}); }
-  function fmtDate(iso){
-    if(!iso) return '—';
-    const parts = iso.split('-');
-    if(parts.length !== 3) return iso;
-    return `${parts[2]}/${parts[1]}/${parts[0]}`;
-  }
-  function todayISO(){
-    const d = new Date();
-    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-  }
-  function addMonths(iso, n){
-    const [y,m,d] = iso.split('-').map(Number);
-    const first = new Date(y, (m-1)+n, 1);
-    const lastDay = new Date(first.getFullYear(), first.getMonth()+1, 0).getDate();
-    const day = Math.min(d, lastDay);
-    first.setDate(day);
-    return `${first.getFullYear()}-${String(first.getMonth()+1).padStart(2,'0')}-${String(first.getDate()).padStart(2,'0')}`;
-  }
-  function escapeHTML(str){
-    return String(str ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  }
-  const ACCOUNT_LABELS = {nubank:'Nubank', santander:'Santander', c6:'C6 Bank'};
-  function accountBadgeHtml(acc){
-    const _l = String(ACCOUNT_LABELS[acc] || acc || '').toLowerCase();
-    const cls = _l.includes('nubank') ? 'account-nubank' : _l.includes('santander') ? 'account-santander' : _l.includes('c6') ? 'account-c6' : 'account-other';
-    const label = escapeHTML(ACCOUNT_LABELS[acc] || acc || '—');
-    return `<span class="account-badge ${cls}"><span class="dot"></span>${label}</span>`;
-  }
-  const STATUS_LABELS = {pendente:'Pendente', pago:'Pago', atrasado:'Atrasado'};
-  function accountLabel(acc){ return ACCOUNT_LABELS[acc] || acc || ''; }
-
-  /* ============================================================
-     TOAST
-  ============================================================ */
-  function showToast(msg){
-    const wrap = document.getElementById('toastWrap');
-    const t = document.createElement('div');
-    t.className = 'toast';
-    t.textContent = msg;
-    wrap.appendChild(t);
-    setTimeout(() => t.remove(), 2500);
-  }
-
-  /* ============================================================
-     MODAL HELPERS
-  ============================================================ */
-  function openModal(id){ document.getElementById(id).classList.add('open'); }
-  function closeModal(id){ document.getElementById(id).classList.remove('open'); }
-  document.querySelectorAll('[data-close]').forEach(el => {
-    el.addEventListener('click', () => closeModal(el.getAttribute('data-close')));
+'use strict';
+const KEY='nc_entregas_items';
+const $=id=>document.getElementById(id);
+const todayISO=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
+const money=cents=>(cents/100).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const cents=item=>Math.round(item.value*100);
+const sum=items=>items.reduce((n,item)=>n+cents(item),0);
+const fmtDate=date=>date.split('-').reverse().join('/');
+const escapeHTML=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function uid(){
+  if(globalThis.crypto?.randomUUID)return crypto.randomUUID();
+  const bytes=new Uint8Array(16);
+  if(globalThis.crypto?.getRandomValues)crypto.getRandomValues(bytes);
+  else for(let i=0;i<16;i++)bytes[i]=Math.floor(Math.random()*256);
+  bytes[6]=(bytes[6]&15)|64;bytes[8]=(bytes[8]&63)|128;
+  const h=Array.from(bytes,b=>b.toString(16).padStart(2,'0')).join('');
+  return `${h.slice(0,8)}-${h.slice(8,12)}-${h.slice(12,16)}-${h.slice(16,20)}-${h.slice(20)}`;
+}
+function validDate(value){
+  if(typeof value!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(value))return false;
+  const d=new Date(value+'T12:00:00Z');return Number.isFinite(d.getTime())&&d.toISOString().slice(0,10)===value;
+}
+function validateRecords(records){
+  if(!Array.isArray(records))throw new Error('O backup deve conter uma lista de entregas.');
+  const ids=new Set();
+  return records.map((item,index)=>{
+    if(!item||typeof item!=='object'||Array.isArray(item)||typeof item.id!=='string'||!item.id.trim()||!validDate(item.date)||typeof item.service!=='string'||!item.service.trim()||typeof item.value!=='number'||!Number.isFinite(item.value)||item.value<=0||!Number.isSafeInteger(Math.round(item.value*100))||!['pendente','pago'].includes(item.status))throw new Error(`Corrida ${index+1} inválida. Verifique identificador, data, descrição, valor e status.`);
+    if(ids.has(item.id))throw new Error('O backup contém identificadores duplicados. Nenhum dado foi substituído.');
+    ids.add(item.id);
+    for(const field of ['createdAt','updatedAt','paidAt'])if(item[field]!=null&&(typeof item[field]!=='string'||!Number.isFinite(Date.parse(item[field]))))throw new Error(`Data ${field} inválida na corrida ${index+1}.`);
+    return {...item};
   });
-  document.querySelectorAll('.modal-overlay').forEach(overlay => {
-    overlay.addEventListener('click', (e) => { if(e.target === overlay) overlay.classList.remove('open'); });
-  });
-
-  let confirmCallback = null;
-  function openConfirm(title, text, onConfirm){
-    document.getElementById('confirmTitle').textContent = title;
-    document.getElementById('confirmText').textContent = text;
-    confirmCallback = onConfirm;
-    openModal('confirmModalOverlay');
-  }
-  document.getElementById('confirmActionBtn').addEventListener('click', () => {
-    if(confirmCallback) confirmCallback();
-    closeModal('confirmModalOverlay');
-  });
-
-  /* ============================================================
-     YES/NO TOGGLE HELPERS (reusable)
-  ============================================================ */
-  document.querySelectorAll('[data-yesno]').forEach(group => {
-    group.querySelectorAll('.yesno-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        group.querySelectorAll('.yesno-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-      });
-    });
-  });
-  function getYesNo(groupId){
-    const group = document.querySelector(`[data-yesno="${groupId}"]`);
-    const active = group.querySelector('.yesno-btn.active');
-    return active ? active.dataset.val : 'Não';
-  }
-  function setYesNo(groupId, val){
-    const group = document.querySelector(`[data-yesno="${groupId}"]`);
-    group.querySelectorAll('.yesno-btn').forEach(b => b.classList.toggle('active', b.dataset.val === (val || 'Não')));
-  }
-
-  /* ============================================================
-     TABS
-  ============================================================ */
-  document.querySelectorAll('.tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-      tab.classList.add('active');
-      document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
-    });
-  });
-
-  const MONTH_NAMES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
-  function formatMonthLabel(yyyyMm){
-    const [y, m] = yyyyMm.split('-');
-    return `${MONTH_NAMES[parseInt(m,10)-1] || m} de ${y}`;
-  }
-
-  /* ============================================================================================
-     ===========================================  COBRANÇAS  ====================================
-     ============================================================================================ */
-
-  function autoEscalateCobrancas(){
-    const today = todayISO();
-    let changed = false;
-    clients.forEach(c => c.installments.forEach(inst => {
-      if(inst.status === 'pendente' && inst.dueDate && inst.dueDate < today){
-        inst.status = 'atrasado';
-        changed = true;
-      }
-    }));
-    if(changed) saveClients();
-  }
-
-  let cobMonth = '';
-  let cobStatusFilter = 'todos';
-  let cobSearch = '';
-
-  document.getElementById('cobMonthFilter').addEventListener('change', (e) => {
-    cobMonth = e.target.value;
-    renderCobrancas();
-  });
-  document.getElementById('btnCobClearMonth').addEventListener('click', () => {
-    cobMonth = '';
-    document.getElementById('cobMonthFilter').value = '';
-    renderCobrancas();
-  });
-  document.querySelectorAll('#cobFilters .chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-      document.querySelectorAll('#cobFilters .chip').forEach(c => c.classList.remove('active'));
-      chip.classList.add('active');
-      cobStatusFilter = chip.dataset.filter;
-      renderCobrancas();
-    });
-  });
-  document.getElementById('cobSearchInput').addEventListener('input', (e) => {
-    cobSearch = e.target.value.trim().toLowerCase();
-    renderCobrancas();
-  });
-
-  function renderCobPeriodLabel(){
-    const el = document.getElementById('cobPeriodLabel');
-    const input = document.getElementById('cobMonthFilter');
-    if(cobMonth){
-      el.innerHTML = `📅 Vencimentos de: <b>${formatMonthLabel(cobMonth)}</b>`;
-      input.classList.add('active-filter');
-    } else {
-      el.innerHTML = `📅 Mostrando: <b>todos os períodos</b>`;
-      input.classList.remove('active-filter');
-    }
-  }
-
-  function renderCobDashboard(){
-    let aReceber = 0, recebido = 0, pendente = 0, atrasado = 0;
-    clients.forEach(c => c.installments.forEach(inst => {
-      if(cobMonth && (inst.dueDate || '').slice(0,7) !== cobMonth) return;
-      const _v = Number(inst.value) || 0;
-      const _p = inst.status === 'pago' ? _v : Math.min(Number(inst.partial) || 0, _v);
-      aReceber += _v;
-      recebido += _p;
-      if(inst.status === 'pago'){ /* já somado em recebido */ }
-      else if(inst.status === 'pendente') pendente += _v - _p;
-      else if(inst.status === 'atrasado') atrasado += _v - _p;
-    }));
-    document.getElementById('cobDashboard').innerHTML = `
-      <div class="stat-card">
-        <div class="stat-label">A receber</div>
-        <div class="stat-value">${fmtBRL(aReceber)}</div>
-        <div class="stat-sub">Soma de todas as parcelas</div>
-      </div>
-      <div class="stat-card accent-green">
-        <div class="stat-label">Recebido</div>
-        <div class="stat-value">${fmtBRL(recebido)}</div>
-      </div>
-      <div class="stat-card accent-amber">
-        <div class="stat-label">Pendente</div>
-        <div class="stat-value">${fmtBRL(pendente)}</div>
-      </div>
-      <div class="stat-card accent-red">
-        <div class="stat-label">Atrasado</div>
-        <div class="stat-value">${fmtBRL(atrasado)}</div>
-      </div>
-    `;
-  }
-
-  function renderClientsList(){
-    let list = clients.slice();
-    if(cobSearch){
-      list = list.filter(c =>
-        (c.name||'').toLowerCase().includes(cobSearch) ||
-        (c.description||'').toLowerCase().includes(cobSearch)
-      );
-    }
-
-    const rows = [];
-    list.forEach(c => {
-      const filteredInst = c.installments.filter(inst =>
-        (!cobMonth || (inst.dueDate||'').slice(0,7) === cobMonth) &&
-        (cobStatusFilter === 'todos' || inst.status === cobStatusFilter)
-      ).sort((a,b) => a.number - b.number);
-      if(filteredInst.length > 0){
-        rows.push({client: c, installments: filteredInst});
-      }
-    });
-
-    const container = document.getElementById('clientsList');
-    const emptyState = document.getElementById('emptyClients');
-
-    if(rows.length === 0){
-      container.innerHTML = '';
-      emptyState.hidden = false;
-      return;
-    }
-    emptyState.hidden = true;
-
-    container.innerHTML = rows.map(({client:c, installments}) => {
-      const totalCount = c.installments.length;
-      const paidCount = c.installments.filter(i => i.status === 'pago').length;
-      const pct = totalCount ? (paidCount/totalCount*100) : 0;
-      const totalValue = c.installments.reduce((s,i) => s + (Number(i.value)||0), 0);
-
-      const instHtml = installments.map(inst => {
-        const overdue = inst.status !== 'pago' && inst.dueDate && inst.dueDate < todayISO();
-        return `
-          <div class="installment-row" data-inst-id="${inst.id}">
-            <div class="inst-info">
-              <span class="inst-num">Parcela ${inst.number}/${totalCount}</span>
-              <span class="inst-due ${overdue?'late':''}">Vence ${fmtDate(inst.dueDate)}<span class="inst-value">${fmtBRL(inst.value)}</span></span>
-              ${inst.status !== 'pago' && Number(inst.partial) > 0 ? `<span class="inst-partial">Entrada <b>${fmtBRL(inst.partial)}</b> · Resta <span class="rest">${fmtBRL(Math.max(inst.value - inst.partial, 0))}</span></span>` : ''}
-            </div>
-            <div class="inst-actions">
-              <select class="status-select" data-action="inst-status">
-                <option value="pendente" ${inst.status==='pendente'?'selected':''}>Pendente</option>
-                <option value="pago" ${inst.status==='pago'?'selected':''}>Pago</option>
-                <option value="atrasado" ${inst.status==='atrasado'?'selected':''}>Atrasado</option>
-              </select>
-              <button type="button" class="icon-action-sm pay" data-action="inst-partial" title="Registrar entrada">💵</button>
-              <button type="button" class="icon-action-sm" data-action="inst-delete" title="Excluir parcela">✕</button>
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      return `
-        <div class="client-card" data-client-id="${c.id}">
-          <div class="client-top">
-            <div>
-              <div class="client-name">${escapeHTML(c.name)}</div>
-              ${c.description ? `<div class="client-desc">${escapeHTML(c.description)}</div>` : ''}
-            </div>
-            <div class="client-actions">
-              ${accountBadgeHtml(c.account)}
-              <button class="icon-action" data-action="edit-client" title="Editar">✏️</button>
-              <button class="icon-action" data-action="delete-client" title="Excluir">🗑️</button>
-            </div>
-          </div>
-          <div class="progress-wrap">
-            <div class="progress-labels"><span><b>${paidCount}</b> de <b>${totalCount}</b> parcelas pagas</span><span>Total: <b>${fmtBRL(totalValue)}</b></span></div>
-            <div class="mini-track"><div class="mini-fill" style="width:${pct}%"></div></div>
-          </div>
-          <div class="installments-list">${instHtml}</div>
-        </div>
-      `;
-    }).join('');
-
-    container.querySelectorAll('.client-card').forEach(card => {
-      const clientId = card.dataset.clientId;
-      card.querySelector('[data-action="edit-client"]').addEventListener('click', () => openClientModal(clientId));
-      card.querySelector('[data-action="delete-client"]').addEventListener('click', () => {
-        openConfirm('Excluir cliente', 'Isso vai apagar o cliente e todas as parcelas dele. Essa ação não pode ser desfeita. Deseja continuar?', () => {
-          clients = clients.filter(c => c.id !== clientId);
-          saveClients();
-          renderCobrancas();
-          showToast('Cliente excluído.');
-        });
-      });
-      card.querySelectorAll('.installment-row').forEach(row => {
-        const instId = row.dataset.instId;
-        row.querySelector('[data-action="inst-status"]').addEventListener('change', (e) => {
-          const client = clients.find(c => c.id === clientId);
-          const inst = client && client.installments.find(i => i.id === instId);
-          if(inst){
-            inst.status = e.target.value;
-            saveClients();
-            renderCobrancas();
-            showToast('Status da parcela atualizado.');
-          }
-        });
-        row.querySelector('[data-action="inst-partial"]').addEventListener('click', () => openPartialModal(clientId, instId));
-        row.querySelector('[data-action="inst-delete"]').addEventListener('click', () => {
-          const client = clients.find(c => c.id === clientId);
-          if(client){
-            client.installments = client.installments.filter(i => i.id !== instId);
-            client.installments.forEach((i, idx) => i.number = idx + 1);
-            saveClients();
-            renderCobrancas();
-            showToast('Parcela removida.');
-          }
-        });
-      });
-    });
-  }
-
-  function renderCobrancas(){
-    autoEscalateCobrancas();
-    renderCobPeriodLabel();
-    renderCobDashboard();
-    renderClientsList();
-  }
-
-  /* ---------- MODAL: entrada / pagamento parcial ---------- */
-  let partialTarget = null;
-  function getPartialInst(){
-    if(!partialTarget) return null;
-    const c = clients.find(x => x.id === partialTarget.clientId);
-    return c && c.installments.find(i => i.id === partialTarget.instId);
-  }
-  function openPartialModal(clientId, instId){
-    partialTarget = {clientId, instId};
-    const inst = getPartialInst();
-    if(!inst) return;
-    const paid = Math.min(Number(inst.partial) || 0, inst.value);
-    document.getElementById('partialInfo').textContent = `Restante (parcela de ${fmtBRL(inst.value)})`;
-    document.getElementById('partialRest').textContent = fmtBRL(inst.value - paid);
-    document.getElementById('partialHint').textContent = paid > 0 ? `Já recebido: ${fmtBRL(paid)}` : '';
-    document.getElementById('partialValue').value = '';
-    openModal('partialModalOverlay');
-  }
-  document.getElementById('btnPartialSave').addEventListener('click', () => {
-    const inst = getPartialInst();
-    const v = Number(document.getElementById('partialValue').value) || 0;
-    if(!inst || v <= 0){ showToast('Informe o valor recebido.'); return; }
-    inst.partial = (Number(inst.partial) || 0) + v;
-    if(inst.partial >= inst.value){ inst.partial = inst.value; inst.status = 'pago'; }
-    saveClients();
-    closeModal('partialModalOverlay');
-    renderCobrancas();
-    showToast(inst.status === 'pago' ? 'Parcela quitada!' : 'Entrada registrada.');
-  });
-  document.getElementById('btnPartialReset').addEventListener('click', () => {
-    const inst = getPartialInst();
-    if(inst){ inst.partial = 0; saveClients(); renderCobrancas(); }
-    closeModal('partialModalOverlay');
-    showToast('Entrada zerada.');
-  });
-
-  /* ---------- MODAL: novo/editar cliente ---------- */
-  let editingClientId = null;
-  const clientForm = document.getElementById('clientForm');
-  const cobInstallmentFields = document.getElementById('cobInstallmentFields');
-
-  function updateCobPreview(){
-    const val = Number(document.getElementById('cobInstallmentValue').value) || 0;
-    const qty = Number(document.getElementById('cobInstallmentQty').value) || 0;
-    document.getElementById('cobPreviewTotal').textContent = fmtBRL(val * qty);
-  }
-  document.getElementById('cobInstallmentValue').addEventListener('input', updateCobPreview);
-  document.getElementById('cobInstallmentQty').addEventListener('input', updateCobPreview);
-
-  function openClientModal(id){
-    editingClientId = id || null;
-    clientForm.reset();
-    document.getElementById('bancosList').innerHTML = [...new Set(clients.map(c => accountLabel(c.account)).filter(Boolean))].map(b => `<option value="${escapeHTML(b)}">`).join('');
-    if(id){
-      const c = clients.find(x => x.id === id);
-      document.getElementById('clientModalTitle').textContent = 'Editar cliente';
-      document.getElementById('cobClientName').value = c.name || '';
-      document.getElementById('cobDescription').value = c.description || '';
-      document.getElementById('cobAccount').value = accountLabel(c.account);
-      cobInstallmentFields.hidden = true;
-    } else {
-      document.getElementById('clientModalTitle').textContent = 'Novo cliente';
-      document.getElementById('cobFirstDue').value = todayISO();
-      cobInstallmentFields.hidden = false;
-      updateCobPreview();
-    }
-    openModal('clientModalOverlay');
-  }
-  document.getElementById('btnNewClient').addEventListener('click', () => openClientModal(null));
-
-  clientForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const name = document.getElementById('cobClientName').value.trim();
-    const description = document.getElementById('cobDescription').value.trim();
-    const account = document.getElementById('cobAccount').value.trim();
-
-    if(!name){
-      showToast('Informe o nome do cliente.');
-      return;
-    }
-
-    if(editingClientId){
-      const c = clients.find(x => x.id === editingClientId);
-      if(c){ c.name = name; c.description = description; c.account = account; }
-      saveClients();
-      closeModal('clientModalOverlay');
-      renderCobrancas();
-      showToast('Cliente atualizado.');
-      return;
-    }
-
-    const value = Number(document.getElementById('cobInstallmentValue').value) || 0;
-    const qty = Number(document.getElementById('cobInstallmentQty').value) || 0;
-    const firstDue = document.getElementById('cobFirstDue').value;
-
-    if(value <= 0 || qty <= 0 || !firstDue){
-      showToast('Preencha valor da parcela, quantidade e data do primeiro vencimento.');
-      return;
-    }
-
-    const installments = [];
-    for(let i = 0; i < qty; i++){
-      installments.push({
-        id: uid(),
-        number: i + 1,
-        value: value,
-        dueDate: addMonths(firstDue, i),
-        status: 'pendente'
-      });
-    }
-
-    clients.push({id: uid(), name, description, account, installments});
-    saveClients();
-    closeModal('clientModalOverlay');
-    renderCobrancas();
-    showToast('Cliente cadastrado.');
-  });
-
-  /* ============================================================================================
-     ============================================  ENTREGAS  ====================================
-     ============================================================================================ */
-
-  let entMonth = '';
-  let entDay = '';
-  let entStatusFilter = 'todos';
-  let entSearch = '';
-
-  document.getElementById('entMonthFilter').addEventListener('change', (e) => {
-    entMonth = e.target.value;
-    if(entMonth){ entDay = ''; document.getElementById('entDayFilter').value = ''; }
-    renderEntregas();
-  });
-  document.getElementById('entDayFilter').addEventListener('change', (e) => {
-    entDay = e.target.value;
-    if(entDay){ entMonth = ''; document.getElementById('entMonthFilter').value = ''; }
-    renderEntregas();
-  });
-  document.getElementById('btnEntClearPeriod').addEventListener('click', () => {
-    entMonth = ''; entDay = '';
-    document.getElementById('entMonthFilter').value = '';
-    document.getElementById('entDayFilter').value = '';
-    renderEntregas();
-  });
-  document.querySelectorAll('#entFilters .chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-      document.querySelectorAll('#entFilters .chip').forEach(c => c.classList.remove('active'));
-      chip.classList.add('active');
-      entStatusFilter = chip.dataset.filter;
-      renderEntregas();
-    });
-  });
-  document.getElementById('entSearchInput').addEventListener('input', (e) => {
-    entSearch = e.target.value.trim().toLowerCase();
-    renderEntregas();
-  });
-
-  function renderEntPeriodLabel(){
-    const el = document.getElementById('entPeriodLabel');
-    const monthInput = document.getElementById('entMonthFilter');
-    const dayInput = document.getElementById('entDayFilter');
-    monthInput.classList.toggle('active-filter', !!entMonth);
-    dayInput.classList.toggle('active-filter', !!entDay);
-    if(entDay){
-      el.innerHTML = `📅 Mostrando: <b>${fmtDate(entDay)}</b>`;
-    } else if(entMonth){
-      el.innerHTML = `📅 Mostrando: <b>${formatMonthLabel(entMonth)}</b>`;
-    } else {
-      el.innerHTML = `📅 Mostrando: <b>todos os períodos</b>`;
-    }
-  }
-
-  function getFilteredEntregas(){
-    let list = entregas.slice();
-    if(entDay) list = list.filter(e => e.date === entDay);
-    else if(entMonth) list = list.filter(e => (e.date||'').slice(0,7) === entMonth);
-    if(entStatusFilter !== 'todos') list = list.filter(e => e.status === entStatusFilter);
-    if(entSearch) list = list.filter(e => (e.service||'').toLowerCase().includes(entSearch));
-    return list.sort((a,b) => (b.date||'').localeCompare(a.date||''));
-  }
-
-  function renderEntSummary(){
-    const pendentesAll = entregas.filter(e => e.status === 'pendente');
-    const totalPendente = pendentesAll.reduce((s,e) => s + (Number(e.value)||0), 0);
-    document.getElementById('entTotalPendente').textContent = fmtBRL(totalPendente);
-    document.getElementById('entCountPendente').textContent = `${pendentesAll.length} corrida(s) pendente(s)`;
-
-    const filtered = getFilteredEntregas();
-    const totalPagoPeriodo = entregas
-      .filter(e => {
-        if(entDay) return e.date === entDay;
-        if(entMonth) return (e.date||'').slice(0,7) === entMonth;
-        return true;
-      })
-      .filter(e => e.status === 'pago')
-      .reduce((s,e) => s + (Number(e.value)||0), 0);
-    document.getElementById('entTotalPagoPeriodo').textContent = fmtBRL(totalPagoPeriodo);
-  }
-
-  function renderEntregasList(){
-    const list = getFilteredEntregas();
-    const container = document.getElementById('entregasList');
-    const emptyState = document.getElementById('emptyEntregas');
-
-    if(list.length === 0){
-      container.innerHTML = '';
-      emptyState.hidden = false;
-      return;
-    }
-    emptyState.hidden = true;
-
-    container.innerHTML = list.map(e => `
-      <div class="entrega-card" data-id="${e.id}">
-        <div class="entrega-left">
-          <div class="entrega-service">${escapeHTML(e.service)}</div>
-          <div class="entrega-date">${fmtDate(e.date)}</div>
-        </div>
-        <div class="entrega-right">
-          <span class="entrega-value">${fmtBRL(e.value)}</span>
-          <span class="badge clickable ${e.status==='pago'?'badge-pago':'badge-pendente'}" data-action="toggle-status" title="Toque para alternar status"><span class="dot"></span>${STATUS_LABELS[e.status]}</span>
-          <button class="icon-action-sm" data-action="delete-entrega" title="Excluir">✕</button>
-        </div>
-      </div>
-    `).join('');
-
-    container.querySelectorAll('.entrega-card').forEach(card => {
-      const id = card.dataset.id;
-      card.querySelector('[data-action="toggle-status"]').addEventListener('click', () => {
-        const item = entregas.find(e => e.id === id);
-        if(item){
-          item.status = item.status === 'pago' ? 'pendente' : 'pago';
-          saveEntregas();
-          renderEntregas();
-          showToast('Status atualizado.');
-        }
-      });
-      card.querySelector('[data-action="delete-entrega"]').addEventListener('click', () => {
-        entregas = entregas.filter(e => e.id !== id);
-        saveEntregas();
-        renderEntregas();
-        showToast('Corrida removida.');
-      });
-    });
-  }
-
-  function renderEntregas(){
-    renderEntPeriodLabel();
-    renderEntSummary();
-    renderEntregasList();
-  }
-
-  /* ---------- MODAL: nova entrega ---------- */
-  const entregaForm = document.getElementById('entregaForm');
-  document.getElementById('btnNewEntrega').addEventListener('click', () => {
-    entregaForm.reset();
-    document.getElementById('entDate').value = todayISO();
-    setYesNo('entPaid', 'Não');
-    openModal('entregaModalOverlay');
-  });
-
-  entregaForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const date = document.getElementById('entDate').value;
-    const service = document.getElementById('entService').value.trim();
-    const value = Number(document.getElementById('entValue').value) || 0;
-    const paid = getYesNo('entPaid') === 'Sim';
-
-    if(!date || !service || value <= 0){
-      showToast('Preencha data, serviço e valor da corrida.');
-      return;
-    }
-
-    entregas.push({id: uid(), date, service, value, status: paid ? 'pago' : 'pendente'});
-    saveEntregas();
-    closeModal('entregaModalOverlay');
-    renderEntregas();
-    showToast('Corrida registrada.');
-  });
-
-  /* ---------- Fechar ciclo (marcar tudo como pago) ---------- */
-  document.getElementById('btnFecharCiclo').addEventListener('click', () => {
-    const pendentes = entregas.filter(e => e.status === 'pendente');
-    if(pendentes.length === 0){
-      showToast('Não há corridas pendentes para fechar.');
-      return;
-    }
-    const total = pendentes.reduce((s,e) => s + (Number(e.value)||0), 0);
-    openConfirm(
-      'Fechar ciclo de pagamento',
-      `Isso vai marcar ${pendentes.length} corrida(s) pendente(s), totalizando ${fmtBRL(total)}, como pagas. Deseja continuar?`,
-      () => {
-        entregas.forEach(e => { if(e.status === 'pendente'){ e.status = 'pago'; e.paidAt = todayISO(); } });
-        saveEntregas();
-        renderEntregas();
-        showToast('Ciclo fechado! Todas as corridas foram marcadas como pagas.');
-      }
-    );
-  });
-
-  /* ============================================================
-     SETTINGS: EXPORT / IMPORT / CLEAR
-  ============================================================ */
-  document.getElementById('btnSettings').addEventListener('click', () => openModal('settingsModalOverlay'));
-
-  document.getElementById('btnExport').addEventListener('click', () => {
-    const payload = {clients, entregas, exportedAt: new Date().toISOString()};
-    const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `nexcell-cobrancas-entregas-${todayISO()}.json`;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-    showToast('Backup exportado.');
-  });
-
-  document.getElementById('btnImport').addEventListener('click', () => document.getElementById('fileImport').click());
-
-  document.getElementById('fileImport').addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if(!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      try{
-        const parsed = JSON.parse(reader.result);
-        openConfirm('Importar backup', 'Isso substituirá todos os dados atuais de cobranças e entregas. Deseja continuar?', () => {
-          clients = Array.isArray(parsed.clients) ? parsed.clients : [];
-          entregas = Array.isArray(parsed.entregas) ? parsed.entregas : [];
-          saveClients();
-          saveEntregas();
-          renderAll();
-          closeModal('settingsModalOverlay');
-          showToast('Backup importado com sucesso.');
-        });
-      }catch(err){
-        showToast('Arquivo inválido. Selecione um backup JSON válido.');
-      }
-      e.target.value = '';
-    };
-    reader.readAsText(file);
-  });
-
-  document.getElementById('btnClearAll').addEventListener('click', () => {
-    openConfirm('Limpar todos os dados', 'Essa ação vai apagar TODAS as cobranças e entregas salvas neste navegador. Essa ação não pode ser desfeita. Deseja continuar?', () => {
-      clients = [];
-      entregas = [];
-      saveClients();
-      saveEntregas();
-      renderAll();
-      closeModal('settingsModalOverlay');
-      showToast('Todos os dados foram apagados.');
-    });
-  });
-
-  /* ============================================================
-     INIT
-  ============================================================ */
-  function renderAll(){
-    renderCobrancas();
-    renderEntregas();
-  }
-  renderAll();
-
+}
+// Storage adapter: replace this layer with authenticated async requests in a future integration.
+// Future read-only courier access must be enforced by Supabase RLS, never only by UI controls.
+const store={
+  async list(){const raw=localStorage.getItem(KEY);return raw===null?[]:validateRecords(JSON.parse(raw));},
+  async replace(records){const checked=validateRecords(records);localStorage.setItem(KEY,JSON.stringify(checked));return checked;},
+  async create(data){const items=await this.list();const now=new Date().toISOString();const item={...data,id:uid(),createdAt:now,updatedAt:now,paidAt:data.status==='pago'?todayISO():null};return this.replace([...items,item]);},
+  async update(id,data){const items=await this.list();const index=items.findIndex(e=>e.id===id);if(index<0)throw new Error('Corrida não encontrada. Atualize a página.');const old=items[index];items[index]={...old,...data,id:old.id,updatedAt:new Date().toISOString(),paidAt:data.status==='pago'?(old.status==='pago'?old.paidAt||todayISO():todayISO()):null};return this.replace(items);},
+  async remove(id){return this.replace((await this.list()).filter(e=>e.id!==id));},
+  async settle(){const now=new Date().toISOString();return this.replace((await this.list()).map(e=>e.status==='pendente'?{...e,status:'pago',paidAt:todayISO(),updatedAt:now}:e));},
+  async clear(){localStorage.removeItem(KEY);return [];}
+};
+// Separate future profile policy from data access; no login or online service in this version.
+const policy={role:'admin',canWrite(){return this.role==='admin';}};
+let items=[],editingId=null,busy=false,storageReady=false;
+const filters={month:'',day:'',status:'todos',search:''};
+function toast(message){const node=document.createElement('div');node.className='toast';node.textContent=message;$('toastWrap').append(node);setTimeout(()=>node.remove(),4000);}
+const focusStack=[];
+function openModal(id){const overlay=$(id);focusStack.push({id,trigger:document.activeElement});overlay.classList.add('open');overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');const title=overlay.querySelector('h3');if(!title.id)title.id=id+'Title';overlay.setAttribute('aria-labelledby',title.id);overlay.querySelector('input:not([type=file]),button')?.focus();}
+let confirmCallback=null;
+function closeModal(id){$(id).classList.remove('open');if(id==='confirmModalOverlay')confirmCallback=null;const index=focusStack.findLastIndex(x=>x.id===id);if(index>=0){const entry=focusStack.splice(index,1)[0];if(entry.trigger?.isConnected)entry.trigger.focus();}}
+function confirmAction(title,text,action){$('confirmTitle').textContent=title;$('confirmText').textContent=text;confirmCallback=action;openModal('confirmModalOverlay');}
+function fail(error){toast(error.name==='QuotaExceededError'?'Não foi possível salvar: armazenamento cheio. Exporte um backup e libere espaço.':error.name==='SecurityError'?'O navegador bloqueou o armazenamento local. Permita o acesso para salvar as entregas.':error.message||'Não foi possível concluir a operação.');}
+async function mutate(operation,message){
+  if(busy)return false;
+  if(!policy.canWrite()){toast('Este perfil permite somente consulta.');return false;}
+  if(!storageReady){toast('O armazenamento não está disponível ou contém dados inválidos. Importe um backup válido para recuperar os dados.');return false;}
+  busy=true;
+  try{items=await operation();render();toast(message);return true;}catch(error){fail(error);return false;}finally{busy=false;}
+}
+$('confirmActionBtn').addEventListener('click',async()=>{if(busy||!confirmCallback)return;const action=confirmCallback;const ok=await action();if(ok!==false)closeModal('confirmModalOverlay');});
+document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>closeModal(b.dataset.close)));
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o&&!busy)closeModal(o.id);}));
+document.addEventListener('keydown',e=>{const open=Array.from(document.querySelectorAll('.modal-overlay.open')).at(-1);if(!open)return;if(e.key==='Escape'&&!busy){closeModal(open.id);return;}if(e.key==='Tab'){const nodes=Array.from(open.querySelectorAll('button,input,textarea,select')).filter(n=>!n.hidden&&!n.disabled&&n.offsetParent!==null);const first=nodes[0],last=nodes.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}});
+function setPaid(paid){document.querySelectorAll('[data-yesno="entPaid"] button').forEach(b=>{const active=(b.dataset.val==='Sim')===paid;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));});}
+document.querySelectorAll('[data-yesno="entPaid"] button').forEach(b=>b.addEventListener('click',()=>setPaid(b.dataset.val==='Sim')));
+function periodItems(){return items.filter(e=>filters.day?e.date===filters.day:filters.month?e.date.slice(0,7)===filters.month:true);}
+function render(){
+  $('emptyEntregas').querySelector('h3').textContent='Nenhuma corrida encontrada';
+  $('emptyEntregas').querySelector('p').textContent='Registre uma entrega ou ajuste os filtros de busca.';
+  const pending=items.filter(e=>e.status==='pendente');
+  $('entTotalPendente').textContent=money(sum(pending));$('entCountPendente').textContent=`${pending.length} corrida(s) pendente(s)`;
+  const period=periodItems(),paid=period.filter(e=>e.status==='pago');
+  $('entTotalPagoPeriodo').textContent=money(sum(paid));$('periodPaid').textContent=money(sum(paid));$('periodPendingCount').textContent=period.length-paid.length;$('periodPaidCount').textContent=paid.length;$('periodTotal').textContent=money(sum(period));
+  $('entPeriodLabel').textContent='📅 Mostrando: '+(filters.day?fmtDate(filters.day):filters.month?new Date(filters.month+'-01T12:00:00').toLocaleDateString('pt-BR',{month:'long',year:'numeric'}):'todos os períodos');
+  const list=period.filter(e=>(filters.status==='todos'||e.status===filters.status)&&e.service.toLocaleLowerCase('pt-BR').includes(filters.search)).sort((a,b)=>b.date.localeCompare(a.date));
+  $('emptyEntregas').hidden=list.length>0;
+  $('entregasList').innerHTML=list.map(e=>`<article class="entrega-card" data-id="${escapeHTML(e.id)}"><div class="entrega-left"><div class="entrega-service">${escapeHTML(e.service)}</div><div class="entrega-date">${fmtDate(e.date)}</div></div><div class="entrega-right"><span class="entrega-value">${money(cents(e))}</span><button class="badge clickable ${e.status==='pago'?'badge-pago':'badge-pendente'}" data-action="status" aria-label="${e.status==='pago'?'Marcar como pendente':'Marcar como pago'}"><span class="dot"></span>${e.status==='pago'?'Pago':'Pendente'}</button><button class="icon-action-sm" data-action="edit" title="Editar corrida" aria-label="Editar corrida">✎</button><button class="icon-action-sm" data-action="delete" title="Excluir corrida" aria-label="Excluir corrida">✕</button></div></article>`).join('');
+  $('btnFecharCiclo').disabled=!pending.length||!policy.canWrite();
+}
+function openEntry(item=null){editingId=item?.id??null;$('entregaForm').reset();$('entregaModalTitle').textContent=item?'Editar corrida':'Nova corrida';$('entDate').value=item?.date||todayISO();$('entService').value=item?.service||'';$('entValue').value=item?.value??'';setPaid(item?.status==='pago');openModal('entregaModalOverlay');$('entDate').focus();}
+$('btnNewEntrega').addEventListener('click',()=>openEntry());
+$('entregaForm').addEventListener('submit',async e=>{
+  e.preventDefault();const value=Number($('entValue').value),date=$('entDate').value,service=$('entService').value.trim();
+  if(!validDate(date)||!service||!Number.isFinite(value)||value<=0||!Number.isSafeInteger(Math.round(value*100))){toast('Preencha data, descrição e um valor válido maior que zero.');return;}
+  const data={date,service,value:Math.round(value*100)/100,status:document.querySelector('[data-yesno="entPaid"] .active').dataset.val==='Sim'?'pago':'pendente'};
+  const ok=await mutate(()=>editingId?store.update(editingId,data):store.create(data),editingId?'Corrida atualizada.':'Corrida registrada.');if(ok)closeModal('entregaModalOverlay');
+});
+$('entregasList').addEventListener('click',e=>{const b=e.target.closest('[data-action]');if(!b)return;const item=items.find(x=>x.id===b.closest('[data-id]').dataset.id);if(!item)return;
+  if(b.dataset.action==='edit')openEntry(item);
+  if(b.dataset.action==='status')mutate(()=>store.update(item.id,{status:item.status==='pago'?'pendente':'pago'}),'Status atualizado.');
+  if(b.dataset.action==='delete')confirmAction('Excluir corrida','Tem certeza de que deseja excluir esta corrida? Essa ação não poderá ser desfeita.',()=>mutate(()=>store.remove(item.id),'Corrida excluída.'));
+});
+$('btnFecharCiclo').addEventListener('click',()=>{const pending=items.filter(e=>e.status==='pendente');if(!pending.length)return;confirmAction('Fechar ciclo de pagamento',`Serão quitadas ${pending.length} corrida(s), totalizando ${money(sum(pending))}. Isso inclui todas as corridas pendentes, independentemente dos filtros ativos. Nenhuma corrida será apagada; todas permanecerão no histórico como pagas. Deseja continuar?`,()=>mutate(()=>store.settle(),'Ciclo fechado. Todas as corridas continuam no histórico.'));});
+$('entMonthFilter').addEventListener('change',e=>{filters.month=e.target.value;filters.day='';$('entDayFilter').value='';render();});
+$('entDayFilter').addEventListener('change',e=>{filters.day=e.target.value;filters.month='';$('entMonthFilter').value='';render();});
+$('btnEntClearPeriod').addEventListener('click',()=>{filters.month=filters.day='';$('entMonthFilter').value=$('entDayFilter').value='';render();});
+$('entSearchInput').addEventListener('input',e=>{filters.search=e.target.value.trim().toLocaleLowerCase('pt-BR');render();});
+document.querySelectorAll('#entFilters .chip').forEach(b=>b.addEventListener('click',()=>{filters.status=b.dataset.filter;document.querySelectorAll('#entFilters .chip').forEach(c=>{c.classList.toggle('active',c===b);c.setAttribute('aria-pressed',String(c===b));});render();}));
+$('btnSettings').addEventListener('click',()=>openModal('settingsModalOverlay'));
+$('btnExport').addEventListener('click',async()=>{try{const records=await store.list();const payload={version:1,entregas:records,exportedAt:new Date().toISOString()};const url=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=`nexcell-entregas-${todayISO()}.json`;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('Backup exportado.');}catch(error){fail(error);}});
+$('btnImport').addEventListener('click',()=>$('fileImport').click());
+$('fileImport').addEventListener('change',async e=>{const file=e.target.files[0];e.target.value='';if(!file)return;try{const parsed=JSON.parse(await file.text());const records=validateRecords(Array.isArray(parsed)?parsed:parsed?.entregas);confirmAction('Importar backup',`Restaurar ${records.length} corrida(s)? Isso substituirá somente as entregas atuais. Cobranças e outros dados serão preservados.`,async()=>{
+    // Explicit recovery is allowed even when existing stored data is malformed.
+    if(busy||!policy.canWrite())return false;busy=true;try{items=await store.replace(records);storageReady=true;render();closeModal('settingsModalOverlay');toast('Backup importado com sucesso.');return true;}catch(error){fail(error);return false;}finally{busy=false;}
+  });}catch(error){fail(error);}});
+$('btnClearAll').addEventListener('click',()=>confirmAction('Limpar todas as entregas','Apagar todas as entregas deste navegador? Essa ação não pode ser desfeita. Cobranças e outros dados serão preservados.',async()=>{const ok=await mutate(()=>store.clear(),'Entregas apagadas.');if(ok)closeModal('settingsModalOverlay');return ok;}));
+async function refresh(){try{items=await store.list();storageReady=true;render();}catch(error){storageReady=false;fail(error);$('emptyEntregas').hidden=false;$('emptyEntregas').querySelector('h3').textContent='Não foi possível carregar as entregas';$('emptyEntregas').querySelector('p').textContent='Os dados originais foram preservados. Confira o armazenamento ou importe um backup válido pelas configurações.';}}
+window.addEventListener('storage',e=>{if(e.key===KEY||e.key===null)refresh();});
+setPaid(false);render();refresh();
 })();
+
 </script>
 </body>
-  </html>
+</html>
