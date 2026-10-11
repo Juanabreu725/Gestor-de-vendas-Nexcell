@@ -189,7 +189,9 @@ input::placeholder,textarea::placeholder{color:#8885A5}
 
 <section id="ownSection" hidden>
   <div class="section-head"><h2>Minhas despesas</h2><button class="btn primary" id="ownAdd" type="button">＋ Nova despesa</button></div>
-  <p class="hint">Suas próprias compras, separadas dos valores a receber de outras pessoas.</p>
+  <p class="hint">Suas próprias compras e cartões pessoais, totalmente separados dos cartões de terceiros.</p>
+  <div class="section-head"><h2>Meus cartões pessoais</h2><button class="btn small primary" id="ownNewCard" type="button">＋ Novo cartão pessoal</button></div>
+  <div id="ownCardsList" class="grid"></div>
   <div class="panel"><div class="invoice-controls"><label>Mês da fatura<input id="ownMonth" type="month"></label><label>Cartão<select id="ownCardFilter"><option value="">Todos os cartões</option></select></label></div>
   <div class="own-stats"><div><span class="eyebrow">Total do mês</span><strong id="ownTotal">R$ 0,00</strong></div><div><span class="eyebrow">Já paguei</span><strong class="green" id="ownPaid">R$ 0,00</strong></div><div><span class="eyebrow">Falta pagar</span><strong id="ownDue">R$ 0,00</strong></div></div></div>
   <div class="section-head"><h2>Minhas compras</h2><button class="btn small" id="ownBackup" type="button">⬇️ Backup das despesas</button></div>
@@ -348,6 +350,13 @@ input::placeholder,textarea::placeholder{color:#8885A5}
 </div>
 </div>
 
+<div class="modal-overlay" id="ownCardOverlay"><div class="modal">
+  <div class="modal-header"><h3 id="ownCardTitle">Novo cartão pessoal</h3><button class="modal-close" id="ownCardClose" type="button" aria-label="Fechar">×</button></div>
+  <form id="ownCardForm">
+    <div class="field"><label>Nome do cartão<input id="ownCardName" required maxlength="100" placeholder="Ex.: Nubank pessoal"></label></div>
+    <div class="row"><div class="field"><label>Dia de fechamento<input id="ownCardClosing" type="number" min="1" max="31" required></label></div><div class="field"><label>Dia de vencimento<input id="ownCardDue" type="number" min="1" max="31" required></label></div></div>
+    <div class="modal-buttons"><button class="btn" type="button" id="ownCardCancel">Cancelar</button><button class="btn primary" type="submit">Salvar cartão</button></div>
+  </form></div></div>
 <div class="modal-overlay" id="ownOverlay"><div class="modal">
   <div class="modal-header"><h3 id="ownFormTitle">Nova despesa</h3><button class="modal-close" id="ownClose" type="button" aria-label="Fechar">×</button></div>
   <form id="ownForm">
@@ -1314,20 +1323,43 @@ load();
 <script>
 (function(){
 'use strict';
-const K='nexcell_minhas_despesas_v1', C='nexcell_cartoes_v1';
+const K='nexcell_minhas_despesas_v1', C='nexcell_cartoes_v1', P='nexcell_cartoes_pessoais_v1';
 const $=id=>document.getElementById(id);
 const money=n=>(n/100).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
 const month=()=>new Date().toISOString().slice(0,7);
 const uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now()+'-'+Math.random();
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const getCards=()=>{try{return JSON.parse(localStorage.getItem(C)||'{}').cards||[]}catch{return []}};
-let expenses=[];let editId=null;
+let personalCards=[];
+try{const saved=JSON.parse(localStorage.getItem(P)||'[]');if(Array.isArray(saved))personalCards=saved}catch{}
+const getCards=()=>personalCards;
+function savePersonalCards(){try{localStorage.setItem(P,JSON.stringify(personalCards));return true}catch(e){alert('Não foi possível salvar cartão: '+e.message);return false}}
+// Migração: mantém as despesas existentes, mas cria cópias independentes dos cartões
+// antigos usados por elas, sem modificar os cartões de terceiros.
+try{
+ const existing=JSON.parse(localStorage.getItem(K)||'[]');
+ const third=JSON.parse(localStorage.getItem(C)||'{}').cards||[];
+ if(Array.isArray(existing)){
+  let changed=false;
+  for(const e of existing){
+   if(!personalCards.some(c=>c.id===e.cardId)){
+    const old=third.find(c=>c.id===e.cardId);
+    personalCards.push({id:e.cardId,name:old?.name||'Cartão anterior',closingDay:old?.closingDay||1,dueDay:old?.dueDay||1});changed=true;
+   }
+  }
+  if(changed)savePersonalCards();
+ }
+}catch{}
+let expenses=[];let editId=null;let editingPersonalCard=null;
 try{const v=JSON.parse(localStorage.getItem(K)||'[]');if(Array.isArray(v))expenses=v}catch{}
 function persist(){try{localStorage.setItem(K,JSON.stringify(expenses));return true}catch(e){alert('Não foi possível salvar: '+e.message);return false}}
 function plusMonth(m,n){const [y,mo]=m.split('-').map(Number);const d=new Date(Date.UTC(y,mo-1+n,1));return d.toISOString().slice(0,7)}
 function split(total,count){const base=Math.floor(total/count),rest=total%count;return Array.from({length:count},(_,i)=>base+(i<rest?1:0))}
 function modal(show){$('ownOverlay').classList.toggle('open',show)}
+function renderCards(){
+ $('ownCardsList').innerHTML=personalCards.length?personalCards.map(c=>`<article class="card"><h3>💳 ${esc(c.name)}</h3><div class="card-meta">Fecha dia ${c.closingDay} · vence dia ${c.dueDay}</div><div class="card-actions"><button class="btn small" data-own-card-action="edit" data-id="${esc(c.id)}">Editar</button><button class="btn small danger" data-own-card-action="delete" data-id="${esc(c.id)}">Excluir</button></div></article>`).join(''):'<div class="empty">Cadastre seus cartões pessoais aqui. Eles não aparecerão na aba Cartões de terceiros.</div>';
+}
 function render(){
+ renderCards();
  const cards=getCards(),old=$('ownCardFilter').value;
  $('ownCardFilter').innerHTML='<option value="">Todos os cartões</option>'+cards.map(c=>`<option value="${esc(c.id)}">${esc(c.name)}</option>`).join('');
  $('ownCardFilter').value=cards.some(c=>c.id===old)?old:'';
@@ -1346,13 +1378,46 @@ function render(){
   return `<article class="card"><div class="card-head"><div><h3>${esc(e.description)}</h3><div class="card-meta">💳 ${esc(c?.name||'Cartão excluído')} · Total ${money(e.total)}</div></div></div><div class="card-actions"><button class="btn small" data-own-action="edit" data-own-id="${esc(e.id)}">Editar</button><button class="btn small danger" data-own-action="delete" data-own-id="${esc(e.id)}">Excluir</button></div><details style="margin-top:14px" ${e.parts.some(p=>p.month===selected)?'open':''}><summary>Ver ${e.parts.length} parcela(s)</summary>${parts}</details></article>`;
  }).join('');
 }
-function openForm(e){const cards=getCards();if(!cards.length){alert('Cadastre primeiro um cartão na aba Cartões.');return}
+function openForm(e){const cards=getCards();if(!cards.length){alert('Cadastre primeiro um cartão em Meus cartões pessoais, nesta aba.');return}
  editId=e?.id||null;$('ownFormTitle').textContent=e?'Editar despesa':'Nova despesa';
  $('ownCard').innerHTML=cards.map(c=>`<option value="${esc(c.id)}">${esc(c.name)}</option>`).join('');
  $('ownDescription').value=e?.description||'';$('ownCard').value=e?.cardId||cards[0].id;
  $('ownValue').value=e?(e.total/100).toFixed(2).replace('.',','):'';
  $('ownCount').value=e?.parts.length||1;$('ownFirstMonth').value=e?.firstMonth||$('ownMonth').value||month();modal(true)
 }
+function openPersonalCard(c=null){
+ editingPersonalCard=c?.id||null;
+ $('ownCardTitle').textContent=c?'Editar cartão pessoal':'Novo cartão pessoal';
+ $('ownCardName').value=c?.name||'';
+ $('ownCardClosing').value=c?.closingDay||'';
+ $('ownCardDue').value=c?.dueDay||'';
+ $('ownCardOverlay').classList.add('open');
+ $('ownCardName').focus();
+}
+function closePersonalCard(){$('ownCardOverlay').classList.remove('open')}
+$('ownNewCard').onclick=()=>openPersonalCard();
+$('ownCardClose').onclick=$('ownCardCancel').onclick=closePersonalCard;
+$('ownCardOverlay').addEventListener('click',e=>{if(e.target===$('ownCardOverlay'))closePersonalCard()});
+$('ownCardForm').onsubmit=e=>{
+ e.preventDefault();
+ const name=$('ownCardName').value.trim(),closingDay=Number($('ownCardClosing').value),dueDay=Number($('ownCardDue').value);
+ if(!name||![closingDay,dueDay].every(n=>Number.isInteger(n)&&n>=1&&n<=31)){alert('Confira nome e dias entre 1 e 31.');return}
+ const before=JSON.stringify(personalCards);
+ if(editingPersonalCard){const c=personalCards.find(c=>c.id===editingPersonalCard);if(!c)return;Object.assign(c,{name,closingDay,dueDay})}
+ else personalCards.push({id:uid(),name,closingDay,dueDay});
+ if(!savePersonalCards()){personalCards=JSON.parse(before);return}
+ closePersonalCard();render();
+};
+$('ownCardsList').onclick=e=>{
+ const b=e.target.closest('[data-own-card-action]');if(!b)return;
+ const c=personalCards.find(c=>c.id===b.dataset.id);if(!c)return;
+ if(b.dataset.ownCardAction==='edit'){openPersonalCard(c);return}
+ if(expenses.some(x=>x.cardId===c.id)){alert('Este cartão tem despesas cadastradas. Mova ou exclua essas despesas antes de excluir o cartão.');return}
+ if(!confirm('Excluir o cartão pessoal '+c.name+'?'))return;
+ const before=JSON.stringify(personalCards);
+ personalCards=personalCards.filter(x=>x.id!==c.id);
+ if(!savePersonalCards()){personalCards=JSON.parse(before);return}render();
+};
 $('ownAdd').onclick=()=>openForm();$('ownClose').onclick=$('ownCancel').onclick=()=>modal(false);
 $('ownOverlay').addEventListener('click',e=>{if(e.target===$('ownOverlay'))modal(false)});
 $('ownMonth').value=month();$('ownMonth').onchange=render;$('ownCardFilter').onchange=render;
@@ -1374,8 +1439,8 @@ $('ownList').onclick=e=>{const b=e.target.closest('[data-own-action]');if(!b)ret
  if(action==='undo'){if(!confirm('Zerar o pagamento registrado nesta parcela?'))return;part.paid=0}
  persist();render();
 };
-$('ownBackup').onclick=()=>{const blob=new Blob([JSON.stringify({version:1,expenses},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='nexcell-minhas-despesas.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
-window.addEventListener('storage',e=>{if(e.key===K){try{const v=JSON.parse(e.newValue||'[]');if(Array.isArray(v))expenses=v}catch{}}render()});
+$('ownBackup').onclick=()=>{const blob=new Blob([JSON.stringify({version:2,expenses,personalCards},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='nexcell-minhas-despesas.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
+window.addEventListener('storage',e=>{if(e.key===K){try{const v=JSON.parse(e.newValue||'[]');if(Array.isArray(v))expenses=v}catch{}}if(e.key===P){try{const v=JSON.parse(e.newValue||'[]');if(Array.isArray(v))personalCards=v}catch{}}render()});
 const tabs=document.querySelectorAll('[data-tab]');tabs.forEach(t=>t.addEventListener('click',()=>{if(t.dataset.tab==='own')render()}));
 render();
 })();
