@@ -1,0 +1,1110 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#09090B">
+  <meta name="description" content="NexCell Cartões — seus recebíveis e despesas pessoais em ordem">
+  <title>NexCell Cartões</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23A78BFA'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Arial' font-size='39' font-weight='bold' fill='%23100D19'%3EN%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+:root{color-scheme:dark;--bg:#09090b;--surface:#141418;--elevated:#1c1c22;--purple:#a78bfa;--text:#fafafa;--muted:#94949f;--green:#34d399;--red:#fb7185;--line:#2a2a31;--safe-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{background:var(--bg);scrollbar-width:none}
+html::-webkit-scrollbar{display:none}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+button,input{font:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:focus-visible,input:focus-visible{outline:2px solid var(--purple);outline-offset:3px}
+[hidden]{display:none!important}
+.svg-defs{position:absolute;width:0;height:0;overflow:hidden}
+.icon{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.app-shell{max-width:430px;margin:0 auto;min-height:100dvh;position:relative;background:var(--bg)}
+#app{padding:0 24px calc(124px + var(--safe-bottom));min-height:100dvh;animation:appear .23s ease}
+.topline{display:flex;justify-content:space-between;align-items:center;padding-top:calc(28px + env(safe-area-inset-top,0px));gap:12px}
+.brand{display:flex;align-items:center;gap:10px;min-height:44px}
+.brand-mark{height:32px;width:32px;display:grid;place-items:center;background:#a78bfa;color:#100d19;border-radius:10px;font-weight:800;font-size:20px;letter-spacing:-.13em;padding-right:3px}
+.brand-name{font-size:14px;letter-spacing:.06em;font-weight:800}
+.brand-name span{font-weight:500;color:var(--muted);letter-spacing:0;margin-left:4px}
+.icon-button{height:44px;width:44px;display:grid;place-items:center;border:0;border-radius:14px;background:var(--surface);color:var(--text)}
+.icon-button .icon{width:20px;height:20px}
+.greeting{margin:22px 0 5px;color:var(--muted);font-size:14px;letter-spacing:-.01em}
+.page-title{font-size:28px;line-height:1.13;letter-spacing:-.055em;font-weight:700;margin:0}
+.demo-label{display:inline-flex;align-items:center;gap:7px;color:#b8b8c0;font-size:11px;line-height:1.3;background:#1b1b20;border-radius:100px;padding:7px 10px;margin-top:15px}
+.demo-label::before{content:"";width:6px;height:6px;border-radius:100%;background:var(--purple)}
+.hero{padding:28px 0 22px;border-bottom:1px solid var(--line)}
+.eyebrow{font-size:10px;letter-spacing:.145em;font-weight:700;color:var(--muted);margin:0;text-transform:uppercase}
+.hero-amount{font-size:clamp(39px,10.5vw,52px);line-height:1.07;letter-spacing:-.075em;font-weight:700;font-variant-numeric:tabular-nums;margin:10px 0 12px;overflow-wrap:anywhere}
+.hero-amount .currency{font-size:.48em;color:#b9b9c2;letter-spacing:-.04em;font-weight:600;vertical-align:13%}
+.hero-foot{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);line-height:1.45}
+.hero-foot .icon{width:15px;height:15px;color:var(--purple)}
+.metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin:19px 0 24px}.metric{min-width:0}
+.metric+.metric{padding-left:22px;border-left:1px solid var(--line)}
+.metric-label{font-size:12px;color:var(--muted);margin:0 0 8px;white-space:nowrap}
+.metric-value{font-size:21px;line-height:1.15;font-weight:650;letter-spacing:-.055em;overflow-wrap:anywhere;font-variant-numeric:tabular-nums;margin:0}
+.metric-value.green{color:var(--green)}
+.metric-value.red{color:var(--red)}
+.section-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px}
+.section-heading h2{font-size:16px;letter-spacing:-.03em;margin:0;font-weight:700}
+.text-link{border:0;background:transparent;color:var(--purple);font-size:12px;font-weight:600;padding:12px 0;min-height:44px}
+.quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:22px}
+.quick-action{border:0;background:var(--surface);border-radius:17px;color:var(--text);padding:17px 16px 16px;min-height:98px;display:flex;align-items:flex-start;flex-direction:column;justify-content:space-between;text-align:left;font-weight:600;font-size:13px;letter-spacing:-.02em}
+.quick-action .icon{color:var(--purple);height:23px;width:23px}
+.quick-action:last-child .icon{color:var(--green)}
+.quick-action:active,.bank-card:active,.transaction:active{transform:scale(.985)}
+.transaction-list{margin:0 -24px}
+.transaction{width:100%;display:flex;align-items:center;text-align:left;padding:14px 24px;min-height:79px;background:transparent;border:0;color:var(--text);gap:12px}
+.transaction+.transaction{border-top:1px solid #202025}
+.avatar{width:42px;height:42px;display:grid;place-items:center;border-radius:14px;flex:none;background:#25212e;color:#d7c7ff;font-size:12px;font-weight:700;letter-spacing:.01em}
+.avatar.green{background:#1a2b27;color:#7ee3b5}
+.avatar.rose{background:#302129;color:#f3a2b2}
+.transaction-body{min-width:0;flex:1}
+.transaction-name{display:block;font-size:13px;line-height:1.3;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:0 0 3px}
+.transaction-desc{display:block;font-size:11px;line-height:1.3;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:0}
+.transaction-end{text-align:right;flex:none;max-width:38%}
+.transaction-amount{display:block;font-size:13px;font-weight:650;font-variant-numeric:tabular-nums;overflow-wrap:anywhere;margin:0 0 4px}
+.status{display:block;font-size:10px;color:var(--muted);margin:0}
+.status.late{color:var(--red)}
+.status.partial{color:var(--purple)}
+.status.paid{color:var(--green)}
+.bottom-nav{position:fixed;z-index:15;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,430px);height:calc(70px + var(--safe-bottom));padding:7px 9px calc(8px + var(--safe-bottom));background:rgba(20,20,24,.96);border-top:1px solid #25252b;display:grid;grid-template-columns:repeat(5,1fr);backdrop-filter:blur(18px)}
+.nav-item{border:0;background:transparent;color:#878791;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;font-size:10px;font-weight:500;min-width:0;min-height:48px;padding:0 2px}
+.nav-item .icon{height:20px;width:20px}
+.nav-item.active{color:var(--purple)}
+.nav-item.active::before{content:"";position:absolute;top:0;width:25px;height:2px;background:var(--purple);border-radius:0 0 3px 3px}
+.fab{position:fixed;z-index:16;bottom:calc(86px + var(--safe-bottom));right:max(20px,calc((100vw - 430px)/2 + 20px));height:52px;width:52px;border:0;background:var(--purple);color:#141018;border-radius:17px;display:grid;place-items:center;box-shadow:0 9px 25px #0008;transition:transform .2s ease}
+.fab .icon{width:24px;height:24px;stroke-width:2.1}
+.fab[aria-expanded="true"]{transform:rotate(45deg)}
+.cards-head{margin:34px 0 8px}
+.cards-intro{color:var(--muted);font-size:13px;line-height:1.5;margin:10px 0 22px}
+.month-row{display:flex;justify-content:space-between;align-items:center;margin:0 0 17px;gap:10px}
+.month-row .eyebrow{font-size:10px}
+.month-picker{display:flex;align-items:center;gap:6px;color:var(--text);font-size:12px;font-weight:650}
+.month-picker button{border:0;background:var(--surface);color:var(--text);width:44px;height:44px;display:grid;place-items:center;border-radius:12px}
+.month-picker .icon{width:16px;height:16px}
+.bank-list{display:flex;flex-direction:column;gap:14px}
+.bank-card{position:relative;overflow:hidden;width:100%;text-align:left;border:1px solid #34303b;color:var(--text);background:#211f27;border-radius:23px;min-height:196px;padding:21px 22px 19px;display:flex;flex-direction:column;justify-content:space-between;transition:transform .18s ease,border-color .18s ease}
+.bank-card::before{content:"";position:absolute;width:250px;height:250px;border:1px solid #ffffff12;border-radius:50%;top:-150px;right:-70px;pointer-events:none}
+.bank-card::after{content:"";position:absolute;width:330px;height:330px;border:1px solid #ffffff0a;border-radius:50%;top:-180px;right:-110px;pointer-events:none}
+.bank-card.ink{background:#202027;border-color:#33333b}
+.bank-card.slate{background:#1c2224;border-color:#303b39}
+.bank-top,.bank-bottom{position:relative;z-index:1;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.bank-name{display:block;font-size:15px;font-weight:700;letter-spacing:-.045em;margin:0 0 4px}
+.bank-sub{display:block;font-size:11px;color:#b1afb9;margin:0}
+.bank-symbol{font-size:18px;line-height:1;font-weight:800;letter-spacing:-.07em;color:#c7b5ff}
+.bank-card.ink .bank-symbol{color:#dddde5}
+.bank-card.slate .bank-symbol{color:#a5d7c1}
+.bank-bill-label,.bank-pending-label{display:block;font-size:10px;color:#aaa8b3;margin:0 0 5px}
+.bank-bill{display:block;font-size:26px;line-height:1.05;letter-spacing:-.055em;font-weight:700;font-variant-numeric:tabular-nums;margin:0;overflow-wrap:anywhere}
+.bank-pending{text-align:right;align-self:end}
+.bank-pending strong{font-size:13px;letter-spacing:-.02em;white-space:nowrap}
+.bank-due{position:relative;z-index:1;font-size:11px;color:#b8b5c0;margin-top:15px;display:flex;align-items:center;gap:6px}
+.bank-due .icon{height:14px;width:14px}
+.bank-card.large-values .bank-bottom{flex-direction:column;gap:12px}.bank-card.large-values .bank-pending{text-align:left;align-self:start}
+.bank-card.large-values .bank-bottom>span{width:100%;min-width:0}
+.cards-note{font-size:11px;color:var(--muted);line-height:1.5;margin:20px 0}
+.detail-top{display:flex;align-items:center;gap:10px;margin:27px 0 31px}
+.detail-top .detail-back{margin-left:-9px;background:transparent}
+.detail-top span{font-size:13px;font-weight:600}
+.detail-hero{border-bottom:1px solid var(--line);padding:0 0 27px}
+.detail-hero h1{font-size:28px;line-height:1.2;letter-spacing:-.05em;margin:8px 0 20px}
+.detail-hero .hero-amount{font-size:42px;margin:6px 0 13px}
+.detail-split{display:flex;flex-wrap:wrap;gap:18px 30px;color:var(--muted);font-size:11px}
+.detail-split strong{display:block;color:var(--text);font-size:14px;margin-top:6px}
+.detail-list-head{margin-top:29px}
+.detail-section-label{font-size:11px;color:var(--muted);font-weight:600;letter-spacing:.03em;margin:22px 0 4px}
+.empty-state{padding:46px 18px;text-align:center;color:var(--muted)}
+.empty-state .icon{color:var(--purple);height:30px;width:30px;margin-bottom:12px}
+.empty-state h2{font-size:17px;color:var(--text);margin:0 0 7px}
+.empty-state p{font-size:12px;line-height:1.5;margin:0}
+.scrim{position:fixed;z-index:30;inset:0;background:#000a;animation:fade .2s ease}
+.action-menu{position:fixed;z-index:32;bottom:calc(149px + var(--safe-bottom));right:max(18px,calc((100vw - 430px)/2 + 18px));width:min(320px,calc(100vw - 36px));background:var(--elevated);border:1px solid #34343b;border-radius:20px;padding:6px;box-shadow:0 18px 50px #0008;animation:menu-in .2s ease}
+.action-menu button{display:flex;align-items:center;gap:12px;width:100%;min-height:55px;border:0;background:transparent;color:var(--text);text-align:left;border-radius:13px;padding:5px 9px;font-size:13px;font-weight:600}
+.action-menu button:hover{background:#27272e}
+.menu-icon{width:33px;height:33px;border-radius:11px;background:#302b3b;color:var(--purple);display:grid;place-items:center}
+.menu-icon .icon{width:17px;height:17px}
+.action-menu .arrow{width:16px;height:16px;margin-left:auto;color:var(--muted)}
+.sheet{position:fixed;z-index:35;left:50%;bottom:0;transform:translateX(-50%);width:min(100%,430px);max-height:calc(93dvh - env(safe-area-inset-top,0px));overflow-y:auto;background:var(--elevated);border-radius:26px 26px 0 0;padding:10px 24px calc(26px + var(--safe-bottom));box-shadow:0 -18px 55px #0008;animation:sheet-in .24s cubic-bezier(.2,.8,.2,1)}
+.sheet-handle{width:35px;height:4px;background:#5a5a63;border-radius:10px;margin:0 auto 22px}
+.sheet-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:25px}
+.sheet-header .eyebrow{color:var(--purple);margin-bottom:8px}
+.sheet-header h2{font-size:23px;letter-spacing:-.045em;line-height:1.15;margin:0}
+.sheet-header .icon-button{background:#2b2b32;margin-top:-4px}
+.search-field{display:flex;align-items:center;gap:10px;width:100%;min-height:49px;border-radius:14px;background:#2a2a31;padding:0 15px;color:var(--muted)}
+.search-field .icon{width:19px;height:19px}
+.search-field input{border:0;outline:0;background:transparent;color:var(--text);width:100%;height:49px;min-width:0;font-size:14px}
+.search-field input::placeholder{color:#a1a1aa}
+.sheet-subheading{font-size:11px;color:var(--muted);font-weight:600;margin:23px 0 7px}
+.sheet-choice{display:flex;align-items:center;gap:12px;width:100%;min-height:65px;text-align:left;border:0;border-bottom:1px solid #32323a;background:transparent;color:var(--text);padding:9px 0}
+.sheet-choice .avatar{width:40px;height:40px}
+.sheet-choice-body{flex:1;min-width:0}
+.sheet-choice strong{display:block;font-size:13px;margin-bottom:4px}
+.sheet-choice small{display:block;font-size:11px;color:var(--muted)}
+.sheet-choice .icon{height:17px;width:17px;color:var(--muted)}
+.sheet-choice .choice-end{font-size:12px;font-weight:600;text-align:right}
+.sheet-choice .choice-end small{font-size:10px;margin-top:4px}
+.sheet-person{display:flex;align-items:center;gap:12px;background:#292930;border-radius:16px;padding:13px;margin-bottom:19px}
+.sheet-person .avatar{width:42px;height:42px}
+.sheet-person strong{font-size:13px}
+.sheet-person p{font-size:11px;color:var(--muted);margin:4px 0 0}
+.sheet-back{background:transparent;border:0;color:var(--purple);font-weight:600;font-size:12px;min-height:44px;padding:0;margin-top:5px}
+.amount-field{position:relative;margin:24px 0 13px}
+.amount-field label{display:block;font-size:11px;color:var(--muted);margin-bottom:8px}
+.amount-field .prefix{position:absolute;left:17px;bottom:17px;color:var(--muted);font-size:18px;font-weight:600}
+.amount-field input{width:100%;height:68px;border:1px solid #4b4657;border-radius:16px;background:#292930;color:var(--text);font-size:27px;font-weight:700;letter-spacing:-.045em;padding:0 18px 0 50px;font-variant-numeric:tabular-nums}
+.balance-hint{font-size:11px;color:var(--muted);margin:0 0 17px}
+.payment-totals{border-top:1px solid #34343b;margin:18px 0 20px;padding-top:16px;display:flex;justify-content:space-between;color:var(--muted);font-size:12px}
+.payment-totals strong{color:var(--text)}
+.primary-button{width:100%;min-height:52px;border:0;border-radius:15px;background:var(--purple);color:#151019;font-size:14px;font-weight:750;display:flex;align-items:center;justify-content:center;gap:9px}
+.primary-button .icon{height:18px;width:18px}
+.sheet-disclaimer{font-size:10px;color:var(--muted);line-height:1.4;text-align:center;margin:12px 0 0}
+.success-state{text-align:center;padding:20px 10px 10px}
+.success-mark{height:57px;width:57px;border-radius:19px;margin:0 auto 20px;display:grid;place-items:center;background:#1e4036;color:var(--green)}
+.success-mark .icon{height:30px;width:30px}
+.success-state h3{font-size:23px;letter-spacing:-.04em;margin:0 0 8px}
+.success-state p{font-size:13px;color:var(--muted);line-height:1.5;margin:0 0 27px}
+.success-state .primary-button{background:#292930;color:var(--text)}
+.toast{position:fixed;z-index:50;left:50%;transform:translateX(-50%);bottom:calc(85px + var(--safe-bottom));width:min(calc(100vw - 32px),390px);background:#292930;border:1px solid #42424a;color:var(--text);border-radius:13px;padding:13px 16px;font-size:12px;line-height:1.4;box-shadow:0 12px 35px #0008}
+.data-warning{background:#322228;color:#f7d9df;border-radius:16px;padding:15px;margin:18px 0 0;font-size:12px;line-height:1.5}
+.data-warning strong{display:block;font-size:13px}.data-warning p{margin:6px 0}.data-warning button{background:transparent;border:0;color:#ff9aaa;font-weight:700;min-height:44px;padding:0}
+.quiet-button{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;min-height:48px;border:1px solid #393941;border-radius:14px;background:#202026;color:var(--text);font-size:13px;font-weight:650;margin-top:18px}
+.quiet-button .icon{width:17px;height:17px}
+.detail-menu{margin-left:auto;background:transparent}
+.detail-hero h1{overflow-wrap:anywhere}
+.detail-meta{display:flex;gap:7px;align-items:center;line-height:1.5;font-size:11px;color:var(--muted);margin:18px 0 0;overflow-wrap:anywhere}
+.detail-meta .icon{width:15px;height:15px}
+.subtle-count{font-size:12px;color:var(--muted)}
+.simple-list{margin:0 -24px}
+.simple-row,.person-row,.own-card,.history-row{width:100%;display:flex;align-items:center;gap:10px;text-align:left;background:transparent;border:0;color:var(--text);padding:14px 24px;min-height:72px}
+.simple-row+.simple-row,.person-row+.person-row,.own-card+.own-card,.history-row+.history-row{border-top:1px solid #24242a}
+.simple-row>.icon,.person-row>.icon,.own-card>.icon{width:15px;height:15px;color:#767681}
+.row-main{flex:1;min-width:0}.row-main strong{display:block;font-size:13px;line-height:1.35;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.row-main small{display:block;font-size:11px;line-height:1.35;color:var(--muted);margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row-right{flex:none;text-align:right;max-width:37%}.row-right strong{display:block;font-size:12px;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}.row-right small{display:block;color:var(--muted);font-size:10px;margin-top:5px}.row-right.green strong{color:var(--green)}
+.people-section-head{margin-top:25px}
+.page-search{margin:4px 0 0}
+.forecast-hero{padding:12px 0 23px;border-bottom:1px solid var(--line)}
+.forecast-hero .hero-amount{margin:11px 0 22px}
+.forecast-hero .detail-split{gap:36px}
+.chart{height:164px;display:flex;align-items:end;justify-content:space-between;gap:8px;padding:20px 3px 0;margin-bottom:29px;border-bottom:1px solid var(--line)}
+.chart-item{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:8px;flex:1;min-width:0;height:100%;background:transparent;border:0;color:var(--muted);padding:0}
+.chart-column{display:flex;align-items:flex-end;width:100%;height:118px;min-height:0;border-radius:7px 7px 0 0;background:#18181d;overflow:hidden}
+.chart-bar{display:block;width:100%;background:#574b73;border-radius:7px 7px 0 0;min-height:3px}
+.chart-item.active .chart-bar{background:var(--purple)}
+.chart-label{font-size:10px;text-transform:capitalize;padding-bottom:9px}
+.chart-item.active .chart-label{color:var(--purple);font-weight:700}
+.late-callout{display:flex;align-items:center;gap:12px;min-height:76px;background:#231b22;border-radius:17px;padding:13px 14px;color:var(--red)}
+.late-icon{display:grid;place-items:center;width:36px;height:36px;border-radius:11px;background:#3a2730}.late-icon .icon{width:19px;height:19px}
+.late-callout span:nth-child(2){flex:1;min-width:0}.late-callout span:nth-child(2) strong{display:block;color:var(--text);font-size:12px}.late-callout small{display:block;color:#b9a0aa;font-size:10px;line-height:1.35;margin-top:4px}.late-callout>strong{font-size:12px;white-space:nowrap}
+.own-hero{padding-top:9px}
+.own-card-symbol{height:38px;width:38px;flex:none;border-radius:12px;display:grid;place-items:center;background:#302b3b;color:var(--purple);font-size:11px;font-weight:700}
+.history-icon{height:36px;width:36px;flex:none;border-radius:12px;display:grid;place-items:center;background:#1a2b27;color:var(--green)}.history-icon .icon{width:18px;height:18px}
+.form-stack{display:flex;flex-direction:column;gap:15px}
+.form-stack label,.date-field{display:block;font-size:11px;font-weight:600;color:var(--muted)}
+.form-stack input,.form-stack textarea,.form-stack select,.date-field input{display:block;width:100%;min-height:49px;border:1px solid #393941;border-radius:13px;background:#292930;color:var(--text);padding:12px 13px;margin-top:7px;font-size:14px;outline:none}
+.form-stack textarea{height:79px;resize:vertical;min-height:70px}
+.form-stack input:focus,.form-stack textarea:focus,.form-stack select:focus,.date-field input:focus{border-color:var(--purple)}
+.form-stack input::placeholder,.form-stack textarea::placeholder{color:#898993}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.form-row>*{min-width:0}
+.form-note{font-size:11px;line-height:1.55;color:var(--muted);margin:0 0 7px}
+.step-indicator{font-size:10px;letter-spacing:.1em;font-weight:700;color:var(--purple);margin:-5px 0 20px}
+.preview-panel{background:#292930;border-radius:13px;padding:13px;color:#c4c4ce;font-size:11px;line-height:1.5}
+.date-field{margin:0 0 17px}
+.date-default{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0 16px;border-bottom:1px solid #34343b;color:var(--muted);font-size:11px}.date-default strong{display:block;color:var(--text);font-size:12px;margin-top:5px}.date-default button{border:0;background:transparent;color:var(--purple);min-height:44px;font-size:12px;font-weight:650;padding:0 2px}
+.sheet-actions{display:flex;flex-direction:column;gap:6px}
+.sheet-actions button{width:100%;min-height:55px;text-align:left;display:flex;align-items:center;gap:12px;border:0;border-radius:12px;background:#292930;color:var(--text);padding:11px 13px;font-size:13px;font-weight:600;flex-wrap:wrap}
+.sheet-actions button>.icon{color:var(--purple);height:19px;width:19px}.sheet-actions button small{display:block;width:100%;padding-left:31px;margin-top:-6px;font-size:10px;color:var(--muted);font-weight:400}
+.sheet-transactions{margin:0 -24px}
+.confirm-message{color:#c7c7cf;font-size:13px;line-height:1.55;margin:0 0 23px;white-space:pre-wrap}
+.confirm-buttons{display:flex;gap:10px}.confirm-buttons>*{margin:0;flex:1;min-width:0}.danger-button{background:var(--red)}
+.payment-history-row{display:flex;align-items:center;gap:8px;min-height:66px;border-bottom:1px solid #35353d}.payment-history-row>span{flex:1}.payment-history-row strong{display:block;font-size:13px;color:var(--green)}.payment-history-row small{display:block;color:var(--muted);font-size:10px;margin-top:5px}.payment-history-row button{border:0;border-radius:11px;height:44px;width:44px;background:#292930;color:var(--muted)}.payment-history-row button .icon{height:18px;width:18px}
+.history-add{margin-top:19px}.paid-message{color:var(--green);font-size:13px;margin:20px 0}.danger-text{color:var(--red)}
+@media(max-width:370px){.simple-list{margin-left:-20px;margin-right:-20px}.simple-row,.person-row,.own-card,.history-row{padding-left:20px;padding-right:20px}.month-picker{gap:2px}.month-picker span{font-size:11px}.row-right strong{font-size:11px}}
+@keyframes appear{from{opacity:.6;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes menu-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes sheet-in{from{opacity:0;transform:translate(-50%,30px)}to{opacity:1;transform:translate(-50%,0)}}
+@media(max-width:370px){#app{padding-left:20px;padding-right:20px}.transaction-list{margin-left:-20px;margin-right:-20px}.transaction{padding-left:20px;padding-right:20px}.hero-amount{font-size:40px}.metric-value{font-size:19px}.quick-action{min-height:100px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+</style>
+</head>
+<body>
+  <svg class="svg-defs" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V10Z"/><path d="M9 21v-7h6v7"/></symbol>
+    <symbol id="i-card" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v18h18M7 16l4-5 4 3 5-7"/></symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M20 7V5a2 2 0 0 0-2-2H5a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h15a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2H5a3 3 0 0 1 0-6"/><path d="M22 13h-6a2 2 0 0 0 0 4h6"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06-1.9 1.9-.06-.06A1.65 1.65 0 0 0 16 18.4a1.65 1.65 0 0 0-1 1.52V20h-6v-.08A1.65 1.65 0 0 0 8 18.4a1.65 1.65 0 0 0-1.82.33l-.06.06-1.9-1.9.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.52-1H3v-4h.08A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06 1.9-1.9.06.06A1.65 1.65 0 0 0 8 5.6a1.65 1.65 0 0 0 1-1.52V4h6v.08A1.65 1.65 0 0 0 16 5.6a1.65 1.65 0 0 0 1.82-.33l.06-.06 1.9 1.9-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.52 1H21v4h-.08A1.65 1.65 0 0 0 19.4 15Z"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></symbol>
+    <symbol id="i-arrow-down-left" viewBox="0 0 24 24"><path d="M17 7 7 17M17 17H7V7"/></symbol>
+    <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L9 17l-4 1 1-4Z"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M5 6l1 15h12l1-15M10 10v7M14 10v7"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v4h16v-4"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4m0 0 4 4m-4-4-4 4M4 17v4h16v-4"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  </svg>
+
+  <div class="app-shell">
+    <main id="app" aria-live="polite"></main>
+    <button class="fab" id="fab" type="button" aria-label="Abrir ações rápidas" aria-expanded="false"><svg class="icon"><use href="#i-plus"></use></svg></button>
+    <nav class="bottom-nav" aria-label="Navegação principal">
+      <button type="button" class="nav-item active" data-nav="home"><svg class="icon"><use href="#i-home"></use></svg><span>Início</span></button>
+      <button type="button" class="nav-item" data-nav="cards"><svg class="icon"><use href="#i-card"></use></svg><span>Cartões</span></button>
+      <button type="button" class="nav-item" data-nav="people"><svg class="icon"><use href="#i-users"></use></svg><span>Pessoas</span></button>
+      <button type="button" class="nav-item" data-nav="forecast"><svg class="icon"><use href="#i-chart"></use></svg><span>Previsão</span></button>
+      <button type="button" class="nav-item" data-nav="mine"><svg class="icon"><use href="#i-wallet"></use></svg><span>Minhas</span></button>
+    </nav>
+  </div>
+
+  <div class="scrim" id="scrim" hidden></div>
+  <section class="action-menu" id="actionMenu" aria-label="Ações rápidas" hidden>
+    <button type="button" data-action="purchase"><span class="menu-icon"><svg class="icon"><use href="#i-card"></use></svg></span><span>Nova compra</span><svg class="icon arrow"><use href="#i-chevron-right"></use></svg></button>
+    <button type="button" data-action="receive"><span class="menu-icon"><svg class="icon"><use href="#i-arrow-down-left"></use></svg></span><span>Registrar recebimento</span><svg class="icon arrow"><use href="#i-chevron-right"></use></svg></button>
+    <button type="button" data-action="new-card"><span class="menu-icon"><svg class="icon"><use href="#i-plus"></use></svg></span><span>Novo cartão</span><svg class="icon arrow"><use href="#i-chevron-right"></use></svg></button>
+  </section>
+  <section class="sheet" id="appSheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" tabindex="-1" hidden>
+    <div class="sheet-handle" aria-hidden="true"></div>
+    <header class="sheet-header"><div><p class="eyebrow" id="sheetEyebrow"></p><h2 id="sheetTitle"></h2></div><button class="icon-button" type="button" id="closeSheet" aria-label="Fechar"><svg class="icon"><use href="#i-x"></use></svg></button></header>
+    <div id="sheetContent"></div>
+  </section>
+  <input id="backupFile" type="file" accept=".json,application/json" hidden>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <script>
+/* Regras financeiras compatíveis com os registros do NexCell Cartões v1. */
+(function (root) {
+  'use strict';
+  const KEYS = Object.freeze({ third: 'nexcell_cartoes_v1', expenses: 'nexcell_minhas_despesas_v1', personalCards: 'nexcell_cartoes_pessoais_v1' });
+  const emptyThird = () => ({ version: 1, cards: [], purchases: [] });
+  const clone = value => JSON.parse(JSON.stringify(value));
+  const today = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
+  const currentMonth = () => today().slice(0, 7);
+  const uuid = () => globalThis.crypto?.randomUUID?.() || `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+  const digits = cents => `${cents < 0 ? '-' : ''}${Math.floor(Math.abs(cents) / 100).toLocaleString('pt-BR')},${String(Math.abs(cents) % 100).padStart(2, '0')}`;
+  const money = cents => `R$ ${digits(cents)}`;
+  const inputMoney = cents => digits(cents);
+  function parseMoney(raw, max = 100000000000) {
+    const s = String(raw).trim();
+    const grouped = /^\d{1,3}(?:\.\d{3})+(?:,\d{1,2})?$/.test(s);
+    if (!grouped && !/^\d+(?:[.,]\d{1,2})?$/.test(s)) throw new Error('Digite um valor em reais. Ex.: 1.500,50.');
+    const normalized = grouped ? s.replace(/\./g, '') : s;
+    const [whole, fraction = ''] = normalized.replace(',', '.').split('.');
+    const cents = BigInt(whole) * 100n + BigInt(fraction.padEnd(2, '0'));
+    if (cents <= 0n || cents > BigInt(max)) throw new Error('Informe um valor válido maior que zero.');
+    return Number(cents);
+  }
+  function sum(values) {
+    return values.reduce((total, value) => {
+      const next = total + value;
+      if (!Number.isSafeInteger(next)) throw new Error('O total ultrapassa o limite de cálculo seguro.');
+      return next;
+    }, 0);
+  }
+  function validDate(date) {
+    if (typeof date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return false;
+    const d = new Date(`${date}T12:00:00Z`);
+    return Number.isFinite(d.getTime()) && d.toISOString().slice(0, 10) === date;
+  }
+  const validMonth = month => typeof month === 'string' && /^\d{4}-(0[1-9]|1[0-2])$/.test(month) && +month.slice(0, 4) >= 1;
+  function shiftMonth(month, offset) {
+    const [year, number] = month.split('-').map(Number);
+    const d = new Date(Date.UTC(year, number - 1 + offset, 1));
+    return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`;
+  }
+  function dayInMonth(month, day) {
+    const [year, number] = month.split('-').map(Number);
+    const last = new Date(Date.UTC(year, number, 0)).getUTCDate();
+    return `${month}-${String(Math.min(day, last)).padStart(2, '0')}`;
+  }
+  const monthlyDate = (date, offset) => dayInMonth(shiftMonth(date.slice(0, 7), offset), +date.slice(8, 10));
+  function split(total, count) {
+    if (!Number.isInteger(count) || count < 1 || count > 120 || total < count) throw new Error('Use de 1 a 120 parcelas, com pelo menos R$ 0,01 por parcela.');
+    const base = Math.floor(total / count), extra = total % count;
+    return Array.from({ length: count }, (_, i) => base + (i < extra ? 1 : 0));
+  }
+  function suggestMonth(card, date) {
+    let closingMonth = date.slice(0, 7);
+    if (date >= dayInMonth(closingMonth, card.closingDay)) closingMonth = shiftMonth(closingMonth, 1);
+    return card.dueDay <= card.closingDay ? shiftMonth(closingMonth, 1) : closingMonth;
+  }
+  const received = installment => sum(installment.payments.map(payment => payment.amountCents));
+  const pending = installment => installment.amountCents - received(installment);
+  const flat = state => state.purchases.flatMap(purchase => purchase.installments.map(installment => ({ purchase, installment })));
+  const text = value => typeof value === 'string' && value.trim().length > 0;
+  const amount = value => Number.isSafeInteger(value) && value > 0 && value <= 100000000000;
+  function validateThird(data) {
+    if (!data || data.version !== 1 || !Array.isArray(data.cards) || !Array.isArray(data.purchases)) throw new Error('Dados de terceiros inválidos: formato ou versão não reconhecidos.');
+    const ids = new Set(), cardIds = new Set();
+    const unique = id => { if (typeof id !== 'string' || !id.trim() || ids.has(id)) throw new Error('Identificadores ausentes ou duplicados.'); ids.add(id); };
+    for (const card of data.cards) {
+      unique(card.id);
+      if (!text(card.name) || !Number.isInteger(card.closingDay) || card.closingDay < 1 || card.closingDay > 31 || !Number.isInteger(card.dueDay) || card.dueDay < 1 || card.dueDay > 31) throw new Error('Há um cartão inválido nos dados.');
+      cardIds.add(card.id);
+    }
+    for (const purchase of data.purchases) {
+      unique(purchase.id);
+      if (!cardIds.has(purchase.cardId) || !text(purchase.person) || !text(purchase.description) || !validDate(purchase.purchaseDate) || !amount(purchase.totalCents) || !Number.isInteger(purchase.count) || purchase.count < 1 || purchase.count > 120 || !validMonth(purchase.firstMonth) || !validDate(purchase.expectedDate) || !Array.isArray(purchase.installments) || purchase.installments.length !== purchase.count) throw new Error('Há uma compra inválida ou sem cartão nos dados.');
+      const values = split(purchase.totalCents, purchase.count);
+      purchase.installments.forEach((installment, index) => {
+        unique(installment.id);
+        if (installment.number !== index + 1 || installment.amountCents !== values[index] || installment.invoiceMonth !== shiftMonth(purchase.firstMonth, index) || installment.expectedDate !== monthlyDate(purchase.expectedDate, index) || !Array.isArray(installment.payments)) throw new Error('Há parcelas incompatíveis nos dados.');
+        for (const payment of installment.payments) { unique(payment.id); if (!amount(payment.amountCents) || !validDate(payment.date)) throw new Error('Há um recebimento inválido nos dados.'); }
+        if (received(installment) > installment.amountCents) throw new Error('Há recebimentos acima do valor da parcela.');
+      });
+    }
+    sum(data.purchases.map(purchase => purchase.totalCents));
+    return data;
+  }
+  function validatePersonalCards(cards) {
+    if (!Array.isArray(cards)) throw new Error('Cartões pessoais inválidos.');
+    const ids = new Set();
+    for (const card of cards) {
+      if (!card || typeof card.id !== 'string' || !card.id.trim() || ids.has(card.id) || !text(card.name) || !Number.isInteger(card.closingDay) || card.closingDay < 1 || card.closingDay > 31 || !Number.isInteger(card.dueDay) || card.dueDay < 1 || card.dueDay > 31) throw new Error('Há um cartão pessoal inválido.');
+      ids.add(card.id);
+    }
+    return cards;
+  }
+  function validateExpenses(expenses) {
+    if (!Array.isArray(expenses)) throw new Error('Despesas pessoais inválidas.');
+    const ids = new Set();
+    for (const item of expenses) {
+      if (!item || typeof item.id !== 'string' || !item.id.trim() || ids.has(item.id) || !text(item.description) || typeof item.cardId !== 'string' || !Number.isSafeInteger(item.total) || item.total <= 0 || !validMonth(item.firstMonth) || !Array.isArray(item.parts) || item.parts.length < 1 || item.parts.length > 120) throw new Error('Há uma despesa pessoal inválida.');
+      ids.add(item.id);
+      let total = 0;
+      item.parts.forEach((part, index) => {
+        if (!part || part.month !== shiftMonth(item.firstMonth, index) || !Number.isSafeInteger(part.value) || part.value <= 0 || !Number.isSafeInteger(part.paid || 0) || (part.paid || 0) < 0 || (part.paid || 0) > part.value) throw new Error('Há uma parcela pessoal inválida.');
+        total = sum([total, part.value]);
+      });
+      if (total !== item.total) throw new Error('O total de uma despesa pessoal não corresponde às parcelas.');
+    }
+    return expenses;
+  }
+  function makePurchase(data, old = null) {
+    const values = split(data.totalCents, data.count);
+    const changed = old && (old.totalCents !== data.totalCents || old.count !== data.count || old.cardId !== data.cardId || old.firstMonth !== data.firstMonth);
+    if (changed && old.installments.some(i => i.payments.length)) throw new Error('Esta compra já tem recebimentos. Corrija os pagamentos antes de alterar valor, parcelas, cartão ou primeira fatura.');
+    const installments = values.map((value, index) => ({
+      id: old && !changed ? old.installments[index].id : uuid(), number: index + 1,
+      amountCents: value, invoiceMonth: shiftMonth(data.firstMonth, index), expectedDate: monthlyDate(data.expectedDate, index),
+      payments: old && !changed ? old.installments[index].payments : []
+    }));
+    return { ...(old || {}), id: old?.id || uuid(), ...data, installments };
+  }
+  function migratePersonalCards(cards, expenses, thirdCards) {
+    const result = clone(cards);
+    for (const expense of expenses) {
+      if (result.some(card => card.id === expense.cardId)) continue;
+      const old = thirdCards.find(card => card.id === expense.cardId);
+      result.push({ id: expense.cardId, name: old?.name || 'Cartão anterior', closingDay: old?.closingDay || 1, dueDay: old?.dueDay || 1 });
+    }
+    return result;
+  }
+  const api = { KEYS, emptyThird, clone, today, currentMonth, uuid, money, digits, inputMoney, parseMoney, sum, validDate, validMonth, shiftMonth, dayInMonth, monthlyDate, split, suggestMonth, received, pending, flat, validateThird, validatePersonalCards, validateExpenses, makePurchase, migratePersonalCards };
+  if (typeof module !== 'undefined' && module.exports) module.exports = api;
+  root.NexcellFinance = api;
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+  <script>
+(() => {
+  'use strict';
+  const F = window.NexcellFinance;
+  const $ = id => document.getElementById(id);
+  const icon = name => `<svg class="icon" aria-hidden="true"><use href="#i-${name}"></use></svg>`;
+  const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+  const monthName = value => new Date(`${value}-01T12:00:00`).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+  const dateName = value => new Date(`${value}T12:00:00`).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }).replace('.', '');
+  const dateFull = value => new Date(`${value}T12:00:00`).toLocaleDateString('pt-BR');
+  const initials = value => (String(value).trim().split(/\s+/).slice(0, 2).map(part => part[0] || '').join('').toUpperCase() || 'N');
+  const avatarTone = value => ['','green','rose'][[...String(value)].reduce((n, c) => n + c.charCodeAt(0), 0) % 3];
+  const today = F.today;
+  let state = { third: F.emptyThird(), personalCards: [], expenses: [], errors: {}, raw: {} };
+  let ui = { page: 'home', detail: null, cardMonth: F.currentMonth(), forecastMonth: F.currentMonth(), ownMonth: F.currentMonth(), peopleQuery: '', sheet: null, confirm: null };
+  let toastTimer;
+
+  function readAll() {
+    const errors = {};
+    const raw = { third: null, personalCards: null, expenses: null };
+    let third = F.emptyThird(), personalCards = [], expenses = [];
+    try { raw.third = localStorage.getItem(F.KEYS.third); if (raw.third !== null) third = F.validateThird(JSON.parse(raw.third)); } catch (error) { errors.third = error.message; }
+    try { raw.personalCards = localStorage.getItem(F.KEYS.personalCards); if (raw.personalCards !== null) personalCards = F.validatePersonalCards(JSON.parse(raw.personalCards)); } catch (error) { errors.personalCards = error.message; }
+    try { raw.expenses = localStorage.getItem(F.KEYS.expenses); if (raw.expenses !== null) expenses = F.validateExpenses(JSON.parse(raw.expenses)); } catch (error) { errors.expenses = error.message; }
+    if (!errors.personalCards && !errors.expenses) personalCards = F.migratePersonalCards(personalCards, expenses, third.cards);
+    state = { third, personalCards, expenses, errors, raw };
+  }
+
+  function storageMessage(error) {
+    return error?.name === 'QuotaExceededError' ? 'Armazenamento cheio. Exporte um backup e libere espaço.' : error?.name === 'SecurityError' ? 'O navegador bloqueou o armazenamento local.' : (error?.message || 'Não foi possível salvar os dados.');
+  }
+  function showToast(message) {
+    clearTimeout(toastTimer);
+    $('toast').textContent = message;
+    $('toast').hidden = false;
+    toastTimer = setTimeout(() => { $('toast').hidden = true; }, 4500);
+  }
+  function commitThird(change, message) {
+    if (state.errors.third) { showToast('Os dados de terceiros estão inválidos. Restaure um backup válido.'); return false; }
+    try {
+      if (localStorage.getItem(F.KEYS.third) !== state.raw.third) { readAll(); render(); throw new Error('Os dados mudaram em outra aba. A tela foi atualizada; tente novamente.'); }
+      const next = F.clone(state.third);
+      change(next);
+      F.validateThird(next);
+      localStorage.setItem(F.KEYS.third, JSON.stringify(next));
+      state.third = next;
+      state.raw.third = JSON.stringify(next);
+      render();
+      if (message) showToast(message);
+      return true;
+    } catch (error) { showToast(storageMessage(error)); return false; }
+  }
+  function commitPersonal(kind, change, message) {
+    if (state.errors.personalCards || state.errors.expenses) { showToast('Os dados pessoais estão inválidos. Restaure um backup válido.'); return false; }
+    try {
+      if (localStorage.getItem(F.KEYS.personalCards) !== state.raw.personalCards || localStorage.getItem(F.KEYS.expenses) !== state.raw.expenses) { readAll(); render(); throw new Error('Os dados pessoais mudaram em outra aba. A tela foi atualizada; tente novamente.'); }
+      const cards = F.clone(state.personalCards), expenses = F.clone(state.expenses);
+      change(cards, expenses);
+      F.validatePersonalCards(cards);
+      F.validateExpenses(expenses);
+      if (expenses.some(item => !cards.some(card => card.id === item.cardId))) throw new Error('Uma despesa ficou sem cartão pessoal.');
+      const value = JSON.stringify(kind === 'cards' ? cards : expenses);
+      localStorage.setItem(kind === 'cards' ? F.KEYS.personalCards : F.KEYS.expenses, value);
+      state.personalCards = cards; state.expenses = expenses;
+      state.raw[kind === 'cards' ? 'personalCards' : 'expenses'] = value;
+      render();
+      if (message) showToast(message);
+      return true;
+    } catch (error) { showToast(storageMessage(error)); return false; }
+  }
+
+  const entries = () => F.flat(state.third);
+  const openEntries = () => entries().filter(x => F.pending(x.installment) > 0);
+  const cardById = id => state.third.cards.find(card => card.id === id);
+  const personKey = name => String(name).trim().toLocaleLowerCase('pt-BR');
+  const late = x => F.pending(x.installment) > 0 && x.installment.expectedDate < today();
+  const paidInMonth = month => F.sum(entries().flatMap(x => x.installment.payments).filter(pay => pay.date.slice(0, 7) === month).map(pay => pay.amountCents));
+  const totalPending = () => F.sum(entries().map(x => F.pending(x.installment)));
+  const totalLate = () => F.sum(openEntries().filter(late).map(x => F.pending(x.installment)));
+  const sumEntry = (list, getter) => F.sum(list.map(getter));
+  function people() {
+    const groups = new Map();
+    for (const purchase of state.third.purchases) {
+      const key = personKey(purchase.person);
+      if (!groups.has(key)) groups.set(key, { key, name: purchase.person, purchases: [], entries: [] });
+      groups.get(key).purchases.push(purchase);
+      purchase.installments.forEach(installment => groups.get(key).entries.push({ purchase, installment }));
+    }
+    return [...groups.values()].map(person => ({ ...person, pending: sumEntry(person.entries, x => F.pending(x.installment)), received: sumEntry(person.entries, x => F.received(x.installment)) }))
+      .sort((a, b) => b.pending - a.pending || a.name.localeCompare(b.name, 'pt-BR'));
+  }
+  function status(x) {
+    const remaining = F.pending(x.installment);
+    return remaining === 0 ? ['Pago', 'paid'] : late(x) ? ['Atrasado', 'late'] : F.received(x.installment) > 0 ? ['Parcial', 'partial'] : ['Pendente', ''];
+  }
+  function warningBanner() {
+    const messages = Object.entries(state.errors).map(([key, value]) => `${key === 'third' ? 'Recebíveis' : 'Despesas pessoais'}: ${value}`);
+    return messages.length ? `<div class="data-warning" role="alert"><strong>Não foi possível ler parte dos dados.</strong><p>O conteúdo original permanece no navegador. ${esc(messages.join(' '))}</p><button type="button" data-action="settings">Abrir backup e restauração</button></div>` : '';
+  }
+  function header() {
+    return `<header class="topline"><div class="brand"><div class="brand-mark" aria-hidden="true">N</div><div class="brand-name">NEXCELL <span>cartões</span></div></div><button class="icon-button" type="button" data-action="settings" aria-label="Configurações e backup">${icon('settings')}</button></header>${warningBanner()}`;
+  }
+  function empty(title, body, symbol = 'card') {
+    return `<div class="empty-state">${icon(symbol)}<h2>${esc(title)}</h2><p>${esc(body)}</p></div>`;
+  }
+  function transaction(x, action = 'pay-entry') {
+    const remaining = F.pending(x.installment), [label, tone] = status(x);
+    const value = remaining > 0 ? remaining : x.installment.amountCents;
+    const verb = remaining > 0 ? 'Receber' : 'Ver';
+    return `<button class="transaction" type="button" data-${action}="${esc(x.installment.id)}" aria-label="${verb} parcela de ${esc(x.purchase.person)}, ${esc(F.money(value))}"><span class="avatar ${avatarTone(x.purchase.person)}">${esc(initials(x.purchase.person))}</span><span class="transaction-body"><span class="transaction-name">${esc(x.purchase.person)}</span><span class="transaction-desc">${esc(x.purchase.description)} · ${x.installment.number}/${x.purchase.count} · ${dateName(x.installment.expectedDate)}</span></span><span class="transaction-end"><span class="transaction-amount">${F.money(value)}</span><span class="status ${tone}">${label}</span></span></button>`;
+  }
+  function home() {
+    const hour = new Date().getHours();
+    const greeting = hour < 12 ? 'Bom dia' : hour < 18 ? 'Boa tarde' : 'Boa noite';
+    const upcoming = openEntries().sort((a, b) => a.installment.expectedDate.localeCompare(b.installment.expectedDate));
+    return `${header()}<p class="greeting">${greeting}, bem-vindo de volta</p><h1 class="page-title">Seu dinheiro, em ordem.</h1>
+      <section class="hero" aria-label="Total a receber"><p class="eyebrow">TOTAL A RECEBER</p><p class="hero-amount"><span class="currency">R$</span> ${F.digits(totalPending())}</p><div class="hero-foot">${icon('arrow-down-left')}<span>De compras de terceiros · todos os meses</span></div></section>
+      <section class="metrics" aria-label="Resumo financeiro"><div class="metric"><p class="metric-label">Recebido no mês</p><p class="metric-value green">${F.money(paidInMonth(F.currentMonth()))}</p></div><div class="metric"><p class="metric-label">Em atraso</p><p class="metric-value red">${F.money(totalLate())}</p></div></section>
+      <section aria-label="Ações rápidas"><div class="section-heading"><h2>Acesso rápido</h2></div><div class="quick-actions"><button class="quick-action" type="button" data-action="purchase">${icon('arrow-up-right')}<span>Nova compra</span></button><button class="quick-action" type="button" data-action="receive">${icon('arrow-down-left')}<span>Receber parcela</span></button></div></section>
+      <section aria-label="Próximos recebimentos"><div class="section-heading"><h2>Próximos recebimentos</h2><button class="text-link" type="button" data-action="all-receipts">Ver todos</button></div><div class="transaction-list">${upcoming.length ? upcoming.slice(0, 7).map(x => transaction(x)).join('') : empty('Tudo em dia', state.third.cards.length ? 'Nenhuma parcela pendente por enquanto.' : 'Cadastre um cartão e sua primeira compra.', 'check')}</div></section>`;
+  }
+  function cardSummary(card) {
+    const all = entries().filter(x => x.purchase.cardId === card.id);
+    const bill = all.filter(x => x.installment.invoiceMonth === ui.cardMonth);
+    const invoice = sumEntry(bill, x => x.installment.amountCents);
+    const pending = sumEntry(all, x => F.pending(x.installment));
+    return { all, bill, invoice, pending, received: sumEntry(bill, x => F.received(x.installment)) };
+  }
+  function cardsPage() {
+    return `${header()}<div class="cards-head"><p class="eyebrow">SEUS CARTÕES</p><h1 class="page-title" style="margin-top:9px">Cartões</h1><p class="cards-intro">Compras de terceiros, organizadas por cartão e fatura.</p></div>
+      <div class="month-row"><p class="eyebrow">FATURA DE</p><div class="month-picker"><button type="button" data-month="card:-1" aria-label="Mês anterior">${icon('chevron-left')}</button><span>${monthName(ui.cardMonth)}</span><button type="button" data-month="card:1" aria-label="Próximo mês">${icon('chevron-right')}</button></div></div>
+      <section class="bank-list" aria-label="Cartões cadastrados">${state.third.cards.length ? state.third.cards.map((card, index) => {
+        const s = cardSummary(card);
+        return `<button class="bank-card ${['','ink','slate'][index % 3]} ${s.invoice >= 10000000 || s.pending >= 10000000 ? 'large-values' : ''}" type="button" data-card="${esc(card.id)}" aria-label="Abrir ${esc(card.name)}"><span class="bank-top"><span><span class="bank-name">${esc(card.name)}</span><span class="bank-sub">Cartão de terceiros</span></span><span class="bank-symbol">${esc(initials(card.name))}</span></span><span class="bank-bottom"><span><span class="bank-bill-label">Fatura de ${monthName(ui.cardMonth).split(' ')[0]}</span><span class="bank-bill">${F.money(s.invoice)}</span></span><span class="bank-pending"><span class="bank-pending-label">Total pendente</span><strong>${F.money(s.pending)}</strong></span></span><span class="bank-due">${icon('calendar')} Fecha dia ${card.closingDay} · vence dia ${card.dueDay}</span></button>`;
+      }).join('') : empty('Nenhum cartão ainda', 'Cadastre um cartão para registrar compras de terceiros.')}</section>
+      <p class="cards-note">As faturas mostram apenas parcelas de terceiros. Suas despesas pessoais ficam em “Minhas”.</p><button class="quiet-button" type="button" data-action="new-card">${icon('plus')} Novo cartão</button>`;
+  }
+  function cardDetail() {
+    const card = cardById(ui.detail.id);
+    if (!card) { ui.detail = null; return cardsPage(); }
+    const s = cardSummary(card);
+    const purchases = state.third.purchases.filter(p => p.cardId === card.id).sort((a, b) => b.purchaseDate.localeCompare(a.purchaseDate));
+    return `<div class="detail-top"><button class="icon-button detail-back" type="button" data-action="back" aria-label="Voltar para cartões">${icon('chevron-left')}</button><span>Detalhes do cartão</span><button class="icon-button detail-menu" type="button" data-action="card-menu" aria-label="Opções do cartão">${icon('more')}</button></div>
+      <section class="detail-hero"><p class="eyebrow">${esc(card.name.toUpperCase())}</p><h1>${monthName(ui.cardMonth)}</h1><p class="eyebrow">FATURA DO MÊS</p><p class="hero-amount"><span class="currency">R$</span> ${F.digits(s.invoice)}</p><div class="detail-split"><span>Total pendente<strong>${F.money(s.pending)}</strong></span><span>Já recebido nesta fatura<strong>${F.money(s.received)}</strong></span></div></section>
+      <div class="section-heading detail-list-head"><h2>Parcelas da fatura</h2><button class="text-link" type="button" data-action="receive">Receber</button></div><div class="transaction-list">${s.bill.length ? s.bill.map(x => transaction(x)).join('') : empty('Sem parcelas', 'Nenhuma parcela nesta fatura.')}</div>
+      <div class="section-heading detail-list-head"><h2>Compras</h2><span class="subtle-count">${purchases.length}</span></div><div class="simple-list">${purchases.length ? purchases.map(purchaseRow).join('') : empty('Nenhuma compra', 'As compras deste cartão aparecerão aqui.')}</div>`;
+  }
+  function purchaseRow(purchase) {
+    const paid = F.sum(purchase.installments.map(F.received));
+    return `<button class="simple-row" type="button" data-purchase="${esc(purchase.id)}"><span class="row-main"><strong>${esc(purchase.description)}</strong><small>${esc(purchase.person)} · ${dateName(purchase.purchaseDate)} · ${purchase.count}x</small></span><span class="row-right"><strong>${F.money(purchase.totalCents - paid)}</strong><small>A receber</small></span>${icon('chevron-right')}</button>`;
+  }
+  function purchaseDetail() {
+    const purchase = state.third.purchases.find(x => x.id === ui.detail.id);
+    if (!purchase) { ui.detail = null; return cardsPage(); }
+    const card = cardById(purchase.cardId);
+    const paid = F.sum(purchase.installments.map(F.received));
+    return `<div class="detail-top"><button class="icon-button detail-back" type="button" data-action="back" aria-label="Voltar">${icon('chevron-left')}</button><span>Compra</span><button class="icon-button detail-menu" type="button" data-action="purchase-menu" aria-label="Opções da compra">${icon('more')}</button></div>
+      <section class="detail-hero"><p class="eyebrow">${esc(purchase.person.toUpperCase())}</p><h1>${esc(purchase.description)}</h1><p class="eyebrow">TOTAL A RECEBER</p><p class="hero-amount"><span class="currency">R$</span> ${F.digits(purchase.totalCents - paid)}</p><div class="detail-split"><span>Valor da compra<strong>${F.money(purchase.totalCents)}</strong></span><span>Recebido<strong>${F.money(paid)}</strong></span></div></section>
+      <p class="detail-meta">${icon('card')} ${esc(card?.name || 'Cartão')} · compra em ${dateFull(purchase.purchaseDate)} · ${purchase.count} parcela(s)</p>
+      <div class="section-heading detail-list-head"><h2>Parcelas</h2></div><div class="transaction-list">${purchase.installments.map(installment => transaction({ purchase, installment })).join('')}</div>`;
+  }
+  function peopleRows() {
+    const query = ui.peopleQuery.trim().toLocaleLowerCase('pt-BR');
+    const list = people().filter(person => person.name.toLocaleLowerCase('pt-BR').includes(query));
+    return list.length ? list.map(person => `<button class="person-row" type="button" data-person-detail="${esc(person.key)}"><span class="avatar ${avatarTone(person.name)}">${esc(initials(person.name))}</span><span class="row-main"><strong>${esc(person.name)}</strong><small>${person.purchases.length} compra(s) · ${person.entries.length} parcela(s)</small></span><span class="row-right"><strong>${F.money(person.pending)}</strong><small>A receber</small></span>${icon('chevron-right')}</button>`).join('') : empty('Nenhuma pessoa encontrada', query ? 'Tente outro nome.' : 'As pessoas aparecerão após a primeira compra.', 'users');
+  }
+  function peoplePage() {
+    return `${header()}<div class="cards-head"><p class="eyebrow">SEUS RECEBÍVEIS</p><h1 class="page-title" style="margin-top:9px">Pessoas</h1><p class="cards-intro">Um extrato claro de cada pessoa.</p></div><label class="search-field page-search">${icon('search')}<input id="peopleSearch" type="search" placeholder="Buscar pessoa" aria-label="Buscar pessoa" value="${esc(ui.peopleQuery)}"></label><div class="section-heading people-section-head"><h2 id="peopleCount">${people().length} pessoa(s)</h2></div><div class="simple-list" id="peopleResults">${peopleRows()}</div>`;
+  }
+  function personDetail() {
+    const person = people().find(x => x.key === ui.detail.id);
+    if (!person) { ui.detail = null; return peoplePage(); }
+    const open = person.entries.filter(x => F.pending(x.installment) > 0).sort((a, b) => a.installment.expectedDate.localeCompare(b.installment.expectedDate));
+    const payments = person.entries.flatMap(x => x.installment.payments.map(pay => ({ ...pay, purchase: x.purchase, installment: x.installment }))).sort((a, b) => b.date.localeCompare(a.date));
+    return `<div class="detail-top"><button class="icon-button detail-back" type="button" data-action="back" aria-label="Voltar para pessoas">${icon('chevron-left')}</button><span>Extrato da pessoa</span></div>
+      <section class="detail-hero"><p class="eyebrow">PESSOA</p><h1>${esc(person.name)}</h1><p class="eyebrow">TOTAL PENDENTE</p><p class="hero-amount"><span class="currency">R$</span> ${F.digits(person.pending)}</p><div class="detail-split"><span>Já recebido<strong>${F.money(person.received)}</strong></span><span>Compras<strong>${person.purchases.length}</strong></span><span>Parcelas<strong>${person.entries.length}</strong></span></div></section>
+      <div class="section-heading detail-list-head"><h2>Parcelas em aberto</h2><button class="text-link" type="button" data-action="receive-person">Receber</button></div><div class="transaction-list">${open.length ? open.map(x => transaction(x)).join('') : empty('Tudo recebido', 'Nenhuma parcela pendente.', 'check')}</div>
+      <div class="section-heading detail-list-head"><h2>Histórico financeiro</h2></div><div class="simple-list">${payments.length ? payments.map(pay => `<button class="history-row" type="button" data-history="${esc(pay.installment.id)}"><span class="history-icon">${icon('check')}</span><span class="row-main"><strong>Recebimento · ${esc(pay.purchase.description)}</strong><small>${dateFull(pay.date)} · parcela ${pay.installment.number}/${pay.purchase.count}</small></span><span class="row-right green"><strong>+ ${F.money(pay.amountCents)}</strong></span></button>`).join('') : empty('Sem recebimentos', 'O histórico aparecerá após o primeiro pagamento.', 'clock')}</div>
+      <div class="section-heading detail-list-head"><h2>Compras realizadas</h2></div><div class="simple-list">${person.purchases.map(purchaseRow).join('')}</div>`;
+  }
+  function forecastPage() {
+    const month = ui.forecastMonth;
+    const all = entries();
+    const selected = all.filter(x => x.installment.expectedDate.slice(0, 7) === month);
+    const planned = sumEntry(selected, x => x.installment.amountCents);
+    const received = sumEntry(selected, x => F.received(x.installment));
+    const months = Array.from({ length: 6 }, (_, index) => F.shiftMonth(month, index));
+    const values = months.map(m => sumEntry(all.filter(x => x.installment.expectedDate.slice(0, 7) === m), x => F.pending(x.installment)));
+    const max = Math.max(1, ...values);
+    return `${header()}<div class="cards-head"><p class="eyebrow">OLHANDO À FRENTE</p><h1 class="page-title" style="margin-top:9px">Previsão</h1><p class="cards-intro">Valores que as pessoas devem pagar em cada mês.</p></div>
+      <div class="month-row"><p class="eyebrow">MÊS</p><div class="month-picker"><button type="button" data-month="forecast:-1" aria-label="Mês anterior">${icon('chevron-left')}</button><span>${monthName(month)}</span><button type="button" data-month="forecast:1" aria-label="Próximo mês">${icon('chevron-right')}</button></div></div>
+      <section class="forecast-hero"><p class="eyebrow">PREVISTO A RECEBER</p><p class="hero-amount"><span class="currency">R$</span> ${F.digits(planned - received)}</p><div class="detail-split"><span>Total das parcelas<strong>${F.money(planned)}</strong></span><span>Já recebido<strong>${F.money(received)}</strong></span></div></section>
+      <div class="chart" role="img" aria-label="Previsão dos próximos seis meses">${months.map((m, index) => `<button class="chart-item ${index === 0 ? 'active' : ''}" type="button" data-forecast-month="${m}" aria-label="${monthName(m)}: ${F.money(values[index])}"><span class="chart-column"><span class="chart-bar" style="height:${Math.max(values[index] ? 8 : 2, Math.round(values[index] / max * 100))}%"></span></span><span class="chart-label">${monthName(m).slice(0, 3)}</span></button>`).join('')}</div>
+      <div class="late-callout"><span class="late-icon">${icon('clock')}</span><span><strong>Valores em atraso</strong><small>Parcelas anteriores ainda pendentes</small></span><strong>${F.money(totalLate())}</strong></div>
+      <div class="section-heading detail-list-head"><h2>Parcelas de ${monthName(month).split(' ')[0]}</h2><span class="subtle-count">${selected.length}</span></div><div class="transaction-list">${selected.length ? selected.sort((a, b) => a.installment.expectedDate.localeCompare(b.installment.expectedDate)).map(x => transaction(x)).join('') : empty('Sem parcelas previstas', 'Navegue para outro mês ou cadastre uma compra.', 'calendar')}</div>`;
+  }
+  function ownMonthEntries(cardId = null) {
+    return state.expenses.flatMap(expense => expense.parts.map((part, index) => ({ expense, part, index }))).filter(x => x.part.month === ui.ownMonth && (!cardId || x.expense.cardId === cardId));
+  }
+  function ownSummary(list) { return { total: F.sum(list.map(x => x.part.value)), paid: F.sum(list.map(x => x.part.paid || 0)) }; }
+  function ownCardRow(card) {
+    const s = ownSummary(ownMonthEntries(card.id));
+    return `<button class="own-card" type="button" data-own-card="${esc(card.id)}"><span class="own-card-symbol">${esc(initials(card.name))}</span><span class="row-main"><strong>${esc(card.name)}</strong><small>Fecha dia ${card.closingDay} · vence dia ${card.dueDay}</small></span><span class="row-right"><strong>${F.money(s.total - s.paid)}</strong><small>Falta pagar</small></span>${icon('chevron-right')}</button>`;
+  }
+  function ownExpenseRow(expense) {
+    const paid = F.sum(expense.parts.map(p => p.paid || 0));
+    return `<button class="simple-row" type="button" data-own-expense="${esc(expense.id)}"><span class="row-main"><strong>${esc(expense.description)}</strong><small>${esc(state.personalCards.find(c => c.id === expense.cardId)?.name || 'Cartão anterior')} · ${expense.parts.length}x</small></span><span class="row-right"><strong>${F.money(expense.total - paid)}</strong><small>Falta pagar</small></span>${icon('chevron-right')}</button>`;
+  }
+  function minePage() {
+    const s = ownSummary(ownMonthEntries());
+    return `${header()}<div class="cards-head"><p class="eyebrow">ESPAÇO PESSOAL</p><h1 class="page-title" style="margin-top:9px">Minhas despesas</h1><p class="cards-intro">Seus cartões e gastos, separados dos recebíveis.</p></div>
+      <div class="month-row"><p class="eyebrow">FATURA DE</p><div class="month-picker"><button type="button" data-month="own:-1" aria-label="Mês anterior">${icon('chevron-left')}</button><span>${monthName(ui.ownMonth)}</span><button type="button" data-month="own:1" aria-label="Próximo mês">${icon('chevron-right')}</button></div></div>
+      <section class="forecast-hero own-hero"><p class="eyebrow">FALTA PAGAR NO MÊS</p><p class="hero-amount"><span class="currency">R$</span> ${F.digits(s.total - s.paid)}</p><div class="detail-split"><span>Total do mês<strong>${F.money(s.total)}</strong></span><span>Já paguei<strong>${F.money(s.paid)}</strong></span></div></section><button class="quiet-button" type="button" data-action="new-expense">${icon('plus')} Nova despesa</button>
+      <div class="section-heading detail-list-head"><h2>Cartões pessoais</h2><button class="text-link" type="button" data-action="new-own-card">Adicionar</button></div><div class="simple-list">${state.personalCards.length ? state.personalCards.map(ownCardRow).join('') : empty('Sem cartões pessoais', 'Adicione um cartão para acompanhar suas despesas.', 'wallet')}</div>
+      <div class="section-heading detail-list-head"><h2>Minhas compras</h2></div><div class="simple-list">${state.expenses.length ? state.expenses.slice().reverse().map(ownExpenseRow).join('') : empty('Sem despesas', 'Suas compras pessoais aparecerão aqui.', 'wallet')}</div>`;
+  }
+  function ownCardDetail() {
+    const card = state.personalCards.find(x => x.id === ui.detail.id);
+    if (!card) { ui.detail = null; return minePage(); }
+    const s = ownSummary(ownMonthEntries(card.id));
+    const expenses = state.expenses.filter(x => x.cardId === card.id);
+    return `<div class="detail-top"><button class="icon-button detail-back" type="button" data-action="back" aria-label="Voltar">${icon('chevron-left')}</button><span>Cartão pessoal</span><button class="icon-button detail-menu" type="button" data-action="own-card-menu" aria-label="Opções do cartão">${icon('more')}</button></div>
+      <section class="detail-hero"><p class="eyebrow">CARTÃO PESSOAL</p><h1>${esc(card.name)}</h1><p class="eyebrow">FALTA PAGAR EM ${esc(monthName(ui.ownMonth).toUpperCase())}</p><p class="hero-amount"><span class="currency">R$</span> ${F.digits(s.total - s.paid)}</p><div class="detail-split"><span>Total do mês<strong>${F.money(s.total)}</strong></span><span>Já paguei<strong>${F.money(s.paid)}</strong></span></div></section>
+      <p class="detail-meta">${icon('calendar')} Fecha dia ${card.closingDay} · vence dia ${card.dueDay}</p><div class="section-heading detail-list-head"><h2>Despesas</h2><button class="text-link" type="button" data-action="new-expense">Adicionar</button></div><div class="simple-list">${expenses.length ? expenses.map(ownExpenseRow).join('') : empty('Sem despesas', 'Nenhuma compra neste cartão.', 'wallet')}</div>`;
+  }
+  function ownExpenseDetail() {
+    const expense = state.expenses.find(x => x.id === ui.detail.id);
+    if (!expense) { ui.detail = null; return minePage(); }
+    const paid = F.sum(expense.parts.map(p => p.paid || 0));
+    return `<div class="detail-top"><button class="icon-button detail-back" type="button" data-action="back" aria-label="Voltar">${icon('chevron-left')}</button><span>Despesa pessoal</span><button class="icon-button detail-menu" type="button" data-action="expense-menu" aria-label="Opções da despesa">${icon('more')}</button></div>
+      <section class="detail-hero"><p class="eyebrow">MINHA COMPRA</p><h1>${esc(expense.description)}</h1><p class="eyebrow">FALTA PAGAR</p><p class="hero-amount"><span class="currency">R$</span> ${F.digits(expense.total - paid)}</p><div class="detail-split"><span>Valor total<strong>${F.money(expense.total)}</strong></span><span>Já paguei<strong>${F.money(paid)}</strong></span></div></section>
+      <p class="detail-meta">${icon('card')} ${esc(state.personalCards.find(c => c.id === expense.cardId)?.name || 'Cartão anterior')} · ${expense.parts.length} parcela(s)</p>
+      <div class="section-heading detail-list-head"><h2>Parcelas</h2></div><div class="simple-list">${expense.parts.map((part, index) => {
+        const remaining = part.value - (part.paid || 0);
+        return `<button class="simple-row" type="button" data-own-pay="${esc(expense.id)}:${index}"><span class="row-main"><strong>Parcela ${index + 1}/${expense.parts.length}</strong><small>${monthName(part.month)} · pago ${F.money(part.paid || 0)}</small></span><span class="row-right"><strong>${F.money(remaining)}</strong><small class="${remaining ? '' : 'green'}">${remaining ? 'Falta pagar' : 'Pago'}</small></span>${icon('chevron-right')}</button>`;
+      }).join('')}</div>`;
+  }
+  function render() {
+    const detail = ui.detail;
+    $('app').innerHTML = detail ? ({ card: cardDetail, purchase: purchaseDetail, person: personDetail, ownCard: ownCardDetail, ownExpense: ownExpenseDetail }[detail.type] || home)() : ({ home, cards: cardsPage, people: peoplePage, forecast: forecastPage, mine: minePage }[ui.page] || home)();
+    document.querySelectorAll('[data-nav]').forEach(button => { const active = button.dataset.nav === ui.page; button.classList.toggle('active', active); button.setAttribute('aria-current', active ? 'page' : 'false'); });
+  }
+  function animateScreen() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    $('app').animate?.([{ opacity: 0.7, transform: 'translateX(8px)' }, { opacity: 1, transform: 'translateX(0)' }], { duration: 170, easing: 'ease-out' });
+  }
+
+  function closeOverlays() {
+    const hadSheet = !!ui.sheet;
+    ui.sheet = null;
+    $('appSheet').hidden = true;
+    $('scrim').hidden = true;
+    $('actionMenu').hidden = true;
+    $('fab').setAttribute('aria-expanded', 'false');
+    document.querySelector('.app-shell').inert = false;
+    document.body.style.overflow = '';
+    if (hadSheet) {
+      const focusTarget = ui.returnFocus?.isConnected ? ui.returnFocus : document.querySelector('.nav-item.active');
+      focusTarget?.focus({ preventScroll: true });
+    }
+    ui.returnFocus = null;
+  }
+  function openMenu() {
+    if (!$('actionMenu').hidden) { closeOverlays(); return; }
+    $('scrim').hidden = false;
+    $('actionMenu').hidden = false;
+    $('fab').setAttribute('aria-expanded', 'true');
+  }
+  function openSheet(type, options = {}) {
+    if (!ui.sheet) ui.returnFocus = document.activeElement;
+    $('actionMenu').hidden = true;
+    $('fab').setAttribute('aria-expanded', 'false');
+    ui.sheet = { type, ...options };
+    $('scrim').hidden = false;
+    $('appSheet').hidden = false;
+    document.querySelector('.app-shell').inert = true;
+    document.body.style.overflow = 'hidden';
+    renderSheet();
+  }
+  function sheetHeader(eyebrow, title) { $('sheetEyebrow').textContent = eyebrow; $('sheetTitle').textContent = title; }
+  function renderSheet() {
+    if (!ui.sheet) return;
+    const sheet = ui.sheet;
+    let body = '';
+    if (sheet.type === 'payment') {
+      sheetHeader('RECEBIMENTO RÁPIDO', sheet.stage === 'person' ? 'Quem pagou?' : sheet.stage === 'installment' ? 'Qual parcela?' : sheet.stage === 'history' ? 'Histórico da parcela' : sheet.stage === 'success' ? 'Recebimento registrado' : sheet.editPaymentId ? 'Corrigir recebimento' : 'Confirmar valor');
+      body = paymentSheetBody(sheet);
+    } else if (sheet.type === 'card-form') {
+      const card = sheet.id ? cardById(sheet.id) : null;
+      sheetHeader('CARTÕES DE TERCEIROS', card ? 'Editar cartão' : 'Novo cartão');
+      body = `<form id="cardForm" class="form-stack"><label>Nome do cartão<input name="name" maxlength="100" required placeholder="Ex.: Nubank" value="${esc(card?.name || '')}"></label><div class="form-row"><label>Dia de fechamento<input name="closingDay" type="number" min="1" max="31" required value="${card?.closingDay || ''}"></label><label>Dia de vencimento<input name="dueDay" type="number" min="1" max="31" required value="${card?.dueDay || ''}"></label></div><p class="form-note">Alterações do cartão valem para as próximas compras. Parcelas já criadas mantêm suas datas.</p><button class="primary-button" type="submit">Salvar cartão</button></form>`;
+    } else if (sheet.type === 'purchase-form') {
+      sheetHeader('COMPRA DE TERCEIROS', sheet.id ? 'Editar compra' : 'Nova compra');
+      body = purchaseFormBody(sheet);
+    } else if (sheet.type === 'own-card-form') {
+      const card = sheet.id ? state.personalCards.find(x => x.id === sheet.id) : null;
+      sheetHeader('CARTÃO PESSOAL', card ? 'Editar cartão' : 'Novo cartão pessoal');
+      body = `<form id="ownCardForm" class="form-stack"><label>Nome do cartão<input name="name" maxlength="100" required placeholder="Ex.: Nubank pessoal" value="${esc(card?.name || '')}"></label><div class="form-row"><label>Dia de fechamento<input name="closingDay" type="number" min="1" max="31" required value="${card?.closingDay || ''}"></label><label>Dia de vencimento<input name="dueDay" type="number" min="1" max="31" required value="${card?.dueDay || ''}"></label></div><button class="primary-button" type="submit">Salvar cartão pessoal</button></form>`;
+    } else if (sheet.type === 'expense-form') {
+      const expense = sheet.id ? state.expenses.find(x => x.id === sheet.id) : null;
+      sheetHeader('MINHAS DESPESAS', expense ? 'Editar despesa' : 'Nova despesa');
+      body = `<form id="expenseForm" class="form-stack"><label>O que comprei<input name="description" maxlength="200" required placeholder="Ex.: Celular, roupa, assinatura" value="${esc(expense?.description || '')}"></label><label>Cartão pessoal<select name="cardId" required>${state.personalCards.map(card => `<option value="${esc(card.id)}" ${card.id === (expense?.cardId || sheet.cardId) ? 'selected' : ''}>${esc(card.name)}</option>`).join('')}</select></label><div class="form-row"><label>Valor total (R$)<input name="total" inputmode="decimal" required placeholder="150,00" value="${expense ? F.inputMoney(expense.total) : ''}"></label><label>Parcelas<input name="count" type="number" min="1" max="120" required value="${expense?.parts.length || 1}"></label></div><label>Primeira fatura<input name="firstMonth" type="month" required value="${expense?.firstMonth || ui.ownMonth}"></label><button class="primary-button" type="submit">Salvar despesa</button></form>`;
+    } else if (sheet.type === 'own-payment') {
+      sheetHeader('MINHAS DESPESAS', 'Pagar parcela');
+      body = ownPaymentBody(sheet);
+    } else if (sheet.type === 'settings') {
+      sheetHeader('NEXCELL CARTÕES', 'Configurações e backup');
+      body = `<p class="form-note">Os dados ficam neste navegador e endereço. Guarde um backup para trocar de aparelho.</p><p class="sheet-subheading">EXPORTAR</p><div class="sheet-actions"><button type="button" data-sheet-action="export-all">${icon('download')} Backup completo <small>Cartões, recebíveis e despesas pessoais</small></button><button type="button" data-sheet-action="export-third">${icon('download')} Somente recebíveis <small>Compatível com o backup antigo</small></button><button type="button" data-sheet-action="export-own">${icon('download')} Somente despesas pessoais <small>Cartões pessoais e compras</small></button></div><p class="sheet-subheading">RESTAURAR</p><div class="sheet-actions"><button type="button" data-sheet-action="import">${icon('upload')} Restaurar arquivo JSON <small>Backup completo ou dos formatos anteriores</small></button></div>`;
+    } else if (sheet.type === 'context') {
+      sheetHeader('OPÇÕES', sheet.title);
+      body = `<div class="sheet-actions">${sheet.options.map(option => `<button type="button" data-context="${esc(option.action)}">${icon(option.icon)} ${esc(option.label)}</button>`).join('')}</div>`;
+    } else if (sheet.type === 'confirm') {
+      sheetHeader('CONFIRMAR AÇÃO', sheet.title);
+      body = `<p class="confirm-message">${esc(sheet.message)}</p><div class="confirm-buttons"><button type="button" class="quiet-button" data-sheet-action="cancel-confirm">Cancelar</button><button type="button" class="primary-button ${sheet.danger ? 'danger-button' : ''}" data-sheet-action="confirm">${esc(sheet.button || 'Confirmar')}</button></div>`;
+    } else if (sheet.type === 'all-receipts') {
+      sheetHeader('RECEBÍVEIS', 'Parcelas em aberto');
+      body = `<div class="sheet-transactions">${openEntries().sort((a, b) => a.installment.expectedDate.localeCompare(b.installment.expectedDate)).map(x => transaction(x)).join('') || empty('Tudo em dia', 'Nenhuma parcela pendente.', 'check')}</div>`;
+    }
+    $('sheetContent').innerHTML = body;
+    $('appSheet').scrollTop = 0;
+    $('appSheet').focus({ preventScroll: true });
+  }
+  function paymentPersonRows(query = '') {
+    const all = openEntries().sort((a, b) => a.installment.expectedDate.localeCompare(b.installment.expectedDate));
+    const keys = [...new Set(all.map(x => personKey(x.purchase.person)))].filter(key => key.includes(query.trim().toLocaleLowerCase('pt-BR'))).slice(0, query ? undefined : 6);
+    return keys.length ? keys.map(key => {
+      const matching = all.filter(x => personKey(x.purchase.person) === key);
+      const name = matching[0].purchase.person;
+      return `<button type="button" class="sheet-choice" data-payment-person="${esc(key)}"><span class="avatar ${avatarTone(name)}">${esc(initials(name))}</span><span class="sheet-choice-body"><strong>${esc(name)}</strong><small>${matching.length} parcela(s) em aberto</small></span><span class="choice-end">${F.money(sumEntry(matching, x => F.pending(x.installment)))}</span>${icon('chevron-right')}</button>`;
+    }).join('') : empty('Nenhuma pessoa encontrada', 'Tente outro nome.', 'users');
+  }
+  function paymentSheetBody(sheet) {
+    if (sheet.stage === 'person') return `<label class="search-field">${icon('search')}<input id="paymentSearch" type="search" placeholder="Buscar pessoa" autocomplete="off" aria-label="Buscar pessoa" value="${esc(sheet.query || '')}"></label><p class="sheet-subheading">PESSOAS COM PARCELAS EM ABERTO</p><div id="paymentPeople">${paymentPersonRows(sheet.query)}</div>${new Set(openEntries().map(x => personKey(x.purchase.person))).size > 6 ? '<p class="form-note" style="margin-top:14px">Busque pelo nome para encontrar as demais pessoas.</p>' : ''}`;
+    if (sheet.stage === 'installment') {
+      const list = openEntries().filter(x => personKey(x.purchase.person) === sheet.personKey).sort((a, b) => a.installment.expectedDate.localeCompare(b.installment.expectedDate));
+      const name = list[0]?.purchase.person || '';
+      return `<div class="sheet-person"><span class="avatar ${avatarTone(name)}">${esc(initials(name))}</span><div><strong>${esc(name)}</strong><p>${list.length} parcela(s) em aberto</p></div></div><p class="sheet-subheading">SELECIONE UMA PARCELA</p>${list.map(x => `<button type="button" class="sheet-choice" data-payment-entry="${esc(x.installment.id)}"><span class="sheet-choice-body"><strong>${esc(x.purchase.description)} · ${x.installment.number}/${x.purchase.count}</strong><small>${esc(cardById(x.purchase.cardId)?.name || 'Cartão')} · ${dateName(x.installment.expectedDate)}</small></span><span class="choice-end">${F.money(F.pending(x.installment))}<small class="${late(x) ? 'status late' : ''}">${late(x) ? 'Atrasado' : 'Pendente'}</small></span>${icon('chevron-right')}</button>`).join('')}<button class="sheet-back" type="button" data-sheet-action="payment-back-person">← Trocar pessoa</button>`;
+    }
+    if (sheet.stage === 'success') return `<div class="success-state"><div class="success-mark">${icon('check')}</div><h3>Recebimento salvo.</h3><p>O saldo e o histórico foram atualizados.</p><button type="button" class="primary-button" data-sheet-action="close">Concluir</button></div>`;
+    const x = entries().find(x => x.installment.id === sheet.installmentId);
+    if (!x) return empty('Parcela não encontrada', 'Feche este painel e tente novamente.');
+    const remaining = F.pending(x.installment);
+    if (sheet.stage === 'history') return `<div class="sheet-person"><span class="avatar ${avatarTone(x.purchase.person)}">${esc(initials(x.purchase.person))}</span><div><strong>${esc(x.purchase.person)}</strong><p>${esc(x.purchase.description)} · ${x.installment.number}/${x.purchase.count}</p></div></div><div class="payment-totals"><span>Saldo da parcela</span><strong>${F.money(remaining)}</strong></div><p class="sheet-subheading">PAGAMENTOS</p>${x.installment.payments.length ? x.installment.payments.slice().sort((a, b) => b.date.localeCompare(a.date)).map(pay => `<div class="payment-history-row"><span><strong>${F.money(pay.amountCents)}</strong><small>${dateFull(pay.date)}${pay.date < x.installment.expectedDate ? ' · antecipado' : ''}</small></span><button type="button" data-edit-payment="${esc(pay.id)}" aria-label="Corrigir pagamento">${icon('edit')}</button><button type="button" data-delete-payment="${esc(pay.id)}" aria-label="Excluir pagamento">${icon('trash')}</button></div>`).join('') : empty('Sem pagamentos', 'Nenhum recebimento registrado.', 'clock')}${remaining > 0 ? '<button type="button" class="primary-button history-add" data-sheet-action="payment-add">Novo recebimento</button>' : ''}`;
+    const old = x.installment.payments.find(p => p.id === sheet.editPaymentId);
+    const max = remaining + (old?.amountCents || 0);
+    const dateControl = old || sheet.showDate ? `<label class="date-field">Data do recebimento<input name="date" type="date" max="${today()}" value="${old?.date || today()}" required></label>` : `<input type="hidden" name="date" value="${today()}"><div class="date-default"><span>Data do recebimento<strong>Hoje · ${dateFull(today())}</strong></span><button type="button" data-sheet-action="payment-date">Alterar</button></div>`;
+    return `<div class="sheet-person"><span class="avatar ${avatarTone(x.purchase.person)}">${esc(initials(x.purchase.person))}</span><div><strong>${esc(x.purchase.person)}</strong><p>${esc(x.purchase.description)} · ${x.installment.number}/${x.purchase.count} · ${dateName(x.installment.expectedDate)}</p></div></div><form id="paymentForm"><div class="amount-field"><label for="paymentAmount">Valor recebido</label><span class="prefix">R$</span><input id="paymentAmount" name="amount" inputmode="decimal" autocomplete="off" value="${F.inputMoney(old?.amountCents || remaining)}" required></div><p class="balance-hint">Saldo disponível: ${F.money(max)} · edite para pagamento parcial</p>${dateControl}<div class="payment-totals"><span>Após o recebimento, restará</span><strong id="remaining">${F.money(old ? max - old.amountCents : 0)}</strong></div><button class="primary-button" type="submit">${icon('check')} ${old ? 'Salvar correção' : 'Confirmar recebimento'}</button></form><button class="sheet-back" type="button" data-sheet-action="payment-history">Ver histórico e correções</button>`;
+  }
+  function purchaseFormBody(sheet) {
+    const old = sheet.id ? state.third.purchases.find(x => x.id === sheet.id) : null;
+    const draft = sheet.draft || { person: old?.person || '', description: old?.description || '', cardId: old?.cardId || sheet.cardId || state.third.cards[0]?.id || '', total: old ? F.inputMoney(old.totalCents) : '', purchaseDate: old?.purchaseDate || today(), count: old?.count || 1, firstMonth: old?.firstMonth || '', expectedDate: old?.expectedDate || '' };
+    sheet.draft = draft;
+    if (sheet.step === 2) return `<div class="step-indicator">ETAPA 2 DE 2 · DATAS E PARCELAS</div><form id="purchaseStep2" class="form-stack"><div class="form-row"><label>Data da compra<input name="purchaseDate" type="date" required value="${esc(draft.purchaseDate)}"></label><label>Parcelas<input name="count" type="number" min="1" max="120" required value="${draft.count}"></label></div><label>Primeira fatura · mês de vencimento<input name="firstMonth" type="month" required value="${esc(draft.firstMonth)}"></label><label>Primeira data prevista para a pessoa pagar<input name="expectedDate" type="date" required value="${esc(draft.expectedDate)}"></label><p class="form-note">As demais parcelas vencem mensalmente. Atrasos usam a data prevista da pessoa, não a data de pagamento ao banco.</p><div class="preview-panel" id="purchasePreview"></div><button class="primary-button" type="submit">Salvar compra</button></form><button type="button" class="sheet-back" data-sheet-action="purchase-back">← Voltar aos dados da compra</button>`;
+    return `<div class="step-indicator">ETAPA 1 DE 2 · DADOS DA COMPRA</div><form id="purchaseStep1" class="form-stack"><label>Nome da pessoa<input name="person" maxlength="200" required placeholder="Quem vai pagar?" list="knownPeople" value="${esc(draft.person)}"><datalist id="knownPeople">${people().map(p => `<option value="${esc(p.name)}"></option>`).join('')}</datalist></label><label>O que comprou<textarea name="description" maxlength="4000" required placeholder="Ex.: Celular, notebook, eletrodoméstico">${esc(draft.description)}</textarea></label><label>Cartão utilizado<select name="cardId" required>${state.third.cards.map(card => `<option value="${esc(card.id)}" ${card.id === draft.cardId ? 'selected' : ''}>${esc(card.name)}</option>`).join('')}</select></label><label>Valor total (R$)<input name="total" inputmode="decimal" required placeholder="1500,00" value="${esc(draft.total)}"></label><button class="primary-button" type="submit">Continuar ${icon('chevron-right')}</button></form>`;
+  }
+  function ownPaymentBody(sheet) {
+    const expense = state.expenses.find(x => x.id === sheet.expenseId);
+    const part = expense?.parts[sheet.index];
+    if (!part) return empty('Parcela não encontrada', 'Feche este painel e tente novamente.');
+    const remaining = part.value - (part.paid || 0);
+    if (sheet.stage === 'success') return `<div class="success-state"><div class="success-mark">${icon('check')}</div><h3>Pagamento salvo.</h3><p>O saldo da sua despesa foi atualizado.</p><button type="button" class="primary-button" data-sheet-action="close">Concluir</button></div>`;
+    return `<div class="sheet-person"><span class="avatar">${esc(initials(expense.description))}</span><div><strong>${esc(expense.description)}</strong><p>Parcela ${sheet.index + 1}/${expense.parts.length} · ${monthName(part.month)}</p></div></div><div class="payment-totals"><span>Valor da parcela</span><strong>${F.money(part.value)}</strong></div><div class="payment-totals"><span>Já paguei</span><strong>${F.money(part.paid || 0)}</strong></div>${remaining > 0 ? `<form id="ownPaymentForm"><div class="amount-field"><label for="ownPaymentAmount">Valor pago agora</label><span class="prefix">R$</span><input id="ownPaymentAmount" name="amount" inputmode="decimal" value="${F.inputMoney(remaining)}" required></div><p class="balance-hint">Restante da parcela: ${F.money(remaining)}</p><button class="primary-button" type="submit">${icon('check')} Confirmar pagamento</button></form>` : '<p class="paid-message">Esta parcela está paga.</p>'}${(part.paid || 0) > 0 ? '<button type="button" class="sheet-back danger-text" data-sheet-action="own-payment-reset">Zerar pagamento desta parcela</button>' : ''}`;
+  }
+  function confirmAction(title, message, callback, options = {}) {
+    ui.confirm = callback;
+    openSheet('confirm', { title, message, danger: !!options.danger, button: options.button || 'Confirmar' });
+  }
+  function openPayment(installmentId = null, history = false, key = null) {
+    if (state.errors.third) { showToast('Restaure um backup válido antes de registrar recebimentos.'); return; }
+    const stage = installmentId ? (history ? 'history' : 'amount') : key ? 'installment' : 'person';
+    openSheet('payment', { stage, installmentId, personKey: key || null, query: '', editPaymentId: null });
+    if (stage === 'person') $('paymentSearch')?.focus();
+  }
+  function openPurchase(id = null, cardId = null) {
+    if (state.errors.third) { showToast('Restaure um backup válido antes de salvar compras.'); return; }
+    if (!state.third.cards.length) { openSheet('card-form'); showToast('Cadastre um cartão antes da primeira compra.'); return; }
+    openSheet('purchase-form', { id, cardId, step: 1, draft: null });
+  }
+  function openExpense(id = null, cardId = null) {
+    if (state.errors.expenses || state.errors.personalCards) { showToast('Restaure um backup pessoal válido antes de salvar despesas.'); return; }
+    if (!state.personalCards.length) { openSheet('own-card-form'); showToast('Cadastre um cartão pessoal antes da primeira despesa.'); return; }
+    openSheet('expense-form', { id, cardId });
+  }
+  function openOwnPayment(value) {
+    const [expenseId, rawIndex] = value.split(':');
+    const index = Number(rawIndex);
+    if (state.expenses.some(x => x.id === expenseId && x.parts[index])) openSheet('own-payment', { expenseId, index, stage: 'amount' });
+  }
+  function updatePurchasePreview() {
+    const form = $('purchaseStep2');
+    if (!form) return;
+    try {
+      const total = F.parseMoney(ui.sheet.draft.total);
+      const count = Number(form.elements.count.value);
+      const values = F.split(total, count);
+      $('purchasePreview').textContent = `${count} parcela(s) de ${F.money(values[0])}${values[0] !== values.at(-1) ? ` a ${F.money(values.at(-1))}` : ''}. Total exato: ${F.money(F.sum(values))}.`;
+    } catch { $('purchasePreview').textContent = 'Confira valor e quantidade para calcular as parcelas.'; }
+  }
+  function downloadJSON(filename, payload) {
+    const url = URL.createObjectURL(new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' }));
+    const anchor = document.createElement('a');
+    anchor.href = url; anchor.download = filename;
+    document.body.append(anchor); anchor.click(); anchor.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+  function exportBackup(kind) {
+    try {
+      if ((kind === 'all' && Object.keys(state.errors).length) || (kind === 'third' && state.errors.third) || (kind === 'own' && (state.errors.personalCards || state.errors.expenses))) throw new Error('Há dados inválidos neste navegador. Restaure um backup antes de exportar.');
+      if (kind === 'third') downloadJSON(`nexcell-cartoes-${today()}.json`, { ...state.third, exportedAt: new Date().toISOString() });
+      if (kind === 'own') downloadJSON('nexcell-minhas-despesas.json', { version: 2, expenses: state.expenses, personalCards: state.personalCards });
+      if (kind === 'all') downloadJSON(`nexcell-completo-${today()}.json`, { format: 'nexcell-completo-v3', version: 3, exportedAt: new Date().toISOString(), third: state.third, personalCards: state.personalCards, expenses: state.expenses });
+      showToast('Backup exportado.');
+    } catch (error) { showToast(storageMessage(error)); }
+  }
+  function restoreValues(updates) {
+    const previous = Object.fromEntries(Object.keys(updates).map(key => [key, localStorage.getItem(key)]));
+    try {
+      for (const [key, value] of Object.entries(updates)) localStorage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+      for (const [key, value] of Object.entries(previous)) {
+        try { if (value === null) localStorage.removeItem(key); else localStorage.setItem(key, value); } catch { /* Conteúdo anterior permanece sempre que o navegador permitir. */ }
+      }
+      throw error;
+    }
+    readAll(); render();
+  }
+  async function importBackup(file) {
+    if (!file) return;
+    try {
+      const data = JSON.parse(await file.text());
+      let updates, description;
+      if (data?.format === 'nexcell-completo-v3' && data.version === 3) {
+        const third = F.validateThird(F.clone(data.third));
+        const expenses = F.validateExpenses(F.clone(data.expenses));
+        const cards = F.validatePersonalCards(F.clone(data.personalCards));
+        if (expenses.some(x => !cards.some(c => c.id === x.cardId))) throw new Error('Há despesas sem cartão pessoal no backup.');
+        updates = { [F.KEYS.third]: third, [F.KEYS.personalCards]: cards, [F.KEYS.expenses]: expenses };
+        description = `${third.cards.length} cartão(ões) de terceiros, ${third.purchases.length} compra(s) e ${expenses.length} despesa(s) pessoal(is)`;
+      } else if (data?.version === 1) {
+        const third = F.validateThird(F.clone(data));
+        updates = { [F.KEYS.third]: third };
+        description = `${third.cards.length} cartão(ões) e ${third.purchases.length} compra(s) de terceiros`;
+      } else if (data?.version === 2 && Array.isArray(data.expenses) && Array.isArray(data.personalCards)) {
+        const expenses = F.validateExpenses(F.clone(data.expenses));
+        const cards = F.validatePersonalCards(F.clone(data.personalCards));
+        if (expenses.some(x => !cards.some(c => c.id === x.cardId))) throw new Error('Há despesas sem cartão pessoal no backup.');
+        updates = { [F.KEYS.personalCards]: cards, [F.KEYS.expenses]: expenses };
+        description = `${cards.length} cartão(ões) e ${expenses.length} despesa(s) pessoal(is)`;
+      } else throw new Error('Formato de backup não reconhecido.');
+      confirmAction('Restaurar backup', `O arquivo contém ${description}. Os dados atuais das mesmas categorias serão substituídos. Exporte um backup antes de continuar.`, () => {
+        try { restoreValues(updates); showToast('Backup restaurado.'); return true; } catch (error) { showToast(storageMessage(error)); return false; }
+      }, { danger: true, button: 'Restaurar dados' });
+    } catch (error) { showToast(`Arquivo não restaurado. ${storageMessage(error)}`); }
+  }
+  function showContext(type) {
+    const detail = ui.detail;
+    if (!detail) return;
+    const settings = {
+      'card-menu': { title: 'Cartão', options: [{ action: 'edit-card', icon: 'edit', label: 'Editar cartão' }, { action: 'delete-card', icon: 'trash', label: 'Excluir cartão' }] },
+      'purchase-menu': { title: 'Compra', options: [{ action: 'edit-purchase', icon: 'edit', label: 'Editar compra' }, { action: 'delete-purchase', icon: 'trash', label: 'Excluir compra' }] },
+      'own-card-menu': { title: 'Cartão pessoal', options: [{ action: 'edit-own-card', icon: 'edit', label: 'Editar cartão pessoal' }, { action: 'delete-own-card', icon: 'trash', label: 'Excluir cartão pessoal' }] },
+      'expense-menu': { title: 'Despesa pessoal', options: [{ action: 'edit-expense', icon: 'edit', label: 'Editar despesa' }, { action: 'delete-expense', icon: 'trash', label: 'Excluir despesa' }] }
+    };
+    openSheet('context', { ...settings[type], targetId: detail.id });
+  }
+  function contextAction(action, id) {
+    closeOverlays();
+    if (action === 'edit-card') { openSheet('card-form', { id }); return; }
+    if (action === 'edit-purchase') { openPurchase(id); return; }
+    if (action === 'edit-own-card') { openSheet('own-card-form', { id }); return; }
+    if (action === 'edit-expense') { openExpense(id); return; }
+    if (action === 'delete-card') {
+      const card = cardById(id);
+      const purchases = state.third.purchases.filter(x => x.cardId === id);
+      const payments = F.sum(purchases.map(x => x.installments.reduce((n, i) => n + i.payments.length, 0)));
+      confirmAction('Excluir cartão', `Excluir ${card.name}? ${purchases.length} compra(s), todas as parcelas e ${payments} recebimento(s) associados também serão removidos.`, () => commitThird(next => { next.cards = next.cards.filter(x => x.id !== id); next.purchases = next.purchases.filter(x => x.cardId !== id); }, 'Cartão excluído.'), { danger: true, button: 'Excluir cartão' });
+    }
+    if (action === 'delete-purchase') {
+      const purchase = state.third.purchases.find(x => x.id === id);
+      const payments = purchase.installments.reduce((n, i) => n + i.payments.length, 0);
+      confirmAction('Excluir compra', `Excluir a compra de ${purchase.person}: ${purchase.description}? ${purchase.count} parcela(s) e ${payments} recebimento(s) serão removidos.`, () => commitThird(next => { next.purchases = next.purchases.filter(x => x.id !== id); }, 'Compra excluída.'), { danger: true, button: 'Excluir compra' });
+    }
+    if (action === 'delete-own-card') {
+      const card = state.personalCards.find(x => x.id === id);
+      if (state.expenses.some(x => x.cardId === id)) { showToast('Este cartão tem despesas. Mova ou exclua as despesas antes de excluí-lo.'); return; }
+      confirmAction('Excluir cartão pessoal', `Excluir ${card.name}?`, () => commitPersonal('cards', cards => { const index = cards.findIndex(x => x.id === id); cards.splice(index, 1); }, 'Cartão pessoal excluído.'), { danger: true, button: 'Excluir cartão' });
+    }
+    if (action === 'delete-expense') {
+      const expense = state.expenses.find(x => x.id === id);
+      confirmAction('Excluir despesa', `Excluir ${expense.description} e todos os pagamentos acumulados nas parcelas?`, () => commitPersonal('expenses', (_cards, expenses) => { const index = expenses.findIndex(x => x.id === id); expenses.splice(index, 1); }, 'Despesa excluída.'), { danger: true, button: 'Excluir despesa' });
+    }
+  }
+  function navigate(page) {
+    ui.page = page; ui.detail = null; ui.previousDetail = null;
+    closeOverlays(); render(); animateScreen(); window.scrollTo(0, 0);
+  }
+  function showDetail(type, id) {
+    ui.previousDetail = ui.detail && ['purchase', 'ownExpense'].includes(type) ? { ...ui.detail } : null;
+    ui.detail = { type, id }; render(); animateScreen(); window.scrollTo(0, 0);
+  }
+  function back() {
+    ui.detail = ui.previousDetail || null; ui.previousDetail = null;
+    render(); animateScreen(); window.scrollTo(0, 0);
+  }
+  document.addEventListener('click', event => {
+    const nav = event.target.closest('[data-nav]');
+    if (nav) { navigate(nav.dataset.nav); return; }
+    const month = event.target.closest('[data-month]');
+    if (month) { const [type, offset] = month.dataset.month.split(':'); ui[`${type}Month`] = F.shiftMonth(ui[`${type}Month`], Number(offset)); render(); return; }
+    const chartMonth = event.target.closest('[data-forecast-month]');
+    if (chartMonth) { ui.forecastMonth = chartMonth.dataset.forecastMonth; render(); return; }
+    const card = event.target.closest('[data-card]');
+    if (card) { showDetail('card', card.dataset.card); return; }
+    const purchase = event.target.closest('[data-purchase]');
+    if (purchase) { showDetail('purchase', purchase.dataset.purchase); return; }
+    const person = event.target.closest('[data-person-detail]');
+    if (person) { showDetail('person', person.dataset.personDetail); return; }
+    const ownCard = event.target.closest('[data-own-card]');
+    if (ownCard) { showDetail('ownCard', ownCard.dataset.ownCard); return; }
+    const ownExpense = event.target.closest('[data-own-expense]');
+    if (ownExpense) { showDetail('ownExpense', ownExpense.dataset.ownExpense); return; }
+    const ownPay = event.target.closest('[data-own-pay]');
+    if (ownPay) { openOwnPayment(ownPay.dataset.ownPay); return; }
+    const payEntry = event.target.closest('[data-pay-entry]');
+    if (payEntry) { const x = entries().find(x => x.installment.id === payEntry.dataset.payEntry); openPayment(payEntry.dataset.payEntry, F.pending(x.installment) === 0); return; }
+    const history = event.target.closest('[data-history]');
+    if (history) { openPayment(history.dataset.history, true); return; }
+    const paymentPerson = event.target.closest('[data-payment-person]');
+    if (paymentPerson) { ui.sheet.personKey = paymentPerson.dataset.paymentPerson; ui.sheet.stage = 'installment'; renderSheet(); return; }
+    const paymentEntry = event.target.closest('[data-payment-entry]');
+    if (paymentEntry) { ui.sheet.installmentId = paymentEntry.dataset.paymentEntry; ui.sheet.stage = 'amount'; renderSheet(); return; }
+    const editPayment = event.target.closest('[data-edit-payment]');
+    if (editPayment) { ui.sheet.editPaymentId = editPayment.dataset.editPayment; ui.sheet.stage = 'amount'; renderSheet(); return; }
+    const deletePayment = event.target.closest('[data-delete-payment]');
+    if (deletePayment) {
+      const installmentId = ui.sheet.installmentId, paymentId = deletePayment.dataset.deletePayment;
+      const x = entries().find(item => item.installment.id === installmentId);
+      const payment = x?.installment.payments.find(pay => pay.id === paymentId);
+      if (!payment) return;
+      confirmAction('Excluir recebimento', `Excluir ${F.money(payment.amountCents)} recebido em ${dateFull(payment.date)}? O saldo da parcela voltará a ficar pendente.`, () => {
+        const ok = commitThird(next => { const i = F.flat(next).find(item => item.installment.id === installmentId)?.installment; if (!i) throw new Error('Parcela não encontrada.'); i.payments = i.payments.filter(pay => pay.id !== paymentId); }, 'Recebimento excluído.');
+        if (ok) openPayment(installmentId, true);
+        return ok;
+      }, { danger: true, button: 'Excluir recebimento' });
+      return;
+    }
+    const context = event.target.closest('[data-context]');
+    if (context) { contextAction(context.dataset.context, ui.sheet.targetId); return; }
+    const sheetAction = event.target.closest('[data-sheet-action]');
+    if (sheetAction) {
+      const action = sheetAction.dataset.sheetAction;
+      if (action === 'close' || action === 'cancel-confirm') { closeOverlays(); return; }
+      if (action === 'confirm') { const callback = ui.confirm; ui.confirm = null; const result = callback?.(); if (result !== false && ui.sheet?.type === 'confirm') closeOverlays(); return; }
+      if (action.startsWith('export-')) { exportBackup(action.slice(7)); return; }
+      if (action === 'import') { $('backupFile').click(); return; }
+      if (action === 'payment-back-person') { ui.sheet.stage = 'person'; renderSheet(); $('paymentSearch')?.focus(); return; }
+      if (action === 'payment-history') { ui.sheet.stage = 'history'; ui.sheet.editPaymentId = null; renderSheet(); return; }
+      if (action === 'payment-add') { ui.sheet.stage = 'amount'; ui.sheet.editPaymentId = null; ui.sheet.showDate = false; renderSheet(); return; }
+      if (action === 'payment-date') { const amount = $('paymentAmount').value; ui.sheet.showDate = true; renderSheet(); $('paymentAmount').value = amount; $('paymentAmount').dispatchEvent(new Event('input', { bubbles: true })); $('paymentForm [name="date"]')?.focus(); return; }
+      if (action === 'purchase-back') { const form = $('purchaseStep2'); ui.sheet.draft = { ...ui.sheet.draft, purchaseDate: form.elements.purchaseDate.value, count: Number(form.elements.count.value), firstMonth: form.elements.firstMonth.value, expectedDate: form.elements.expectedDate.value }; ui.sheet.step = 1; renderSheet(); return; }
+      if (action === 'own-payment-reset') {
+        const { expenseId, index } = ui.sheet;
+        confirmAction('Zerar pagamento', 'O valor pago desta parcela voltará a R$ 0,00. Deseja continuar?', () => {
+          const ok = commitPersonal('expenses', (_cards, expenses) => { expenses.find(x => x.id === expenseId).parts[index].paid = 0; }, 'Pagamento corrigido.');
+          if (ok) openSheet('own-payment', { expenseId, index, stage: 'amount' });
+          return ok;
+        }, { danger: true, button: 'Zerar pagamento' });
+        return;
+      }
+    }
+    const action = event.target.closest('[data-action]');
+    if (!action) return;
+    const type = action.dataset.action;
+    if (type === 'back') back();
+    else if (type === 'settings') openSheet('settings');
+    else if (type === 'receive') openPayment();
+    else if (type === 'receive-person') openPayment(null, false, ui.detail.id);
+    else if (type === 'purchase') openPurchase();
+    else if (type === 'new-card') openSheet('card-form');
+    else if (type === 'new-own-card') openSheet('own-card-form');
+    else if (type === 'new-expense') openExpense(null, ui.detail?.type === 'ownCard' ? ui.detail.id : null);
+    else if (type === 'all-receipts') openSheet('all-receipts');
+    else if (type.endsWith('-menu')) showContext(type);
+  });
+  document.addEventListener('input', event => {
+    if (event.target.id === 'peopleSearch') { ui.peopleQuery = event.target.value; $('peopleResults').innerHTML = peopleRows(); $('peopleCount').textContent = `${people().filter(x => x.name.toLocaleLowerCase('pt-BR').includes(ui.peopleQuery.trim().toLocaleLowerCase('pt-BR'))).length} pessoa(s)`; }
+    if (event.target.id === 'paymentSearch' && ui.sheet?.type === 'payment') { ui.sheet.query = event.target.value; $('paymentPeople').innerHTML = paymentPersonRows(ui.sheet.query); }
+    if (event.target.id === 'paymentAmount' && ui.sheet?.type === 'payment') {
+      const x = entries().find(x => x.installment.id === ui.sheet.installmentId);
+      const old = x?.installment.payments.find(pay => pay.id === ui.sheet.editPaymentId);
+      let value; try { value = F.parseMoney(event.target.value); } catch { value = NaN; }
+      const max = x ? F.pending(x.installment) + (old?.amountCents || 0) : 0;
+      $('remaining').textContent = Number.isFinite(value) && value <= max ? F.money(max - value) : '—';
+    }
+    if (event.target.closest('#purchaseStep2')) updatePurchasePreview();
+  });
+  document.addEventListener('change', event => {
+    const form = event.target.closest('#purchaseStep2');
+    if (!form || ui.sheet?.type !== 'purchase-form') return;
+    const draft = ui.sheet.draft, card = cardById(draft.cardId);
+    if (event.target.name === 'purchaseDate' && F.validDate(event.target.value) && !ui.sheet.monthManual) form.elements.firstMonth.value = F.suggestMonth(card, event.target.value);
+    if ((event.target.name === 'purchaseDate' || event.target.name === 'firstMonth') && F.validMonth(form.elements.firstMonth.value) && !ui.sheet.expectedManual) form.elements.expectedDate.value = F.dayInMonth(form.elements.firstMonth.value, card.dueDay);
+    if (event.target.name === 'firstMonth') ui.sheet.monthManual = true;
+    if (event.target.name === 'expectedDate') ui.sheet.expectedManual = true;
+  });
+  document.addEventListener('submit', event => {
+    const form = event.target;
+    if (!['cardForm', 'purchaseStep1', 'purchaseStep2', 'paymentForm', 'ownCardForm', 'expenseForm', 'ownPaymentForm'].includes(form.id)) return;
+    event.preventDefault();
+    try {
+      if (form.id === 'cardForm' || form.id === 'ownCardForm') {
+        const data = { name: form.elements.name.value.trim(), closingDay: Number(form.elements.closingDay.value), dueDay: Number(form.elements.dueDay.value) };
+        if (!data.name || ![data.closingDay, data.dueDay].every(x => Number.isInteger(x) && x >= 1 && x <= 31)) throw new Error('Informe o nome e os dias entre 1 e 31.');
+        const id = ui.sheet.id;
+        const ok = form.id === 'cardForm' ? commitThird(next => { if (id) Object.assign(next.cards.find(x => x.id === id), data); else next.cards.push({ id: F.uuid(), ...data }); }, 'Cartão salvo.') : commitPersonal('cards', cards => { if (id) Object.assign(cards.find(x => x.id === id), data); else cards.push({ id: F.uuid(), ...data }); }, 'Cartão pessoal salvo.');
+        if (ok) closeOverlays();
+      } else if (form.id === 'purchaseStep1') {
+        const person = form.elements.person.value.trim(), description = form.elements.description.value.trim(), cardId = form.elements.cardId.value, total = form.elements.total.value.trim();
+        F.parseMoney(total);
+        if (!person || !description || !cardById(cardId)) throw new Error('Confira pessoa, compra e cartão.');
+        const draft = ui.sheet.draft;
+        Object.assign(draft, { person, description, cardId, total });
+        if (!draft.firstMonth) draft.firstMonth = F.suggestMonth(cardById(cardId), draft.purchaseDate);
+        if (!draft.expectedDate) draft.expectedDate = F.dayInMonth(draft.firstMonth, cardById(cardId).dueDay);
+        ui.sheet.step = 2; renderSheet(); updatePurchasePreview();
+      } else if (form.id === 'purchaseStep2') {
+        const draft = ui.sheet.draft;
+        const data = { person: draft.person, description: draft.description, cardId: draft.cardId, purchaseDate: form.elements.purchaseDate.value, totalCents: F.parseMoney(draft.total), count: Number(form.elements.count.value), firstMonth: form.elements.firstMonth.value, expectedDate: form.elements.expectedDate.value };
+        if (!F.validDate(data.purchaseDate) || !F.validMonth(data.firstMonth) || !F.validDate(data.expectedDate)) throw new Error('Confira as datas e o mês da fatura.');
+        const id = ui.sheet.id;
+        const ok = commitThird(next => { const old = id ? next.purchases.find(x => x.id === id) : null; if (id && !old) throw new Error('Compra não encontrada.'); const item = F.makePurchase(data, old); if (old) next.purchases[next.purchases.findIndex(x => x.id === id)] = item; else next.purchases.push(item); }, 'Compra salva e parcelas distribuídas.');
+        if (ok) closeOverlays();
+      } else if (form.id === 'paymentForm') {
+        const installmentId = ui.sheet.installmentId, editPaymentId = ui.sheet.editPaymentId;
+        const amountCents = F.parseMoney(form.elements.amount.value), date = form.elements.date.value;
+        if (!F.validDate(date) || date > today()) throw new Error('A data do recebimento deve ser válida e não pode estar no futuro.');
+        const ok = commitThird(next => {
+          const i = F.flat(next).find(x => x.installment.id === installmentId)?.installment;
+          if (!i) throw new Error('Parcela não encontrada.');
+          const old = i.payments.find(pay => pay.id === editPaymentId);
+          if (editPaymentId && !old) throw new Error('Pagamento não encontrado.');
+          const others = F.received(i) - (old?.amountCents || 0);
+          if (others + amountCents > i.amountCents) throw new Error(`O valor ultrapassa o saldo permitido de ${F.money(i.amountCents - others)}.`);
+          if (old) Object.assign(old, { amountCents, date }); else i.payments.push({ id: F.uuid(), amountCents, date });
+        });
+        if (ok) { ui.sheet.stage = 'success'; renderSheet(); }
+      } else if (form.id === 'ownCardForm') {
+        const data = { name: form.elements.name.value.trim(), closingDay: Number(form.elements.closingDay.value), dueDay: Number(form.elements.dueDay.value) };
+        if (!data.name || ![data.closingDay, data.dueDay].every(x => Number.isInteger(x) && x >= 1 && x <= 31)) throw new Error('Informe o nome e os dias entre 1 e 31.');
+        const id = ui.sheet.id;
+        if (commitPersonal('cards', cards => { if (id) Object.assign(cards.find(x => x.id === id), data); else cards.push({ id: F.uuid(), ...data }); }, 'Cartão pessoal salvo.')) closeOverlays();
+      } else if (form.id === 'expenseForm') {
+        const description = form.elements.description.value.trim(), cardId = form.elements.cardId.value, total = F.parseMoney(form.elements.total.value, Number.MAX_SAFE_INTEGER), count = Number(form.elements.count.value), firstMonth = form.elements.firstMonth.value;
+        if (!description || !state.personalCards.some(x => x.id === cardId) || !F.validMonth(firstMonth)) throw new Error('Confira a despesa, cartão e mês.');
+        const values = F.split(total, count), id = ui.sheet.id;
+        const ok = commitPersonal('expenses', (_cards, expenses) => {
+          const old = id ? expenses.find(x => x.id === id) : null;
+          if (id && !old) throw new Error('Despesa não encontrada.');
+          if (old && old.parts.some(p => (p.paid || 0) > 0) && (old.total !== total || old.parts.length !== count || old.firstMonth !== firstMonth)) throw new Error('Esta despesa já tem pagamentos. Corrija os pagamentos antes de alterar valor, parcelas ou primeira fatura.');
+          const parts = values.map((value, index) => ({ month: F.shiftMonth(firstMonth, index), value, paid: old?.parts[index]?.paid || 0 }));
+          const item = { ...(old || {}), id: old?.id || F.uuid(), description, cardId, total, firstMonth, parts };
+          if (old) expenses[expenses.findIndex(x => x.id === id)] = item; else expenses.push(item);
+        }, 'Despesa salva.');
+        if (ok) closeOverlays();
+      } else if (form.id === 'ownPaymentForm') {
+        const amount = F.parseMoney(form.elements.amount.value, Number.MAX_SAFE_INTEGER), { expenseId, index } = ui.sheet;
+        const ok = commitPersonal('expenses', (_cards, expenses) => { const part = expenses.find(x => x.id === expenseId)?.parts[index]; if (!part) throw new Error('Parcela não encontrada.'); if (amount > part.value - (part.paid || 0)) throw new Error('O pagamento ultrapassa o saldo da parcela.'); part.paid = (part.paid || 0) + amount; });
+        if (ok) { ui.sheet.stage = 'success'; renderSheet(); }
+      }
+    } catch (error) { showToast(storageMessage(error)); }
+  });
+  $('fab').addEventListener('click', openMenu);
+  $('scrim').addEventListener('click', closeOverlays);
+  $('closeSheet').addEventListener('click', closeOverlays);
+  $('backupFile').addEventListener('change', event => { const file = event.target.files[0]; event.target.value = ''; importBackup(file); });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') { closeOverlays(); return; }
+    if (event.key !== 'Tab' || !ui.sheet) return;
+    const focusable = [...$('appSheet').querySelectorAll('button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled])')].filter(node => node.getClientRects().length);
+    if (!focusable.length) return;
+    const first = focusable[0], last = focusable.at(-1);
+    if (event.shiftKey && (document.activeElement === first || document.activeElement === $('appSheet'))) { event.preventDefault(); last.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+  });
+  window.addEventListener('storage', event => { if (Object.values(F.KEYS).includes(event.key) || event.key === null) { closeOverlays(); readAll(); render(); } });
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) render(); });
+  readAll(); render();
+})();
+
+</script>
+</body>
+</html>
